@@ -1,4 +1,4 @@
-package com.example.demo.control;
+package com.example.demo.controlle;
 
 public class Main {
     public static void main(String[] args) {
