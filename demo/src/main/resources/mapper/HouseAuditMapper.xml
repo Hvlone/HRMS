@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.HouseAuditMapper">
+    <resultMap id="HouseAuditResultMap" type="HouseAudit">
+        <id property="auditId" column="audit_id"/>
+        <result property="houseId" column="house_id"/>
+        <result property="adminId" column="admin_id"/>
+        <result property="auditResult" column="audit_result"
+                typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
+        <result property="auditTime" column="audit_time"/>
+    </resultMap>
+
+    <!-- 根据审核结果查询 -->
+    <select id="selectByResult" resultMap="HouseAuditResultMap">
+        SELECT * FROM house_audit
+        WHERE audit_result = #{result, typeHandler=org.apache.ibatis.type.EnumTypeHandler}
+        ORDER BY audit_time DESC
+    </select>
+</mapper>
+    
