@@ -1,62 +1,73 @@
 package com.example.demo.po;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.Date;
 
-/**
- * 租赁订单实体类
- * 对应数据库表: rent_order
- */
 public class RentOrder {
+
     private Integer orderId;
     private Integer houseId;
     private Integer tenantId;
     private BigDecimal amount;
-    private String paymentMethod; // alipay, wechat, bank
-    private LocalDateTime paymentTime;
-    private LocalDate leaseStart;
-    private LocalDate leaseEnd;
+    private PaymentMethod paymentMethod; // 支付方式：alipay/wechat/bank
+    private Date paymentTime;
+    private Date leaseStart;
+    private Date leaseEnd;
 
-    // 构造方法
+    public enum PaymentMethod {
+        ALIPAY, WECHAT, BANK
+    }
+
     public RentOrder() {}
 
-    public RentOrder(Integer orderId, Integer houseId, Integer tenantId,
-                     BigDecimal amount, String paymentMethod, LocalDateTime paymentTime,
-                     LocalDate leaseStart, LocalDate leaseEnd) {
-        this.orderId = orderId;
+    public RentOrder(Integer houseId, Integer tenantId, BigDecimal amount, PaymentMethod paymentMethod, Date leaseStart, Date leaseEnd) {
         this.houseId = houseId;
         this.tenantId = tenantId;
         this.amount = amount;
         this.paymentMethod = paymentMethod;
-        this.paymentTime = paymentTime;
         this.leaseStart = leaseStart;
         this.leaseEnd = leaseEnd;
+        this.paymentTime = new Date();
     }
 
-    // Getter和Setter
+
     public Integer getOrderId() { return orderId; }
     public void setOrderId(Integer orderId) { this.orderId = orderId; }
+    
     public Integer getHouseId() { return houseId; }
     public void setHouseId(Integer houseId) { this.houseId = houseId; }
+    
     public Integer getTenantId() { return tenantId; }
     public void setTenantId(Integer tenantId) { this.tenantId = tenantId; }
+    
     public BigDecimal getAmount() { return amount; }
     public void setAmount(BigDecimal amount) { this.amount = amount; }
-    public String getPaymentMethod() { return paymentMethod; }
-    public void setPaymentMethod(String paymentMethod) { this.paymentMethod = paymentMethod; }
-    public LocalDateTime getPaymentTime() { return paymentTime; }
-    public void setPaymentTime(LocalDateTime paymentTime) { this.paymentTime = paymentTime; }
-    public LocalDate getLeaseStart() { return leaseStart; }
-    public void setLeaseStart(LocalDate leaseStart) { this.leaseStart = leaseStart; }
-    public LocalDate getLeaseEnd() { return leaseEnd; }
-    public void setLeaseEnd(LocalDate leaseEnd) { this.leaseEnd = leaseEnd; }
+    
+    public PaymentMethod getPaymentMethod() { return paymentMethod; }
+    public void setPaymentMethod(PaymentMethod paymentMethod) { 
+        this.paymentMethod = paymentMethod; 
+    }
+    
+    // 获取支付方式的数据库兼容值
+    public String getPaymentMethodValue() {
+        return paymentMethod != null ? paymentMethod.name().toLowerCase() : null;
+    }
+    
+    public Date getPaymentTime() { return paymentTime; }
+    public void setPaymentTime(Date paymentTime) { this.paymentTime = paymentTime; }
+    
+    public Date getLeaseStart() { return leaseStart; }
+    public void setLeaseStart(Date leaseStart) { this.leaseStart = leaseStart; }
+    
+    public Date getLeaseEnd() { return leaseEnd; }
+    public void setLeaseEnd(Date leaseEnd) { this.leaseEnd = leaseEnd; }
 
     @Override
     public String toString() {
-        return "RentOrder{orderId=" + orderId + ", houseId=" + houseId +
-                ", tenantId=" + tenantId + ", amount=" + amount +
-                ", paymentMethod='" + paymentMethod + "', paymentTime=" + paymentTime +
-                ", leaseStart=" + leaseStart + ", leaseEnd=" + leaseEnd + "}";
+        return "RentOrder{" +
+                "orderId=" + orderId +
+                ", amount=" + amount +
+                ", paymentMethod=" + paymentMethod +
+                '}';
     }
 }

@@ -1,45 +1,55 @@
 package com.example.demo.po;
-import java.time.LocalDateTime;
 
-/**
- * 房源审核记录实体类
- * 对应数据库表: house_audit
- */
+
+import java.util.Date;
+
 public class HouseAudit {
+
     private Integer auditId;
     private Integer houseId;
     private Integer adminId;
-    private String auditResult; // approved, rejected
-    private LocalDateTime auditTime;
+    private AuditResult auditResult; // 审核结果：approved/rejected
+    private Date auditTime;
 
-    // 构造方法
+    public enum AuditResult {
+        APPROVED, REJECTED
+    }
+
     public HouseAudit() {}
 
-    public HouseAudit(Integer auditId, Integer houseId, Integer adminId,
-                      String auditResult, LocalDateTime auditTime) {
-        this.auditId = auditId;
+    public HouseAudit(Integer houseId, Integer adminId, AuditResult auditResult) {
         this.houseId = houseId;
         this.adminId = adminId;
         this.auditResult = auditResult;
-        this.auditTime = auditTime;
+        this.auditTime = new Date();
     }
 
-    // Getter和Setter
     public Integer getAuditId() { return auditId; }
     public void setAuditId(Integer auditId) { this.auditId = auditId; }
+    
     public Integer getHouseId() { return houseId; }
     public void setHouseId(Integer houseId) { this.houseId = houseId; }
+    
     public Integer getAdminId() { return adminId; }
     public void setAdminId(Integer adminId) { this.adminId = adminId; }
-    public String getAuditResult() { return auditResult; }
-    public void setAuditResult(String auditResult) { this.auditResult = auditResult; }
-    public LocalDateTime getAuditTime() { return auditTime; }
-    public void setAuditTime(LocalDateTime auditTime) { this.auditTime = auditTime; }
+    
+    public AuditResult getAuditResult() { return auditResult; }
+    public void setAuditResult(AuditResult auditResult) { this.auditResult = auditResult; }
+    
+    public String getAuditResultValue() {
+        return auditResult != null ? auditResult.name().toLowerCase() : null;
+    }
+    
+    public Date getAuditTime() { return auditTime; }
+    public void setAuditTime(Date auditTime) { this.auditTime = auditTime; }
+
 
     @Override
     public String toString() {
-        return "HouseAudit{auditId=" + auditId + ", houseId=" + houseId +
-                ", adminId=" + adminId + ", auditResult='" + auditResult +
-                "', auditTime=" + auditTime + "}";
+        return "HouseAudit{" +
+                "auditId=" + auditId +
+                ", houseId=" + houseId +
+                ", auditResult=" + auditResult +
+                '}';
     }
 }
