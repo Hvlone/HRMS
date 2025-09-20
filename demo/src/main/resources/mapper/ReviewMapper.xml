@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.mapper.ReviewMapper">
+
+    <resultMap id="BaseResultMap" type="com.example.demo.po.Review">
+        <id column="review_id" jdbcType="INTEGER" property="reviewId"/>
+        <result column="house_id" jdbcType="INTEGER" property="houseId"/>
+        <result column="tenant_id" jdbcType="INTEGER" property="tenantId"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="rating" jdbcType="INTEGER" property="rating"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+
+    <sql id="BaseColumns">
+        review_id, house_id, tenant_id, content, rating, status, create_time
+    </sql>
+
+    <!-- 插入 -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="reviewId"
+            parameterType="com.example.demo.po.Review">
+        INSERT INTO review
+            (house_id, tenant_id, content, rating, status, create_time)
+        VALUES
+            (#{houseId}, #{tenantId}, #{content}, #{rating}, #{status}, #{createTime})
+    </insert>
+
+    <!-- 主键查询 -->
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumns"/>
+        FROM review
+        WHERE review_id = #{reviewId}
+    </select>
+
+    <!-- 查询全部 -->
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumns"/>
+        FROM review
+        ORDER BY review_id DESC
+    </select>
+
+    <!-- 根据房源ID查询 -->
+    <select id="selectByHouseId" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumns"/>
+        FROM review
+        WHERE house_id = #{houseId}
+        ORDER BY create_time DESC
+    </select>
+
+    <!-- 根据租户ID查询 -->
+    <select id="selectByTenantId" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumns"/>
+        FROM review
+        WHERE tenant_id = #{tenantId}
+        ORDER BY create_time DESC
+    </select>
+
+    <!-- 动态更新 -->
+    <update id="updateByPrimaryKeySelective" parameterType="com.example.demo.po.Review">
+        UPDATE review
+        <set>
+            <if test="houseId != null">house_id = #{houseId},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="rating != null">rating = #{rating},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </set>
+        WHERE review_id = #{reviewId}
+    </update>
+
+    <!-- 主键删除 -->
+    <delete id="deleteByPrimaryKey">
+        DELETE FROM review WHERE review_id = #{reviewId}
+    </delete>
+
+</mapper>
