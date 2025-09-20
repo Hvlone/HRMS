@@ -6,6 +6,7 @@ import com.example.demo.vo.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -55,7 +56,7 @@ public class HouseController {
         House house = houseService.getHouseDetail(houseId);
         if (house != null) {
             // 转换价格为元
-            house.setPriceYuan(house.getPrice() / 100.0);
+            house.setPrice(house.getPrice());
             return ApiResponse.success(house);
         }
         return ApiResponse.error("房源不存在");
@@ -66,8 +67,8 @@ public class HouseController {
      */
     @GetMapping("/search")
     public ApiResponse searchHouses(
-            @RequestParam(required = false) Double minPrice,
-            @RequestParam(required = false) Double maxPrice,
+            @RequestParam(required = false) BigDecimal minPrice,
+            @RequestParam(required = false) BigDecimal maxPrice,
             @RequestParam(required = false) String status,
             @RequestParam(required = false) String keyword,
             @RequestParam(defaultValue = "1") int page,
@@ -87,7 +88,7 @@ public class HouseController {
             minPrice, maxPrice, statusEnum, keyword, page, size);
         
         // 转换价格为元
-        houses.forEach(house -> house.setPriceYuan(house.getPrice() / 100.0));
+        houses.forEach(house -> house.setPrice(house.getPrice()));
         
         return ApiResponse.success(houses);
     }
