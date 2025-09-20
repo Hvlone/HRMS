@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ex02.student.po.Student">
+    <resultMap id="RentOrderResultMap" type="RentOrder">
+        <id property="orderId" column="order_id"/>
+        <result property="houseId" column="house_id"/>
+        <result property="tenantId" column="tenant_id"/>
+        <result property="amount" column="amount"/>
+        <result property="paymentMethod" column="payment_method"
+                typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
+        <result property="paymentTime" column="payment_time"/>
+        <result property="leaseStart" column="lease_start"/>
+        <result property="leaseEnd" column="lease_end"/>
+    </resultMap>
+
+    <!-- 根据租客ID查询 -->
+    <select id="selectByTenantId" resultMap="RentOrderResultMap">
+        SELECT * FROM rent_order
+        WHERE tenant_id = #{tenantId}
+        ORDER BY payment_time DESC
+    </select>
+
+    <!-- 根据房源ID查询 -->
+    <select id="selectByHouseId" resultMap="RentOrderResultMap">
+        SELECT * FROM rent_order
+        WHERE house_id = #{houseId}
+        ORDER BY payment_time DESC
+    </select>
+
+    <!-- 批量插入 -->
+    <insert id="batchInsert" useGeneratedKeys="true" keyProperty="orderId">
+        INSERT INTO rent_order(house_id, tenant_id, amount, payment_method, payment_time, lease_start, lease_end)
+        VALUES
+        <foreach collection="list" item="order" separator=",">
+            (#{order.houseId}, #{order.tenantId}, #{order.amount},
+            #{order.paymentMethodValue}, #{order.paymentTime},
+            #{order.leaseStart}, #{order.leaseEnd})
+        </foreach>
+    </insert>
+</mapper>
+    
