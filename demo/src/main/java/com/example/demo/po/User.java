@@ -1,69 +1,28 @@
 package com.example.demo.po;
 
+
 import java.time.LocalDateTime;
 
-/**
- * 系统用户实体类
- * 对应数据库表: user
- */
+
 public class User {
-    /**
-     * 用户ID
-     */
     private Integer userId;
-
-    /**
-     * 用户名（唯一）
-     */
     private String username;
-
-    /**
-     * 加密密码
-     */
     private String password;
-
-    /**
-     * 手机号（唯一）
-     */
     private String phone;
-
-    /**
-     * 邮箱
-     */
     private String email;
-
-    /**
-     * 角色类型：landlord(房东), tenant(租客), admin(管理员), repair_staff(维修人员)
-     */
-    private String userType;
-
-    /**
-     * 真实姓名
-     */
+    private String userType;    // 角色类型：landlord/tenant/admin/repair_staff
     private String realName;
-
-    /**
-     * 创建时间
-     */
     private LocalDateTime createTime;
 
-    // 构造方法
-    public User() {
-    }
+    public User() {}
 
-    public User(Integer userId, String username, String password, String phone,
-                String email, String userType, String realName, LocalDateTime createTime) {
-        this.userId = userId;
+    public User(String username, String password, String phone, String userType) {
         this.username = username;
         this.password = password;
         this.phone = phone;
-        this.email = email;
         this.userType = userType;
-        this.realName = realName;
-        this.createTime = createTime;
     }
 
-    // Getter 和 Setter 方法
     public Integer getUserId() {
         return userId;
     }
@@ -133,12 +92,9 @@ public class User {
         return "User{" +
                 "userId=" + userId +
                 ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", phone='" + phone + '\'' +
-                ", email='" + email + '\'' +
                 ", userType='" + userType + '\'' +
-                ", realName='" + realName + '\'' +
-                ", createTime=" + createTime +
                 '}';
     }
+
+
 }
