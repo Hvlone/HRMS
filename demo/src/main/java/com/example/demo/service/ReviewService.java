@@ -1,4 +1,4 @@
 package com.example.demo.service;
 
-public class asdf {
+public interface ReviewService {
 }

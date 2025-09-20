@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.mapper.RepairOrderMapper">
+
+    <resultMap id="BaseResultMap" type="com.example.demo.po.RepairOrder">
+        <id column="repair_id" jdbcType="INTEGER" property="repairId"/>
+        <result column="house_id" jdbcType="INTEGER" property="houseId"/>
+        <result column="tenant_id" jdbcType="INTEGER" property="tenantId"/>
+        <result column="repair_staff_id" jdbcType="INTEGER" property="repairStaffId"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+
+    <sql id="BaseColumns">
+        repair_id, house_id, tenant_id, repair_staff_id,
+        description, status, create_time
+    </sql>
+
+    <!-- 插入 -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="repairId"
+            parameterType="com.example.demo.po.RepairOrder">
+        INSERT INTO repair_order
+        (house_id, tenant_id, repair_staff_id, description, status, create_time)
+        VALUES
+            (#{houseId}, #{tenantId}, #{repairStaffId}, #{description}, #{status}, #{createTime})
+    </insert>
+
+    <!-- 主键查询 -->
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumns"/>
+        FROM repair_order
+        WHERE repair_id = #{repairId}
+    </select>
+
+    <!-- 查询全部 -->
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumns"/>
+        FROM repair_order
+        ORDER BY repair_id DESC
+    </select>
+
+    <!-- 动态更新 -->
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.example.demo.po.RepairOrder">
+        UPDATE repair_order
+        <set>
+            <if test="houseId != null">house_id = #{houseId},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+            <if test="repairStaffId != null">repair_staff_id = #{repairStaffId},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </set>
+        WHERE repair_id = #{repairId}
+    </update>
+
+    <!-- 主键删除 -->
+    <delete id="deleteByPrimaryKey">
+        DELETE FROM repair_order WHERE repair_id = #{repairId}
+    </delete>
+
+</mapper>
