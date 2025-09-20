@@ -1,4 +1,4 @@
-package com.example.demo.controlle;
+package com.example.demo.controller;
 
 
 import org.springframework.stereotype.Controller;

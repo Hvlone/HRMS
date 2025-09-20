@@ -5,86 +5,30 @@
 
 <mapper namespace="com.example.demo.mapper.UserMapper">
 
-    <resultMap id="BaseResultMap" type="com.example.demo.po.User">
-        <id column="user_id" jdbcType="INTEGER" property="userId"/>
-        <result column="username" jdbcType="VARCHAR" property="username"/>
-        <result column="password" jdbcType="VARCHAR" property="password"/>
-        <result column="phone" jdbcType="VARCHAR" property="phone"/>
-        <result column="email" jdbcType="VARCHAR" property="email"/>
-        <result column="user_type" jdbcType="VARCHAR" property="userType"/>
-        <result column="real_name" jdbcType="VARCHAR" property="realName"/>
-        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <resultMap id="UserResultMap" type="User">
+        <id property="userId" column="user_id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="phone" column="phone"/>
+        <result property="email" column="email"/>
+        <result property="userType" column="user_type"/>
+        <result property="realName" column="real_name"/>
+        <result property="createTime" column="create_time"/>
     </resultMap>
 
-    <sql id="BaseColumns">
-        user_id, username, password, phone, email, user_type, real_name, create_time
-    </sql>
-
-    <!-- 插入 -->
-    <insert id="insert" useGeneratedKeys="true" keyProperty="userId"
-            parameterType="com.example.demo.po.User">
-        INSERT INTO user
-            (username, password, phone, email, user_type, real_name, create_time)
-        VALUES
-            (#{username}, #{password}, #{phone}, #{email}, #{userType}, #{realName}, #{createTime})
-    </insert>
-
-    <!-- 主键查询 -->
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
-        SELECT <include refid="BaseColumns"/>
-        FROM user
-        WHERE user_id = #{userId}
+    <!-- 动态条件查询 -->
+    <select id="selectByCondition" resultMap="UserResultMap">
+        SELECT * FROM user
+        <where>
+            <if test="userType != null and userType != ''">
+                AND user_type = #{userType}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                AND (username LIKE CONCAT('%', #{keyword}, '%')
+                OR real_name LIKE CONCAT('%', #{keyword}, '%')
+                OR phone LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+        </where>
+        ORDER BY create_time DESC
     </select>
-
-    <!-- 用户名查询 -->
-    <select id="selectByUsername" resultMap="BaseResultMap">
-        SELECT <include refid="BaseColumns"/>
-        FROM user
-        WHERE username = #{username}
-        LIMIT 1
-    </select>
-
-    <!-- 手机号查询 -->
-    <select id="selectByPhone" resultMap="BaseResultMap">
-        SELECT <include refid="BaseColumns"/>
-        FROM user
-        WHERE phone = #{phone}
-        LIMIT 1
-    </select>
-
-    <!-- 查询全部 -->
-    <select id="selectAll" resultMap="BaseResultMap">
-        SELECT <include refid="BaseColumns"/>
-        FROM user
-        ORDER BY user_id DESC
-    </select>
-
-    <!-- 按角色类型查询 -->
-    <select id="selectByUserType" resultMap="BaseResultMap">
-        SELECT <include refid="BaseColumns"/>
-        FROM user
-        WHERE user_type = #{userType}
-        ORDER BY user_id DESC
-    </select>
-
-    <!-- 动态更新 -->
-    <update id="updateByPrimaryKeySelective" parameterType="com.example.demo.po.User">
-        UPDATE user
-        <set>
-            <if test="username != null">username = #{username},</if>
-            <if test="password != null">password = #{password},</if>
-            <if test="phone != null">phone = #{phone},</if>
-            <if test="email != null">email = #{email},</if>
-            <if test="userType != null">user_type = #{userType},</if>
-            <if test="realName != null">real_name = #{realName},</if>
-            <if test="createTime != null">create_time = #{createTime},</if>
-        </set>
-        WHERE user_id = #{userId}
-    </update>
-
-    <!-- 主键删除 -->
-    <delete id="deleteByPrimaryKey">
-        DELETE FROM user WHERE user_id = #{userId}
-    </delete>
-
 </mapper>
