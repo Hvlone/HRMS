@@ -1,8 +1,10 @@
 package com.example.demo.mapper;
 
 import com.example.demo.po.RepairReview;
-import java.util.List;
+import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+@Mapper
 public interface RepairReviewMapper {
 
     /* 新增并返回主键 */

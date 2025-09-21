@@ -1,8 +1,8 @@
 package com.example.demo.mapper;
-
+import org.apache.ibatis.annotations.Mapper;
 import com.example.demo.po.User;
 import java.util.List;
-
+@Mapper
 public interface UserMapper {
 
     /* 新增并返回主键 */
