@@ -1,71 +1,51 @@
 package com.example.demo.service.servceImpl;
 
-import com.example.demo.exception.BusinessException;
+import com.example.demo.common.LoginUser;
+import com.example.demo.common.MessageConstant;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.po.User;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.DigestUtils;
 
-import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Service
 public class UserServiceImpl implements UserService {
-    private final UserMapper userMapper;
 
     @Autowired
-    public UserServiceImpl(UserMapper userMapper) {
-        this.userMapper = userMapper;
+    UserMapper userMapper;
+
+    @Override
+    public boolean isValidatedUser(User user) {
+        User user1=userMapper.selectByUsername(user.getUsername());
+        if (user1==null)
+            return false;
+        if (!user1.getPassword().equals(user.getPassword()))
+            return false;
+        LoginUser.setLoginUserId(user1.getUserId());
+        return true;
     }
 
     @Override
-    @Transactional
-    public boolean register(User user) {
-        try {
-            // 密码加密处理
-            String encryptedPwd = DigestUtils.md5DigestAsHex(
-                    user.getPassword().getBytes(StandardCharsets.UTF_8));
-            user.setPassword(encryptedPwd);
+    public boolean selectByUsername(User user) {
+        if (userMapper.selectByUsername(user.getUsername())==null)
+            return true;
+        return false;
+    }
 
-            return userMapper.insert(user) > 0;
-        } catch (DuplicateKeyException e) {
-            throw new BusinessException("用户名或手机号已存在");
+    @Override
+    public boolean selectByPhone(User user) {
+        System.out.println(user.toString());
+
+        if(userMapper.selectByPhone(user.getPhone())==null&&selectByUsername(user)){
+            user.setCreateTime(LocalDateTime.now());
+            userMapper.insert(user);
+            return true;
         }
+        return false;
     }
 
-    @Override
-    public User login(String username, String password) {
-        User user = userMapper.selectByUsername(username);
-        if (user == null) {
-            throw new BusinessException("用户不存在");
-        }
 
-        // 验证密码
-        String encryptedPwd = DigestUtils.md5DigestAsHex(
-                password.getBytes(StandardCharsets.UTF_8));
-        if (!encryptedPwd.equals(user.getPassword())) {
-            throw new BusinessException("密码错误");
-        }
-
-        return user;
-    }
-
-    @Override
-    @Transactional
-    public boolean updateUserInfo(User user) {
-        return userMapper.update(user) > 0;
-    }
-
-    @Override
-    public User getUserById(Integer userId) {
-        return userMapper.selectById(userId);
-    }
-
-    @Override
-    public User getUserByUsername(String username) {
-        return userMapper.selectByUsername(username);
-    }
 }
