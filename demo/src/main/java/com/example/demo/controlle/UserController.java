@@ -34,15 +34,6 @@ public class UserController {
     }
 
 
-    /*    public String login(User user, int roleId, HttpSession session, Model model){
-            if (!userService.isValidatedUser(user)){
-                model.addAttribute("login_error","登录未成功！");
-                return "includes/login";
-            }
-            System.out.println(roleId);
-            session.setAttribute("loginName",user.getUsername());
-            return "includes/home";
-        }*/
     @RequestMapping("/login")
     @ResponseBody
     public Map<String, Object> login(@RequestBody User user, HttpSession session, Model model) {
