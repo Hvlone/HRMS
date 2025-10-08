@@ -1,84 +1,40 @@
 package com.example.demo.po;
 
+import lombok.Setter;
+
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Date;
 
-/**
- * 房源信息实体类
- * 对应数据库表: house
- */
+@Setter
 public class House {
-    /**
-     * 房源ID
-     */
+
     private Integer houseId;
-
-    /**
-     * 房东ID
-     */
     private Integer landlordId;
-
-    /**
-     * 房源标题
-     */
     private String title;
-
-    /**
-     * 详细地址
-     */
     private String address;
-
-    /**
-     * 月租金
-     */
-    private int price;
-
-    /**
-     * 面积(㎡)
-     */
-    private Integer area;
-
-    /**
-     * 房源描述
-     */
+    private BigDecimal price;
+    private Integer area; // 面积
     private String description;
+    private String status; // 状态：draft/pending_review/published/rejected/rented
+    private Date publishTime;
+    private Date createTime;
+    private Date updateTime;
+    // 只存“相对路径”，用逗号分隔多图
+    private String pictures;
+    public House() {}
 
-    /**
-     * 状态：draft(草稿), pending_review(待审核), published(已发布), rejected(已拒绝), rented(已出租)
-     */
-    private String status;
-
-    /**
-     * 发布时间
-     */
-    private LocalDateTime publishTime;
-
-    /**
-     * 创建时间
-     */
-    private LocalDateTime createTime;
-
-    // 构造方法
-    public House() {
-    }
-
-    public House(Integer houseId, Integer landlordId, String title, String address,
-                 int price, Integer area, String description, String status,
-                 LocalDateTime publishTime, LocalDateTime createTime) {
-        this.houseId = houseId;
+    public House(Integer landlordId, String title, String address, BigDecimal price,String pictures) {
         this.landlordId = landlordId;
         this.title = title;
         this.address = address;
         this.price = price;
-        this.area = area;
-        this.description = description;
-        this.status = status;
-        this.publishTime = publishTime;
-        this.createTime = createTime;
+        this.status = "draft";
+        this.createTime = new Date();
+        this.pictures=pictures;
     }
 
-    // Getter 和 Setter 方法
+
+
     public Integer getHouseId() {
         return houseId;
     }
@@ -111,11 +67,11 @@ public class House {
         this.address = address;
     }
 
-    public int getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
@@ -139,24 +95,40 @@ public class House {
         return status;
     }
 
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
     public void setStatus(String status) {
         this.status = status;
     }
 
-    public LocalDateTime getPublishTime() {
+    public Date getPublishTime() {
         return publishTime;
     }
 
-    public void setPublishTime(LocalDateTime publishTime) {
+    public void setPublishTime(Date publishTime) {
         this.publishTime = publishTime;
     }
 
-    public LocalDateTime getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(LocalDateTime createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getPictures() {
+        return pictures;
+    }
+
+    public void setPictures(String pictures) {
+        this.pictures = pictures;
     }
 
     @Override
@@ -172,6 +144,12 @@ public class House {
                 ", status='" + status + '\'' +
                 ", publishTime=" + publishTime +
                 ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", pictures='" + pictures + '\'' +
                 '}';
+    }
+
+    public enum Status {
+        DRAFT, PENDING_REVIEW, PUBLISHED, REJECTED, RENTED
     }
 }

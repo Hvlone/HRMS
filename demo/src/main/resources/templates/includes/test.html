@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form id="houseForm" enctype="multipart/form-data">
+    标题：<input name="title"/><br/>
+    地址：<input name="address"/><br/>
+    租金：<input name="price"/><br/>
+    面积：<input name="area"/><br/>
+    描述：<input name="description"/><br/>
+    图片：<input type="file" name="pics" multiple /><br/>
+    <button type="submit">发布房源</button>
+</form>
+
+<script>
+    document.getElementById('houseForm')
+        .addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const res =await fetch('/house/addHouse', {
+                method: 'POST',
+                body: new FormData(this)
+            });
+
+            // 1. 解析成 ApiResponse 格式
+            const api = await res.json();
+            // 2. 按 code 判断
+            if (api.code === 200) {
+                alert(api.message);          // "添加房源成功！"
+                // 成功后跳转 / 清空表单
+                this.reset();
+                // location.href = '/house/list'; // 例：跳到列表页
+            } else {
+                alert('失败：' + api.message); // "添加房源失败"
+            }
+
+        });
+</script>
+</body>
+</html>

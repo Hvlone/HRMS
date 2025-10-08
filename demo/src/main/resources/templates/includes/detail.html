@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2 th:text="${house.title}">标题</h2>
+<p th:text="${house.price}+'/月'">价格</p>
+<p th:text="${house.area}+'m²'">面积</p>
+<p th:text="${house.description}">描述</p>
+
+<div id="pics">
+    <img th:each="pic : ${pics}" th:src="@{'/uploads/'+${pic}}" width="40%" alt="网络异常">
+</div>
+
+<button onclick="history.back()">返回列表</button>
+</body>
+</html>

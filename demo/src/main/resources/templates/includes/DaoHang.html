@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>回龙观社区 105房间 - 小熊房屋租赁系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- 配置小熊租赁主题配色（与home.html保持一致） -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bear: {
+                            brown: '#8B5A2B',      // 深棕色 - 主色调
+                            light: '#D2B48C',     // 浅棕色 - 次要色调
+                            cream: '#F5F5DC',     // 米黄色 - 背景色
+                            dark: '#5D4037',      // 深棕近黑 - 文本主色
+                            honey: '#F9A825',     // 蜂蜜色 - 强调色（价格、按钮）
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                },
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .card-hover {
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px -5px rgba(93, 64, 55, 0.1), 0 10px 10px -5px rgba(93, 64, 55, 0.04);
+            }
+            .img-thumb-active {
+                border-color: #8B5A2B !important; /* 小熊主色激活边框 */
+                opacity: 1 !important;
+            }
+            .shadow-bear {
+                box-shadow: 0 4px 6px -1px rgba(93, 64, 55, 0.1), 0 2px 4px -1px rgba(93, 64, 55, 0.06);
+            }
+        }
+    </style>
+</head>
+<body class="bg-bear-cream font-sans text-bear-dark">
+<!-- 顶部导航（与home.html保持一致） -->
+<header class="sticky top-0 bg-white shadow-md z-50 transition-all duration-300">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+        <div class="flex items-center space-x-6">
+            <!-- 小熊租赁Logo -->
+            <a href="#" class="text-2xl font-bold text-bear-brown flex items-center">
+                <i class="fa fa-paw text-bear-honey mr-2"></i>
+                <span>小熊房屋租赁系统</span>
+            </a>
+            <!-- 桌面端导航 -->
+            <nav class="hidden md:flex space-x-6">
+                <a href="home.html" class="text-gray-700 hover:text-bear-brown transition-colors">首页</a>
+                <a href="housing_resources.html" class="text-bear-brown font-medium">房源</a>
+                <a href="house_details.html" class="text-gray-700 hover:text-bear-brown transition-colors">区域</a>
+                <a href="#" class="text-gray-700 hover:text-bear-brown transition-colors">关于我们</a>
+            </nav>
+        </div>
+        <div class="flex items-center space-x-4">
+            <!-- 功能图标 -->
+            <button class="text-gray-600 hover:text-bear-brown transition-colors hidden md:block">
+                <i class="fa fa-search text-xl"></i>
+            </button>
+            <button class="text-gray-600 hover:text-bear-brown transition-colors hidden md:block">
+                <i class="fa fa-heart-o text-xl"></i>
+            </button>
+            <button class="text-gray-600 hover:text-bear-brown transition-colors">
+                <i class="fa fa-share-alt text-xl"></i>
+            </button>
+            <!-- 登录按钮（小熊主题色） -->
+            <button class="hidden md:block bg-bear-brown hover:bg-bear-dark text-white px-4 py-2 rounded-lg transition-colors">
+                登录/注册
+            </button>
+            <!-- 移动端菜单 -->
+            <button class="md:hidden text-gray-600 hover:text-bear-brown transition-colors">
+                <i class="fa fa-bars text-xl"></i>
+            </button>
+        </div>
+    </div>
+</header>
+<!-- 顶部导航栏 -->
+<header class="bg-white shadow-md sticky top-0 z-50">
+    <div class="container mx-auto px-4">
+        <div class="flex justify-between items-center py-4">
+            <div class="flex items-center">
+                <i class="fa fa-paw text-2xl text-bear-honey mr-2"></i>
+                <h1 class="text-xl font-bold">小熊房屋租赁系统</h1>
+            </div>
+
+            <!-- 菜单栏 -->
+            <nav class="hidden md:flex space-x-6">
+                <a href="home.html" class="text-gray-600 hover:text-bear-brown transition-colors">首页</a>
+                <a href="housing_resources.html" class="text-bear-brown font-medium">房源</a>
+                <a href="house_details.html" class="text-gray-600 hover:text-bear-brown transition-colors">区域</a>
+                <a href="#" class="text-gray-600 hover:text-bear-brown transition-colors">关于我们</a>
+            </nav>
+
+            <div class="flex items-center space-x-4">
+                <button class="text-gray-600 hover:text-bear-brown transition-colors">
+                    <i class="fa fa-user-circle text-xl"></i>
+                </button>
+                <button class="md:hidden text-gray-600 hover:text-bear-brown transition-colors">
+                    <i class="fa fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</header>
+</body>
+</html>

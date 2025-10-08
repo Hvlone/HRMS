@@ -2,11 +2,11 @@ package com.example.demo.common;
 
 public class MessageConstant {
 
-    public static final String DRAFT="草稿";
-    public static final String PENDING_REVIEW="待审核";
-    public static final String PUBLISHED="已发布";
-    public static final String REJECTED="已拒绝";
-    public static final String RENTED="已出租";
+    public static final String DRAFT="draft";
+    public static final String PENDING_REVIEW="pending_review";
+    public static final String PUBLISHED="published";
+    public static final String REJECTED="rejected";
+    public static final String RENTED="rented";
     public static final String LANDLORD="landlord";
     public static final String TENANT="tenant";
     public static final String ADMIN="admin";

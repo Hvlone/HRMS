@@ -38,7 +38,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean selectByPhone(User user) {
         System.out.println(user.toString());
-
         if(userMapper.selectByPhone(user.getPhone())==null&&selectByUsername(user)){
             user.setCreateTime(LocalDateTime.now());
             userMapper.insert(user);

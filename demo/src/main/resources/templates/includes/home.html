@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -60,34 +60,41 @@
             <a href="#" class="hover:text-bear-honey transition-colors duration-200 flex items-center">
                 <i class="fa fa-home mr-1"></i> 首页
             </a>
-            <a href="#" class="hover:text-bear-honey transition-colors duration-200 flex items-center">
+            <a href="housing_resources.html" class="hover:text-bear-honey transition-colors duration-200 flex items-center">
                 <i class="fa fa-building mr-1"></i> 房源
             </a>
-            <a href="#" class="hover:text-bear-honey transition-colors duration-200 flex items-center">
+            <a href="house_details.html" class="hover:text-bear-honey transition-colors duration-200 flex items-center">
                 <i class="fa fa-map-marker mr-1"></i> 区域
             </a>
-            <a href="#" class="hover:text-bear-honey transition-colors duration-200 flex items-center">
-                <i class="fa fa-info-circle mr-1"></i> 关于
+            <a href="" class="hover:text-bear-honey transition-colors duration-200 flex items-center">
+                <i class="fa fa-info-circle mr-1"></i> 关于我们
             </a>
         </nav>
 
         <div class="flex items-center space-x-4">
-            <button class="hidden md:block bg-bear-honey hover:bg-amber-500 text-white px-4 py-2 rounded-lg transition-colors duration-200">
+            <button id="home-reg" class="hidden md:block bg-bear-honey hover:bg-amber-500 text-white px-4 py-2 rounded-lg transition-colors duration-200">
                 <i class="fa fa-user-plus mr-1"></i> 注册
             </button>
-            <button class="hidden md:block bg-transparent border border-white hover:border-bear-honey hover:text-bear-honey px-4 py-2 rounded-lg transition-colors duration-200">
-                <i class="fa fa-sign-in mr-1"></i> 登录
+            <button  id="home-login" class="hidden md:block bg-transparent border border-white hover:border-bear-honey hover:text-bear-honey px-4 py-2 rounded-lg transition-colors duration-200">
+                <i class="fa fa-sign-in mr-1"></i> 退出登录
             </button>
-
-            <!-- 移动端菜单按钮 -->
+            <div class="flex items-center space-x-4">
+                <button class="text-gray-600 hover:text-black transition-colors" id="about-self">
+                    <i class="fa fa-user-circle text-xl"></i>
+                </button>
+                <button class="md:hidden text-gray-600 hover:text-bear-brown transition-colors">
+                    <i class="fa fa-bars text-xl"></i>
+                </button>
+            </div>
+<!--            &lt;!&ndash; 移动端菜单按钮 &ndash;&gt;
             <button class="md:hidden text-white focus:outline-none" id="menuBtn">
                 <i class="fa fa-bars text-xl"></i>
-            </button>
+            </button>-->
         </div>
     </div>
 
     <!-- 移动端导航菜单 -->
-    <div class="md:hidden hidden bg-bear-dark" id="mobileMenu">
+<!--    <div class="md:hidden hidden bg-bear-dark" id="mobileMenu">
         <div class="container mx-auto px-4 py-3 flex flex-col space-y-3">
             <a href="#" class="text-white hover:text-bear-honey py-2 transition-colors duration-200">
                 <i class="fa fa-home mr-2"></i> 首页
@@ -110,7 +117,7 @@
                 </button>
             </div>
         </div>
-    </div>
+    </div>-->
 </header>
 
 <!-- 主横幅 -->
@@ -132,11 +139,11 @@
                 <div class="flex-1 relative">
                     <i class="fa fa-filter absolute left-3 top-1/2 transform -translate-y-1/2 text-bear-dark/50"></i>
                     <select class="w-full pl-10 pr-10 py-3 rounded-md border border-gray-200 appearance-none focus:outline-none focus:ring-2 focus:ring-bear-brown/50 focus:border-bear-brown bg-white">
-                        <option value="">所有户型</option>
-                        <option value="1">一室</option>
-                        <option value="2">二室</option>
-                        <option value="3">三室</option>
-                        <option value="4+">四室及以上</option>
+                        <option value="" style="color: #8B5A2B">所有户型</option>
+                        <option value="1" style="color: #8B5A2B">一室</option>
+                        <option value="2" style="color: #8B5A2B">二室</option>
+                        <option value="3" style="color: #8B5A2B">三室</option>
+                        <option value="4+" style="color: #8B5A2B">四室及以上</option>
                     </select>
                     <i class="fa fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-bear-dark/50 pointer-events-none"></i>
                 </div>
@@ -149,7 +156,7 @@
 </section>
 
 <!-- 主要内容 -->
-<main class="flex-grow container mx-auto px-4 py-8">
+<main class="flex-grow container mx-auto px-4 py-8"  th:fragment="home">
     <!-- 统计数据 -->
     <section class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
         <div class="bg-white rounded-xl p-6 shadow-bear text-center transform hover:-translate-y-1 transition-transform duration-300">
@@ -217,9 +224,16 @@
                         <span><i class="fa fa-building-o mr-1"></i> 12层</span>
                         <span><i class="fa fa-tag mr-1"></i> 整租</span>
                     </div>
-                    <button class="mt-4 w-full bg-bear-brown hover:bg-bear-dark text-white py-2 rounded-lg transition-colors duration-200">
-                        查看详情
+                    <button class="mt-4 w-full bg-bear-brown hover:bg-bear-dark text-white py-2 rounded-lg transition-colors duration-200 view-details-btn"
+                            th:attr="data-house-id=1" title="查看详情">
+                            查看详情
                     </button>
+         <!--           <form th:action="@{/house/houseDetail}" class="inline">
+                        <input type="hidden" name="houseId" th:value="1" />
+                        <button type="submit" class="mt-4 w-full bg-bear-brown hover:bg-bear-dark text-white py-2 rounded-lg transition-colors duration-200 view-details-btn">
+                            查看详情
+                        </button>
+                    </form>-->
                 </div>
             </div>
 
@@ -571,9 +585,74 @@
                 <ul class="space-y-2">
                     <li><a href="#" class="text-gray-300 hover:text-bear-honey transition-colors duration-200">首页</a></li>
                     <li><a href="#" class="text-gray-300 hover:text-bear-honey transition-colors duration-200">全部房源</a></li>
-                    <li><a href="#" class="text-gray"></a> </li>
+                    <li><a href="#" class="text-gray"></a></li>
                 </ul>
-                </div>
+            </div>
         </div>
     </div>
-    </footer>
+</footer>
+<script>
+    document.getElementById('home-reg')
+        .addEventListener('click', function (e) {
+            if (!confirm("是否退出登录？"))
+                return;
+            location.href = '/includes/login-reg.html';
+        });
+
+
+
+    document.addEventListener('click', e => {
+        console.log('实际点到的元素：', e.target);
+        console.log('它的 class：', e.target.className);
+        console.log('它的 dataset：', e.target.dataset);
+        /* 1. 真正确保拿到按钮节点 */
+        const btn = e.target.closest('.view-details-btn');
+        if (!btn) return;                       // 没点到按钮区域，直接忽略
+
+        /* 2. 取 data */
+        const houseId = btn.dataset.houseId;
+        console.log('houseId =', houseId);
+
+        /* 3. 简单校验 */
+        if (!houseId || isNaN(houseId)) {
+            console.warn('未拿到有效 houseId');
+            return;
+        }
+        fetch('/house/houseDetail', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: 'houseId=' + houseId
+        }).then(resp => {
+            if (resp.redirected) {          // 后端 302
+                window.location.href = resp.url;
+            }
+        });
+    });
+
+/*    function details(houseId) {
+
+        $.post("/house/houseDetail",{"houseId":houseId},
+            function(data){
+                console.log("ddd")
+                if(data == "SUCCESS"){
+                    console.log("进来了")
+                    $("#" + userId).remove();
+                }else{
+                    alert("删除用户失败！");
+                }
+            });
+    }*/
+
+    document.getElementById('about-self')
+        .addEventListener('click', function (e) {
+            location.href = '/includes/user_center.html';
+        });
+    document.getElementById('home-login')
+        .addEventListener('click', function (e) {
+            if (!confirm("是否退出登录？"))
+                return;
+            location.href = '/includes/login-reg.html';
+        });
+</script>
+</body>
+</html>
