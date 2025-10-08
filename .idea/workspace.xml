@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="60ea298c-fe52-435d-a284-764c3de04062" name="Changes" comment="蔡分支拉取dev">
+    <list default="true" id="60ea298c-fe52-435d-a284-764c3de04062" name="Changes" comment="蔡更新readme">
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -27,6 +27,9 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {}
+}]]></component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -104,7 +107,15 @@
       <option name="project" value="LOCAL" />
       <updated>1759907687835</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="蔡更新readme">
+      <option name="closed" value="true" />
+      <created>1759907932299</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1759907932299</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -158,6 +169,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Merge branch 'dev' into cai" />
     <MESSAGE value="蔡分支拉取dev" />
-    <option name="LAST_COMMIT_MESSAGE" value="蔡分支拉取dev" />
+    <MESSAGE value="蔡更新readme" />
+    <option name="LAST_COMMIT_MESSAGE" value="蔡更新readme" />
   </component>
 </project>
