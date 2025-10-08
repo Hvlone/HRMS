@@ -108,17 +108,25 @@
                 </div>
 
                 <!-- 注册表单 -->
-                <form class="space-y-5">
+                <form class="space-y-5" id="form1">
                     <!-- 手机号输入框 -->
                     <div>
-                        <input type="tel" placeholder="手机号码"
+                        <input type="tel" placeholder="手机号码" id="phone"
                                class="w-full px-4 py-3 rounded-md border border-gray-300 focus:border-bear-500 focus:ring-2 focus:ring-bear-200 outline-none transition-bear"
                         >
                     </div>
-
+                    <!-- 用户名输入框 -->
+                    <div class="relative">
+                        <input id="username" placeholder="设置用户名"
+                               class="w-full px-4 py-3 rounded-md border border-gray-300 focus:border-bear-500 focus:ring-2 focus:ring-bear-200 outline-none transition-bear"
+                        >
+                        <button type="button" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-bear-600 transition-bear">
+                            <i class="fa fa-eye-slash"></i>
+                        </button>
+                    </div>
                     <!-- 密码输入框 -->
                     <div class="relative">
-                        <input type="password" placeholder="设置密码"
+                        <input type="password" placeholder="设置密码" id="password"
                                class="w-full px-4 py-3 rounded-md border border-gray-300 focus:border-bear-500 focus:ring-2 focus:ring-bear-200 outline-none transition-bear"
                         >
                         <button type="button" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-bear-600 transition-bear">
@@ -128,7 +136,7 @@
 
                     <!-- 确认密码输入框 -->
                     <div class="relative">
-                        <input type="password" placeholder="确认密码"
+                        <input type="password" placeholder="确认密码" id="sure-password"
                                class="w-full px-4 py-3 rounded-md border border-gray-300 focus:border-bear-500 focus:ring-2 focus:ring-bear-200 outline-none transition-bear"
                         >
                         <button type="button" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-bear-600 transition-bear">
@@ -139,7 +147,7 @@
                     <!-- 小熊ID输入框 -->
                     <div>
                         <select class="w-full px-4 py-3 rounded-md border border-gray-300 focus:border-bear-500 focus:ring-2 focus:ring-bear-200 outline-none transition-bear appearance-none bg-white"
-                                aria-label="选择身份类型">
+                                aria-label="选择身份类型" id="search-input">
                             <option value="" disabled selected>选择身份类型</option>
                             <option value="tenant">租客</option>
                             <option value="landlord">房东</option>
@@ -163,13 +171,14 @@
                         注册
                     </button>
 
-
-
-
+                </form>
+            </div>
+        </main>
         <!-- 底部版权信息 -->
         <footer class="py-6 px-8 md:px-16 text-center text-gray-500 text-sm">
             <p>© 2023 小熊科技 版权所有</p>
         </footer>
+<<<<<<< HEAD
 
                 </form>
 
@@ -177,6 +186,11 @@
         </main>
     </div>
 
+=======
+    </div>
+</div>
+</div>
+>>>>>>> fc76c76c7b6f35ac52a28a3fe55750a6792c1b7f
 <!-- 交互脚本 -->
 <script>
     // 密码显示/隐藏切换
@@ -196,6 +210,64 @@
                 icon.classList.add('fa-eye-slash');
             }
         });
+    });
+    // 注册表单提交处理
+    document.getElementById('form1').addEventListener('submit', async (e) => {
+        e.preventDefault(); // 阻止默认提交
+
+        /* 1. 协议勾选校验 */
+        if (!document.getElementById('terms').checked) {
+            alert('请先阅读并同意小熊账号使用协议和隐私政策');
+            return;
+        }
+
+        /* 2. 收集表单数据 */
+        const phone          = document.getElementById('phone').value.trim();
+        const username       = document.getElementById('username').value.trim();
+        const password       = document.getElementById('password').value.trim();
+        const surePassword   = document.getElementById('sure-password').value.trim();
+        const identity       = document.getElementById('search-input').value; // select
+
+        /* 3. 简单前端校验 */
+        if (!phone || !username || !password || !surePassword || !identity) {
+            alert('请完整填写所有必填项');
+            return;
+        }
+        if (password !== surePassword) {
+            alert('两次输入的密码不一致');
+            document.getElementById('sure-password').focus();
+            return;
+        }
+
+        /* 4. AJAX 提交注册数据 */
+        try {
+            const res = await fetch('/user/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    phone,
+                    username,
+                    password,
+                    identity // tenant 或 landlord
+                })
+            });
+
+            const data = await res.json();
+
+            if (data.success) {
+                alert('注册成功！即将跳转到登录页');
+                location.href = '/includes/login.html'; // 改为你的登录页地址
+            } else {
+                alert('注册失败：' + (data.msg || '未知错误'));
+                // 清空密码框，方便用户重试
+                document.getElementById('password').value = '';
+                document.getElementById('sure-password').value = '';
+                document.getElementById('password').focus();
+            }
+        } catch (err) {
+            console.error(err);
+            alert('网络异常，请稍后再试');
+        }
     });
 
 </script>

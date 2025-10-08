@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小熊账号 - 登录/注册</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- 自定义颜色 & 工具类 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bear: {
+                            50: '#FCF9F5', 100: '#F9F2E9', 200: '#F1E2D0', 300: '#E6C8A0',
+                            400: '#D8A970', 500: '#C88C45', 600: '#B07230', 700: '#8C5825',
+                            800: '#6D4520', 900: '#57381C',
+                        }
+                    },
+                    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+                }
+            }
+        };
+    </script>
+    <style type="text/tailwindcss">
+        .transition-bear { transition: all .3s ease; }
+        .form-panel { transition: opacity .3s; }
+        .hidden { display: none; opacity: 0; }
+    </style>
+</head>
+
+<body class="min-h-screen bg-gray-50 font-sans text-gray-800 overflow-x-hidden">
+<div class="flex flex-col md:flex-row min-h-screen">
+    <!-- 左侧图片 -->
+    <div class="w-full md:w-1/2 bg-bear-100 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-bear-900/20 to-transparent z-10"></div>
+        <div class="relative z-20 h-full flex items-center justify-center p-8">
+            <img src="../../static/img/login_bg.png" alt="可爱的小熊形象">
+        </div>
+        <div class="absolute bottom-8 left-8 right-8 z-20 text-center md:text-left">
+            <h2 class="text-2xl md:text-3xl font-bold text-bear-800 mb-2">欢迎来到小熊世界</h2>
+            <p class="text-bear-700/80 max-w-md mx-auto md:mx-0">探索更多精彩内容，开启愉快的小熊之旅</p>
+        </div>
+    </div>
+
+    <!-- 右侧表单区 -->
+    <div class="w-full md:w-1/2 flex flex-col">
+        <header class="pt-6 pb-12 px-8 md:px-16 flex justify-between items-center">
+            <div class="flex items-center">
+                <div class="w-10 h-10 rounded-full bg-bear-500 flex items-center justify-center mr-3"><i class="fa fa-paw text-white text-xl"></i></div>
+                <h1 class="text-xl font-bold text-bear-800">小熊账号</h1>
+            </div>
+            <div class="hidden md:flex items-center space-x-6 text-sm">
+                <a href="#" class="text-gray-600 hover:text-bear-600 transition-bear">用户协议</a>
+                <a href="#" class="text-gray-600 hover:text-bear-600 transition-bear">隐私政策</a>
+                <a href="#" class="text-gray-600 hover:text-bear-600 transition-bear">帮助中心</a>
+                <div class="relative group">
+                    <button class="flex items-center text-gray-600 hover:text-bear-600 transition-bear">中文(简体)<i class="fa fa-chevron-down ml-1 text-xs"></i></button>
+                    <div class="absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-md overflow-hidden opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-10">
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-bear-100">中文(简体)</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-bear-100">English</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- 切换按钮 -->
+        <div class="flex border-b border-gray-200 mb-8 px-8 md:px-16">
+            <button id="btnLogin" class="py-2 px-1 border-b-2 border-bear-500 text-bear-700 font-medium">登录</button>
+            <button id="btnReg"  class="py-2 px-1 ml-6 text-gray-500 hover:text-bear-600 transition-bear">注册</button>
+        </div>
+
+        <!-- 登录表单 -->
+        <form id="loginForm" class="space-y-5 form-panel px-8 md:px-16">
+            <input type="text" placeholder="邮箱/手机号码/小熊ID" id="username"
+                   class="w-full px-4 py-3 rounded-md border border-gray-300 focus:border-bear-500 focus:ring-2 focus:ring-bear-200 outline-none transition-bear">
+            <div class="relative">
+                <input type="password" placeholder="密码" id="password"
+                       class="w-full px-4 py-3 rounded-md border border-gray-300 focus:border-bear-500 focus:ring-2 focus:ring-bear-200 outline-none transition-bear">
+                <button type="button" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-bear-600 transition-bear">
+                    <i class="fa fa-eye-slash"></i>
+                </button>
+            </div>
+            <div class="flex items-start mt-2">
+                <input id="terms" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-bear-500 focus:ring-bear-500">
+                <label for="terms" class="ml-2 text-sm text-gray-600">已阅读并同意<a href="#" class="text-bear-600 hover:underline">小熊账号使用协议</a>和<a href="#" class="text-bear-600 hover:underline">隐私政策</a></label>
+            </div>
+            <button type="submit" class="w-full py-3 bg-bear-500 hover:bg-bear-600 text-white font-medium rounded-md transition-bear transform hover:translate-y-[-2px] shadow-md hover:shadow-lg">登录</button>
+            <div class="flex justify-between mt-6 text-sm">
+                <a href="#" class="text-bear-600 hover:text-bear-700 transition-bear">忘记密码?</a>
+                <a href="#" class="text-bear-600 hover:text-bear-700 transition-bear">手机号登录</a>
+            </div>
+        </form>
+
+        <!-- 注册表单 -->
+        <form id="regForm" class="space-y-5 form-panel hidden px-8 md:px-16">
+            <input type="tel" placeholder="手机号码" id="phone"
+                   class="w-full px-4 py-3 rounded-md border border-gray-300 focus:border-bear-500 focus:ring-2 focus:ring-bear-200 outline-none transition-bear">
+            <input id="regUsername" placeholder="设置用户名"
+                   class="w-full px-4 py-3 rounded-md border border-gray-300 focus:border-bear-500 focus:ring-2 focus:ring-bear-200 outline-none transition-bear">
+            <div class="relative">
+                <input type="password" placeholder="设置密码" id="regPassword"
+                       class="w-full px-4 py-3 rounded-md border border-gray-300 focus:border-bear-500 focus:ring-2 focus:ring-bear-200 outline-none transition-bear">
+                <button type="button" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-bear-600 transition-bear">
+                    <i class="fa fa-eye-slash"></i>
+                </button>
+            </div>
+            <div class="relative">
+                <input type="password" placeholder="确认密码" id="surePassword"
+                       class="w-full px-4 py-3 rounded-md border border-gray-300 focus:border-bear-500 focus:ring-2 focus:ring-bear-200 outline-none transition-bear">
+                <button type="button" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-bear-600 transition-bear">
+                    <i class="fa fa-eye-slash"></i>
+                </button>
+            </div>
+            <select id="identity" class="w-full px-4 py-3 rounded-md border border-gray-300 focus:border-bear-500 focus:ring-2 focus:ring-bear-200 outline-none appearance-none bg-white">
+                <option value="" disabled selected>选择身份类型</option>
+                <option value="tenant">租客</option>
+                <option value="landlord">房东</option>
+            </select>
+            <div class="flex items-start mt-2">
+                <input id="regTerms" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-bear-500 focus:ring-bear-500">
+                <label for="regTerms" class="ml-2 text-sm text-gray-600">已阅读并同意<a href="#" class="text-bear-600 hover:underline">小熊账号使用协议</a>和<a href="#" class="text-bear-600 hover:underline">隐私政策</a></label>
+            </div>
+            <button type="submit" class="w-full py-3 bg-bear-500 hover:bg-bear-600 text-white font-medium rounded-md transition-bear transform hover:translate-y-[-2px] shadow-md hover:shadow-lg">注册</button>
+        </form>
+
+        <footer class="py-6 px-8 md:px-16 text-center text-gray-500 text-sm mt-auto">
+            <p>© 2023 小熊科技 版权所有</p>
+        </footer>
+    </div>
+</div>
+
+<!-- 核心脚本：切换 + 登录 AJAX + 注册 AJAX -->
+<script>
+    /* ---------- 0. 表单显隐切换 ---------- */
+    const btnLogin = document.getElementById('btnLogin');
+    const btnReg   = document.getElementById('btnReg');
+    const loginPanel = document.getElementById('loginForm');
+    const regPanel   = document.getElementById('regForm');
+
+    function switchForm(show, hide, active, normal) {
+        show.classList.remove('hidden');
+        hide.classList.add('hidden');
+        active.classList.add('border-bear-500','text-bear-700','font-medium');
+        active.classList.remove('text-gray-500');
+        normal.classList.remove('border-bear-500','text-bear-700','font-medium');
+        normal.classList.add('text-gray-500');
+    }
+    btnLogin.addEventListener('click', () => switchForm(loginPanel, regPanel, btnLogin, btnReg));
+    btnReg.addEventListener('click',   () => switchForm(regPanel, loginPanel, btnReg, btnLogin));
+
+    /* ---------- 1. 登录 AJAX ---------- */
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!document.getElementById('terms').checked) { alert('请先同意协议'); return; }
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const res = await fetch('/user/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        });
+        const data = await res.json();
+        if (data.success) {
+            location.href = '/includes/home.html';
+        } else {
+            alert('用户名或密码错误！');
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('username').focus();
+        }
+    });
+
+    /* ---------- 2. 注册 AJAX ---------- */
+    document.getElementById('regForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!document.getElementById('regTerms').checked) { alert('请先同意协议'); return; }
+        const phone = document.getElementById('phone').value.trim();
+        const username = document.getElementById('regUsername').value.trim();
+        const password = document.getElementById('regPassword').value.trim();
+        const sure = document.getElementById('surePassword').value.trim();
+        const userType = document.getElementById('identity').value;
+        if (!phone || !username || !password || !sure || !identity) { alert('请完整填写'); return; }
+        if (password !== sure) { alert('两次密码不一致'); return; }
+        const res = await fetch('/user/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ phone, username, password, userType })
+        });
+
+        const data = await res.json();
+        if (data.success) {
+            alert('注册成功！即将跳转登录页');
+            location.href = '/includes/login-reg.html';
+        } else {
+            alert(data.success)
+            alert('注册失败：' + (data.msg || '未知错误'));
+            document.getElementById('regPassword').value = '';
+            document.getElementById('surePassword').value = '';
+            document.getElementById('regPassword').focus();
+        }
+    });
+
+    /* ---------- 3. 密码显隐通用 ---------- */
+    document.querySelectorAll('.fa-eye-slash').forEach(icon =>
+        icon.parentElement.addEventListener('click', function (e) {
+            e.preventDefault();
+            const input = this.previousElementSibling;
+            const i = this.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                i.classList.remove('fa-eye-slash'); i.classList.add('fa-eye');
+            } else {
+                input.type = 'password';
+                i.classList.remove('fa-eye'); i.classList.add('fa-eye-slash');
+            }
+        })
+    );
+</script>
+</body>
+</html>
