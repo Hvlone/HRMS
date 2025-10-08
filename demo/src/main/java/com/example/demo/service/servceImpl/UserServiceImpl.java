@@ -1,48 +1,58 @@
 package com.example.demo.service.servceImpl;
 
+<<<<<<< HEAD
 import com.example.demo.exception.BusinessException;
+=======
+import com.example.demo.common.LoginUser;
+import com.example.demo.common.MessageConstant;
+>>>>>>> fc76c76c7b6f35ac52a28a3fe55750a6792c1b7f
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.po.User;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.DigestUtils;
 
-import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Service
 public class UserServiceImpl implements UserService {
-    private final UserMapper userMapper;
 
     @Autowired
-    public UserServiceImpl(UserMapper userMapper) {
-        this.userMapper = userMapper;
+    UserMapper userMapper;
+
+    @Override
+    public boolean isValidatedUser(User user) {
+        User user1=userMapper.selectByUsername(user.getUsername());
+        if (user1==null)
+            return false;
+        if (!user1.getPassword().equals(user.getPassword()))
+            return false;
+        LoginUser.setLoginUserId(user1.getUserId());
+        return true;
     }
 
     @Override
-    @Transactional
-    public boolean register(User user) {
-        try {
-            // 密码加密处理
-            String encryptedPwd = DigestUtils.md5DigestAsHex(
-                    user.getPassword().getBytes(StandardCharsets.UTF_8));
-            user.setPassword(encryptedPwd);
-
-            return userMapper.insert(user) > 0;
-        } catch (DuplicateKeyException e) {
-            throw new BusinessException("用户名或手机号已存在");
-        }
+    public boolean selectByUsername(User user) {
+        if (userMapper.selectByUsername(user.getUsername())==null)
+            return true;
+        return false;
     }
 
     @Override
-    public User login(String username, String password) {
-        User user = userMapper.selectByUsername(username);
-        if (user == null) {
-            throw new BusinessException("用户不存在");
-        }
+    public boolean selectByPhone(User user) {
+        System.out.println(user.toString());
 
+        if(userMapper.selectByPhone(user.getPhone())==null&&selectByUsername(user)){
+            user.setCreateTime(LocalDateTime.now());
+            userMapper.insert(user);
+            return true;
+        }
+        return false;
+    }
+
+
+<<<<<<< HEAD
         // 验证密码
         String encryptedPwd = DigestUtils.md5DigestAsHex(
                 password.getBytes(StandardCharsets.UTF_8));
@@ -69,3 +79,6 @@ public class UserServiceImpl implements UserService {
         return userMapper.selectByUsername(username);
     }
 }
+=======
+}
+>>>>>>> fc76c76c7b6f35ac52a28a3fe55750a6792c1b7f

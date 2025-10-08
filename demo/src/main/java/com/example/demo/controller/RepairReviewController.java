@@ -1,12 +1,12 @@
-package com.example.demo.controlle;
+package com.example.demo.controller;
 
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/repairOrder")
-public class RepairOrderController {
+@RequestMapping("/repairReview")
+public class RepairReviewController {
 
 
 }

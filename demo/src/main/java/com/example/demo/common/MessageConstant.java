@@ -7,10 +7,10 @@ public class MessageConstant {
     public static final String PUBLISHED="已发布";
     public static final String REJECTED="已拒绝";
     public static final String RENTED="已出租";
-    public static final String LANDLORD="房东";
-    public static final String TENANT="租客";
-    public static final String ADMIN="管理员";
-    public static final String REPAIR_STAFF ="维修人员";
+    public static final String LANDLORD="landlord";
+    public static final String TENANT="tenant";
+    public static final String ADMIN="admin";
+    public static final String REPAIR_STAFF ="repair_staff";
     public static final String APPROVED="通过";
     public static final String PENDING="待确认";
     public static final String CONFIRMED="已确认";
