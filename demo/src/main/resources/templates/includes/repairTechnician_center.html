@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>维修师傅中心 - 小熊房屋租赁系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- 引入颜色配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bear: {
+                            brown: '#8B5A2B',
+                            light: '#D2B48C',
+                            cream: '#F5F5DC',
+                            dark: '#5D4037',
+                            honey: '#F9A825',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-bear-cream min-h-screen flex flex-col">
+<!-- 导航栏 -->
+<header class="bg-bear-brown text-white shadow-md">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+            <i class="fa fa-paw text-2xl text-bear-honey"></i>
+            <h1 class="text-xl font-bold">小熊房屋租赁系统</h1>
+        </div>
+
+        <nav class="flex items-center space-x-6">
+            <a href="index.html" class="hover:text-bear-honey transition-colors duration-200 flex items-center">
+                <i class="fa fa-home mr-1"></i> 首页
+            </a>
+            <a href="#" class="hover:text-bear-honey transition-colors duration-200 flex items-center">
+                <i class="fa fa-wrench mr-1"></i> 维修单
+            </a>
+            <a href="#" class="hover:text-bear-honey transition-colors duration-200 flex items-center">
+                <i class="fa fa-history mr-1"></i> 维修记录
+            </a>
+            <a href="#" class="hover:text-bear-honey transition-colors duration-200 flex items-center">
+                <i class="fa fa-info-circle mr-1"></i> 帮助中心
+            </a>
+        </nav>
+
+        <!-- 用户区域 -->
+        <div class="flex items-center space-x-4">
+            <div class="relative group">
+                <button class="flex items-center text-white hover:text-bear-honey transition-colors duration-200">
+                    <i class="fa fa-user-circle mr-2 text-xl"></i>
+                    <span id="userName">王师傅</span>
+                    <i class="fa fa-chevron-down ml-1 text-xs"></i>
+                </button>
+                <!-- 下拉菜单 -->
+                <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-10 hidden group-hover:block">
+                    <a href="repairman-center.html" class="block px-4 py-2 text-gray-800 hover:bg-bear-cream hover:text-bear-brown transition-colors duration-200">
+                        <i class="fa fa-user mr-2"></i>个人中心
+                    </a>
+                    <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-bear-cream hover:text-bear-brown transition-colors duration-200">
+                        <i class="fa fa-cog mr-2"></i>账户设置
+                    </a>
+                    <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-bear-cream hover:text-bear-brown transition-colors duration-200">
+                        <i class="fa fa-star mr-2"></i>我的评价
+                    </a>
+                    <div class="border-t border-gray-200 my-1"></div>
+                    <a href="#" onclick="logout()" class="block px-4 py-2 text-gray-800 hover:bg-bear-cream hover:text-bear-brown transition-colors duration-200">
+                        <i class="fa fa-sign-out mr-2"></i>退出登录
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- 维修师傅中心内容 -->
+<main class="flex-grow container mx-auto px-4 py-8">
+    <h2 class="text-2xl md:text-3xl font-bold text-bear-dark mb-8">
+        <i class="fa fa-wrench text-bear-honey mr-2"></i>维修师傅中心
+    </h2>
+
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <!-- 左侧：个人信息 -->
+        <div class="lg:col-span-1">
+            <div class="bg-white rounded-xl shadow-md p-6 sticky top-4">
+                <div class="text-center mb-6">
+                    <div class="w-24 h-24 bg-bear-light rounded-full flex items-center justify-center mx-auto mb-4 overflow-hidden">
+                        <img src="../../static/img/repairman_avatar.jpg" alt="维修师傅头像" class="w-full h-full object-cover" />
+                    </div>
+                    <h3 class="text-xl font-bold text-bear-dark" id="centerUserName">王师傅</h3>
+                    <p class="text-yellow-500 text-sm flex items-center justify-center mt-1">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star-half-o"></i>
+                        <span class="ml-1 text-gray-600">4.5分</span>
+                    </p>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="flex items-start">
+                        <div class="w-10 text-center">
+                            <i class="fa fa-id-card text-bear-brown"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 text-sm">师傅ID</p>
+                            <p class="font-medium" id="userId">WX20230518</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <div class="w-10 text-center">
+                            <i class="fa fa-phone text-bear-brown"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 text-sm">联系电话</p>
+                            <p class="font-medium">139****8877</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <div class="w-10 text-center">
+                            <i class="fa fa-wrench text-bear-brown"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 text-sm">擅长维修</p>
+                            <p class="font-medium">水电维修、家电维修</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <div class="w-10 text-center">
+                            <i class="fa fa-tasks text-bear-brown"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 text-sm">已完成订单</p>
+                            <p class="font-medium">128单</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <div class="w-10 text-center">
+                            <i class="fa fa-calendar text-bear-brown"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 text-sm">加入时间</p>
+                            <p class="font-medium">2023-05-18</p>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="mt-6 w-full bg-bear-light hover:bg-bear-brown text-white py-2 rounded-lg transition-colors duration-200">
+                    <i class="fa fa-edit mr-1"></i> 编辑资料
+                </button>
+            </div>
+        </div>
+
+        <!-- 右侧：功能模块 -->
+        <div class="lg:col-span-3">
+            <!-- 功能按钮 -->
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <button class="function-btn active p-4 border border-bear-brown bg-bear-cream/50 rounded-lg text-center hover:bg-bear-cream transition-colors duration-200" data-target="repair-orders">
+                        <div class="w-12 h-12 bg-bear-brown text-white rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fa fa-list-alt text-xl"></i>
+                        </div>
+                        <h4 class="font-bold text-bear-dark">待处理维修单</h4>
+                    </button>
+
+                    <button class="function-btn p-4 border border-gray-200 rounded-lg text-center hover:bg-bear-cream/30 transition-colors duration-200" data-target="repair-history">
+                        <div class="w-12 h-12 bg-bear-brown text-white rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fa fa-history text-xl"></i>
+                        </div>
+                        <h4 class="font-bold text-bear-dark">维修记录</h4>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 待处理维修单模块 -->
+            <div class="function-content active" id="repair-orders">
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <h3 class="text-xl font-bold text-bear-dark mb-6">
+                        <i class="fa fa-list-alt text-bear-honey mr-2"></i>待处理维修单
+                    </h3>
+
+                    <div class="space-y-6">
+                        <!-- 维修单1 -->
+                        <div class="border border-gray-100 rounded-lg p-4 hover:shadow-md transition-shadow duration-200">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <h4 class="font-bold text-bear-dark">维修单 #BX20231110001</h4>
+                                    <p class="text-gray-500 text-sm">提交时间：2023-11-10 08:30</p>
+                                </div>
+                                <span class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded">紧急</span>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <p class="text-gray-500 text-sm mb-1">报修房屋</p>
+                                    <p class="font-medium">阳光花园小区 3号楼 502室</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-500 text-sm mb-1">报修类型</p>
+                                    <p class="font-medium">水管问题 - 水龙头漏水</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-500 text-sm mb-1">联系人</p>
+                                    <p class="font-medium">李先生 (138****6789)</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-500 text-sm mb-1">期望维修时间</p>
+                                    <p class="font-medium">2023-11-10 下午</p>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <p class="text-gray-500 text-sm mb-1">问题描述</p>
+                                <p class="bg-gray-50 p-3 rounded border border-gray-100">厨房水龙头严重漏水，已经无法正常使用，请尽快安排维修。</p>
+                            </div>
+
+                            <div class="flex flex-wrap gap-3 justify-end">
+                                <button class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg transition-colors duration-200">
+                                    <i class="fa fa-times mr-1"></i> 拒绝
+                                </button>
+                                <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors duration-200">
+                                    <i class="fa fa-check mr-1"></i> 接受并安排
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 维修单2 -->
+                        <div class="border border-gray-100 rounded-lg p-4 hover:shadow-md transition-shadow duration-200">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <h4 class="font-bold text-bear-dark">维修单 #BX20231110002</h4>
+                                    <p class="text-gray-500 text-sm">提交时间：2023-11-10 09:15</p>
+                                </div>
+                                <span class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded">一般</span>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <p class="text-gray-500 text-sm mb-1">报修房屋</p>
+                                    <p class="font-medium">幸福家园 2号楼 1201室</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-500 text-sm mb-1">报修类型</p>
+                                    <p class="font-medium">电器故障 - 空调不制冷</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-500 text-sm mb-1">联系人</p>
+                                    <p class="font-medium">张女士 (139****5678)</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-500 text-sm mb-1">期望维修时间</p>
+                                    <p class="font-medium">2023-11-11 上午</p>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <p class="text-gray-500 text-sm mb-1">问题描述</p>
+                                <p class="bg-gray-50 p-3 rounded border border-gray-100">卧室空调开启后不制冷，只有送风功能，麻烦检查一下是什么问题。</p>
+                            </div>
+
+                            <div class="flex flex-wrap gap-3 justify-end">
+                                <button class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg transition-colors duration-200">
+                                    <i class="fa fa-times mr-1"></i> 拒绝
+                                </button>
+                                <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors duration-200">
+                                    <i class="fa fa-check mr-1"></i> 接受并安排
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 维修单3 -->
+                        <div class="border border-gray-100 rounded-lg p-4 hover:shadow-md transition-shadow duration-200">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <h4 class="font-bold text-bear-dark">维修单 #BX20231109005</h4>
+                                    <p class="text-gray-500 text-sm">提交时间：2023-11-09 16:40</p>
+                                </div>
+                                <span class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded">一般</span>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <p class="text-gray-500 text-sm mb-1">报修房屋</p>
+                                    <p class="font-medium">城市之光 5号楼 302室</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-500 text-sm mb-1">报修类型</p>
+                                    <p class="font-medium">家具损坏 - 衣柜门脱落</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-500 text-sm mb-1">联系人</p>
+                                    <p class="font-medium">王先生 (136****2345)</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-500 text-sm mb-1">期望维修时间</p>
+                                    <p class="font-medium">2023-11-11 下午</p>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <p class="text-gray-500 text-sm mb-1">问题描述</p>
+                                <p class="bg-gray-50 p-3 rounded border border-gray-100">衣柜门合页损坏，门已经脱落，需要更换合页并重新安装。</p>
+                            </div>
+
+                            <div class="flex flex-wrap gap-3 justify-end">
+                                <button class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg transition-colors duration-200">
+                                    <i class="fa fa-times mr-1"></i> 拒绝
+                                </button>
+                                <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors duration-200">
+                                    <i class="fa fa-check mr-1"></i> 接受并安排
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 分页 -->
+                    <div class="mt-8 flex justify-center">
+                        <nav class="inline-flex rounded-md shadow">
+                            <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                <i class="fa fa-chevron-left"></i>
+                            </a>
+                            <a href="#" aria-current="page" class="z-10 bg-bear-brown text-white relative inline-flex items-center px-4 py-2 border border-bear-brown text-sm font-medium">
+                                1
+                            </a>
+                            <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                                2
+                            </a>
+                            <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                                3
+                            </a>
+                            <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                <i class="fa fa-chevron-right"></i>
+                            </a>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 维修记录模块 -->
+            <div class="function-content hidden" id="repair-history">
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <h3 class="text-xl font-bold text-bear-dark mb-6">
+                        <i class="fa fa-history text-bear-honey mr-2"></i>维修记录
+                    </h3>
+
+                    <!-- 搜索和筛选 -->
+                    <div class="mb-6 flex flex-wrap gap-4">
+                        <div class="flex-grow max-w-md">
+                            <div class="relative">
+                                <input type="text" placeholder="搜索维修单号或地址..." class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-bear-brown/50 focus:border-bear-brown">
+                                <i class="fa fa-search absolute left-3 top-3 text-gray-400"></i>
+                            </div>
+                        </div>
+                        <div class="flex gap-3">
+                            <select class="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-bear-brown/50 focus:border-bear-brown">
+                                <option value="">所有类型</option>
+                                <option value="electric">电器故障</option>
+                                <option value="water">水管问题</option>
+                                <option value="furniture">家具损坏</option>
+                                <option value="other">其他问题</option>
+                            </select>
+                            <select class="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-bear-brown/50 focus:border-bear-brown">
+                                <option value="">最近三个月</option>
+                                <option value="month">最近一个月</option>
+                                <option value="week">最近一周</option>
+                                <option value="custom">自定义</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full">
+                            <thead>
+                            <tr class="bg-bear-cream/50">
+                                <th class="py-3 px-4 text-left text-gray-700 font-medium">维修单号</th>
+                                <th class="py-3 px-4 text-left text-gray-700 font-medium">房屋信息</th>
+                                <th class="py-3 px-4 text-left text-gray-700 font-medium">维修类型</th>
+                                <th class="py-3 px-4 text-left text-gray-700 font-medium">维修时间</th>
+                                <th class="py-3 px-4 text-left text-gray-700 font-medium">客户评价</th>
+                                <th class="py-3 px-4 text-left text-gray-700 font-medium">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="border-t border-gray-100">
+                                <td class="py-3 px-4">BX20231108003</td>
+                                <td class="py-3 px-4">阳光花园小区 3号楼 502室</td>
+                                <td class="py-3 px-4">电器故障 - 洗衣机不工作</td>
+                                <td class="py-3 px-4">2023-11-08 15:30</td>
+                                <td class="py-3 px-4">
+                                    <div class="flex items-center">
+                                        <div class="text-yellow-500 mr-2">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <span class="text-sm">5.0分</span>
+                                    </div>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <button class="text-bear-brown hover:text-bear-dark text-sm">
+                                        <i class="fa fa-eye mr-1"></i>查看详情
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr class="border-t border-gray-100">
+                                <td class="py-3 px-4">BX20231105002</td>
+                                <td class="py-3 px-4">幸福家园 2号楼 1201室</td>
+                                <td class="py-3 px-4">水管问题 - 马桶漏水</td>
+                                <td class="py-3 px-4">2023-11-05 10:15</td>
+                                <td class="py-3 px-4">
+                                    <div class="flex items-center">
+                                        <div class="text-yellow-500 mr-2">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star-o"></i>
+                                        </div>
+                                        <span class="text-sm">4.0分</span>
+                                    </div>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <button class="text-bear-brown hover:text-bear-dark text-sm">
+                                        <i class="fa fa-eye mr-1"></i>查看详情
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr class="border-t border-gray-100">
+                                <td class="py-3 px-4">BX20231103001</td>
+                                <td class="py-3 px-4">城市之光 5号楼 302室</td>
+                                <td class="py-3 px-4">电器故障 - 冰箱不制冷</td>
+                                <td class="py-3 px-4">2023-11-03 09:45</td>
+                                <td class="py-3 px-4">
+                                    <div class="flex items-center">
+                                        <div class="text-yellow-500 mr-2">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star-half-o"></i>
+                                        </div>
+                                        <span class="text-sm">4.5分</span>
+                                    </div>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <button class="text-bear-brown hover:text-bear-dark text-sm">
+                                        <i class="fa fa-eye mr-1"></i>查看详情
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr class="border-t border-gray-100">
+                                <td class="py-3 px-4">BX20231101005</td>
+                                <td class="py-3 px-4">丽景花园 1号楼 703室</td>
+                                <td class="py-3 px-4">家具损坏 - 抽屉滑轨损坏</td>
+                                <td class="py-3 px-4">2023-11-01 16:20</td>
+                                <td class="py-3 px-4">
+                                    <div class="flex items-center">
+                                        <div class="text-yellow-500 mr-2">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star-o"></i>
+                                        </div>
+                                        <span class="text-sm">4.0分</span>
+                                    </div>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <button class="text-bear-brown hover:text-bear-dark text-sm">
+                                        <i class="fa fa-eye mr-1"></i>查看详情
+                                    </button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 分页 -->
+                    <div class="mt-8 flex justify-center">
+                        <nav class="inline-flex rounded-md shadow">
+                            <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                <i class="fa fa-chevron-left"></i>
+                            </a>
+                            <a href="#" aria-current="page" class="z-10 bg-bear-brown text-white relative inline-flex items-center px-4 py-2 border border-bear-brown text-sm font-medium">
+                                1
+                            </a>
+                            <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                                2
+                            </a>
+                            <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                                3
+                            </a>
+                            <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                <i class="fa fa-chevron-right"></i>
+                            </a>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- 页脚 -->
+<footer class="bg-bear-dark text-white py-6 mt-12">
+    <div class="container mx-auto px-4 text-center text-gray-400">
+        <p>© 2023 小熊房屋租赁系统 版权所有 | 京ICP备12345678号</p>
+    </div>
+</footer>
+
+<script>
+    // 退出登录
+    function logout() {
+        localStorage.removeItem('currentRepairman');
+        window.location.href = 'index.html';
+    }
+
+    // 功能模块切换
+    function setupFunctionTabs() {
+        const buttons = document.querySelectorAll('.function-btn');
+        const contents = document.querySelectorAll('.function-content');
+
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                // 移除所有按钮的活跃状态
+                buttons.forEach(btn => {
+                    btn.classList.remove('active', 'border-bear-brown', 'bg-bear-cream/50');
+                    btn.classList.add('border-gray-200');
+                });
+
+                // 添加当前按钮的活跃状态
+                button.classList.add('active', 'border-bear-brown', 'bg-bear-cream/50');
+                button.classList.remove('border-gray-200');
+
+                // 隐藏所有内容
+                contents.forEach(content => {
+                    content.classList.add('hidden');
+                    content.classList.remove('active');
+                });
+
+                // 显示对应内容
+                const target = button.getAttribute('data-target');
+                const activeContent = document.getElementById(target);
+                activeContent.classList.remove('hidden');
+                activeContent.classList.add('active');
+            });
+        });
+    }
+
+
+</script>
+</body>
+</html>
