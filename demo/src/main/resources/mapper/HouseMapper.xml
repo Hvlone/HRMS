@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.HouseMapper">
+    <resultMap id="HouseResultMap" type="House">
+        <id property="houseId" column="house_id"/>
+        <result property="landlordId" column="landlord_id"/>
+        <result property="title" column="title"/>
+        <result property="address" column="address"/>
+        <result property="price" column="price"/>
+        <result property="area" column="area"/>
+        <result property="description" column="description"/>
+        <result property="status" column="status"/>
+        <result property="publishTime" column="publish_time"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="pictures" column="pictures"/>
+    </resultMap>
+
+    <!-- 条件查询房源 -->
+    <select id="selectByCondition" resultMap="HouseResultMap">
+        SELECT * FROM house
+        <where>
+            <if test="minPrice != null">
+                AND price >= #{minPrice}
+            </if>
+            <if test="maxPrice != null">
+                AND price &lt;= #{maxPrice}
+            </if>
+            <if test="status != null and status != ''">
+                AND status = #{status}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                AND (title LIKE CONCAT('%', #{keyword}, '%')
+                OR address LIKE CONCAT('%', #{keyword}, '%')
+                OR description LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+        </where>
+        ORDER BY create_time DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+<!--    删除房源-->
+    <delete id="deleteHouseByHouseId" parameterType="Integer">
+        delete from house where house_id=#{houseId}
+    </delete>
+
+<!--更新房源-->
+    <update id="updateHouse" parameterType="com.example.demo.po.House">
+        UPDATE house
+        <set>
+            <if test="landlordId != null">landlord_id = #{landlordId},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="area != null">area = #{area},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="publishTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="pictures != null">pictures = #{pictures},</if>
+        </set>
+        WHERE house_id = #{houseId}
+    </update>
+</mapper>
+    

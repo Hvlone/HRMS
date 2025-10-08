@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>回龙观社区 105房间 - 小熊房屋租赁系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- 配置小熊租赁主题配色（与home.html保持一致） -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bear: {
+                            brown: '#8B5A2B',      // 深棕色 - 主色调
+                            light: '#D2B48C',     // 浅棕色 - 次要色调
+                            cream: '#F5F5DC',     // 米黄色 - 背景色
+                            dark: '#5D4037',      // 深棕近黑 - 文本主色
+                            honey: '#F9A825',     // 蜂蜜色 - 强调色（价格、按钮）
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                },
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .card-hover {
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px -5px rgba(93, 64, 55, 0.1), 0 10px 10px -5px rgba(93, 64, 55, 0.04);
+            }
+            .img-thumb-active {
+                border-color: #8B5A2B !important; /* 小熊主色激活边框 */
+                opacity: 1 !important;
+            }
+            .shadow-bear {
+                box-shadow: 0 4px 6px -1px rgba(93, 64, 55, 0.1), 0 2px 4px -1px rgba(93, 64, 55, 0.06);
+            }
+        }
+    </style>
+</head>
+<body class="bg-bear-cream font-sans text-bear-dark">
+<!-- 顶部导航（与home.html保持一致） -->
+<!--<header class="sticky top-0 bg-white shadow-md z-50 transition-all duration-300">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+        <div class="flex items-center space-x-6">
+            &lt;!&ndash; 小熊租赁Logo &ndash;&gt;
+            <a href="#" class="text-2xl font-bold text-bear-brown flex items-center">
+                <i class="fa fa-paw text-bear-honey mr-2"></i>
+                <span>小熊房屋租赁系统</span>
+            </a>
+            &lt;!&ndash; 桌面端导航 &ndash;&gt;
+            <nav class="hidden md:flex space-x-6">
+                <a href="home.html" class="text-gray-700 hover:text-bear-brown transition-colors">首页</a>
+                <a href="housing_resources.html" class="text-bear-brown font-medium">房源</a>
+                <a href="house_details.html" class="text-gray-700 hover:text-bear-brown transition-colors">区域</a>
+                <a href="#" class="text-gray-700 hover:text-bear-brown transition-colors">关于我们</a>
+            </nav>
+        </div>
+        <div class="flex items-center space-x-4">
+            &lt;!&ndash; 功能图标 &ndash;&gt;
+            <button class="text-gray-600 hover:text-bear-brown transition-colors hidden md:block">
+                <i class="fa fa-search text-xl"></i>
+            </button>
+            <button class="text-gray-600 hover:text-bear-brown transition-colors hidden md:block">
+                <i class="fa fa-heart-o text-xl"></i>
+            </button>
+            <button class="text-gray-600 hover:text-bear-brown transition-colors">
+                <i class="fa fa-share-alt text-xl"></i>
+            </button>
+            &lt;!&ndash; 登录按钮（小熊主题色） &ndash;&gt;
+            <button class="hidden md:block bg-bear-brown hover:bg-bear-dark text-white px-4 py-2 rounded-lg transition-colors">
+                登录/注册
+            </button>
+            &lt;!&ndash; 移动端菜单 &ndash;&gt;
+            <button class="md:hidden text-gray-600 hover:text-bear-brown transition-colors">
+                <i class="fa fa-bars text-xl"></i>
+            </button>
+        </div>
+    </div>
+</header>-->
+<!-- 导航栏 -->
+<header class="bg-bear-brown text-white shadow-md transition-all duration-300">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+            <i class="fa fa-paw text-2xl text-bear-honey"></i>
+            <h1 class="text-xl md:text-2xl font-bold">小熊房屋租赁系统</h1>
+        </div>
+
+        <!-- 桌面导航 -->
+        <nav class="hidden md:flex items-center space-x-6">
+            <a href="home.html" class="hover:text-bear-honey transition-colors duration-200 flex items-center">
+                <i class="fa fa-home mr-1"></i> 首页
+            </a>
+            <a href="housing_resources.html" class="hover:text-bear-honey transition-colors duration-200 flex items-center">
+                <i class="fa fa-building mr-1"></i> 房源
+            </a>
+            <a href="house_details.html" class="hover:text-bear-honey transition-colors duration-200 flex items-center">
+                <i class="fa fa-map-marker mr-1"></i> 区域
+            </a>
+            <a href="" class="hover:text-bear-honey transition-colors duration-200 flex items-center">
+                <i class="fa fa-info-circle mr-1"></i> 关于我们
+            </a>
+        </nav>
+
+        <div class="flex items-center space-x-4">
+            <button id="home-reg" class="hidden md:block bg-bear-honey hover:bg-amber-500 text-white px-4 py-2 rounded-lg transition-colors duration-200">
+                <i class="fa fa-user-plus mr-1"></i> 注册
+            </button>
+            <button  id="home-login" class="hidden md:block bg-transparent border border-white hover:border-bear-honey hover:text-bear-honey px-4 py-2 rounded-lg transition-colors duration-200">
+                <i class="fa fa-sign-in mr-1"></i> 退出登录
+            </button>
+
+            <!--            &lt;!&ndash; 移动端菜单按钮 &ndash;&gt;
+                        <button class="md:hidden text-white focus:outline-none" id="menuBtn">
+                            <i class="fa fa-bars text-xl"></i>
+                        </button>-->
+        </div>
+    </div>
+
+    <!-- 移动端导航菜单 -->
+    <!--    <div class="md:hidden hidden bg-bear-dark" id="mobileMenu">
+            <div class="container mx-auto px-4 py-3 flex flex-col space-y-3">
+                <a href="#" class="text-white hover:text-bear-honey py-2 transition-colors duration-200">
+                    <i class="fa fa-home mr-2"></i> 首页
+                </a>
+                <a href="#" class="text-white hover:text-bear-honey py-2 transition-colors duration-200">
+                    <i class="fa fa-building mr-2"></i> 房源
+                </a>
+                <a href="#" class="text-white hover:text-bear-honey py-2 transition-colors duration-200">
+                    <i class="fa fa-map-marker mr-2"></i> 区域
+                </a>
+                <a href="#" class="text-white hover:text-bear-honey py-2 transition-colors duration-200">
+                    <i class="fa fa-info-circle mr-2"></i> 我的
+                </a>
+                <div class="flex space-x-2 pt-2 border-t border-bear-light/30">
+                    <button class="flex-1 bg-bear-honey hover:bg-amber-500 text-white px-4 py-2 rounded-lg transition-colors duration-200">
+                        <i class="fa fa-user-plus mr-1"></i> 注册
+                    </button>
+                    <button class="flex-1 bg-transparent border border-white hover:border-bear-honey hover:text-bear-honey px-4 py-2 rounded-lg transition-colors duration-200">
+                        <i class="fa fa-sign-in mr-1"></i> 登录
+                    </button>
+                </div>
+            </div>
+        </div>-->
+</header>
+<div class="container mx-auto px-4 py-8">
+    <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- 左侧：房屋图片和基本信息 -->
+        <div class="lg:col-span-2">
+            <!-- 位置导航（调整文本颜色） -->
+            <div class="text-sm text-gray-600 mb-6">
+                <a href="#" class="hover:text-bear-brown">首页</a>
+                <i class="fa fa-angle-right mx-1"></i>
+                <a href="#" class="hover:text-bear-brown">北京租房</a>
+                <i class="fa fa-angle-right mx-1"></i>
+                <a href="#" class="hover:text-bear-brown">昌平区</a>
+                <i class="fa fa-angle-right mx-1"></i>
+                <a href="#" class="hover:text-bear-brown">回龙观</a>
+                <i class="fa fa-angle-right mx-1"></i>
+                <span class="text-bear-dark">回龙观社区 105房间</span>
+            </div>
+
+            <!-- 房屋图片展示（小熊主题阴影） -->
+            <div class="bg-white rounded-xl shadow-bear p-5 mb-6">
+                <div class="mb-4">
+                    <img id="main-image" src="../../static/img/house_picture2.jpg" alt="回龙观社区105房间外观" class="w-full h-[450px] object-cover rounded-lg">
+                </div>
+                <div class="grid grid-cols-4 gap-2">
+                    <img src="../../static/img/house_picture1.jpg" alt="房屋图片1" class="h-24 object-cover rounded cursor-pointer border-2 border-transparent opacity-70 hover:opacity-100 transition-all img-thumb-active">
+                    <img src="../../static/img/house_picture1.jpg" alt="房屋图片2" class="h-24 object-cover rounded cursor-pointer border-2 border-transparent opacity-70 hover:opacity-100 transition-all">
+                    <img src="../../static/img/house_picture1.jpg" alt="房屋图片3" class="h-24 object-cover rounded cursor-pointer border-2 border-transparent opacity-70 hover:opacity-100 transition-all">
+                    <div class="h-24 bg-gray-100 rounded flex items-center justify-center text-gray-500 cursor-pointer hover:bg-bear-cream transition-colors">
+                        <i class="fa fa-plus mr-1"></i> 更多
+                    </div>
+                </div>
+            </div>
+
+            <!-- 房屋标题和价格（小熊蜂蜜色价格） -->
+            <div class="bg-white rounded-xl shadow-bear p-5 mb-6">
+                <div class="flex flex-col md:flex-row md:justify-between md:items-start">
+                    <div>
+                        <h2 class="text-2xl font-bold mb-3 text-bear-dark">回龙观社区 105房间</h2>
+                        <!-- 标签替换为小熊主色 -->
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-bear-brown/10 text-bear-brown text-sm px-2 py-1 rounded-full">朝东</span>
+                            <span class="bg-bear-brown/10 text-bear-brown text-sm px-2 py-1 rounded-full">独卫</span>
+                            <span class="bg-bear-brown/10 text-bear-brown text-sm px-2 py-1 rounded-full">阳台</span>
+                            <span class="bg-bear-brown/10 text-bear-brown text-sm px-2 py-1 rounded-full">近地铁</span>
+                            <span class="bg-bear-brown/10 text-bear-brown text-sm px-2 py-1 rounded-full">拎包入住</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            回龙观社区105房间位于北京市昌平区核心位置，紧邻地铁站，交通便利。房屋采光良好，配套设施齐全，拎包即可入住。小区环境优美，安全性高，适合独居或小家庭居住。
+                        </p>
+                    </div>
+                    <!-- 价格卡片（小熊米黄色背景） -->
+                    <div class="mt-4 md:mt-0 md:ml-6 bg-bear-cream p-4 rounded-lg">
+                        <div class="text-3xl font-bold text-bear-honey mb-2">¥3500<span class="text-base font-normal text-gray-600">/月</span></div>
+                        <div class="text-gray-600 text-sm">
+                            <span class="mr-3"><i class="fa fa-clock-o mr-1"></i> 2023-06-15更新</span>
+                            <span><i class="fa fa-eye mr-1"></i> 328次浏览</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 基本信息、经纪人信息和配套信息（统一小熊主题） -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <!-- 基本信息 -->
+                <div class="bg-white rounded-xl shadow-bear p-5 md:col-span-1">
+                    <h3 class="text-lg font-semibold mb-4 flex items-center text-bear-dark">
+                        <i class="fa fa-list-alt text-bear-brown mr-2"></i>基本信息
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between pb-3 border-b border-gray-100">
+                            <span class="text-gray-600">户型</span>
+                            <span class="font-medium">一室一厅</span>
+                        </div>
+                        <div class="flex justify-between pb-3 border-b border-gray-100">
+                            <span class="text-gray-600">面积</span>
+                            <span class="font-medium">35平</span>
+                        </div>
+                        <div class="flex justify-between pb-3 border-b border-gray-100">
+                            <span class="text-gray-600">朝向</span>
+                            <span class="font-medium">东</span>
+                        </div>
+                        <div class="flex justify-between pb-3 border-b border-gray-100">
+                            <span class="text-gray-600">采光</span>
+                            <span class="font-medium">良</span>
+                        </div>
+                        <div class="flex justify-between pb-3 border-b border-gray-100">
+                            <span class="text-gray-600">卫所</span>
+                            <span class="font-medium">独卫</span>
+                        </div>
+                        <div class="flex justify-between pb-3 border-b border-gray-100">
+                            <span class="text-gray-600">楼层</span>
+                            <span class="font-medium">3/6层</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">装修</span>
+                            <span class="font-medium">精装修</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 经纪人信息（小熊主题按钮） -->
+                <div class="bg-white rounded-xl shadow-bear p-5 md:col-span-1">
+                    <div class="flex items-center mb-4">
+                        <img src="../../static/img/agent.jpg" alt="经纪人头像" class="w-16 h-16 rounded-full object-cover mr-4 border-2 border-bear-light">
+                        <div>
+                            <div class="font-semibold text-bear-dark">张晓明</div>
+                            <div class="text-sm text-gray-500">
+                                <i class="fa fa-id-card-o mr-1"></i> 小熊资深房产顾问
+                            </div>
+                            <div class="text-sm text-bear-honey mt-1">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star-half-o"></i>
+                                <span class="text-gray-600 ml-1">4.8分 (126条评价)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3 mb-4">
+                        <button class="flex items-center justify-center border border-bear-brown text-bear-brown hover:bg-bear-brown/5 transition-colors py-3 rounded-lg">
+                            <i class="fa fa-phone mr-2"></i> 电话咨询
+                        </button>
+                        <button class="flex items-center justify-center border border-bear-brown text-bear-brown hover:bg-bear-brown/5 transition-colors py-3 rounded-lg">
+                            <i class="fa fa-commenting-o mr-2"></i> 在线沟通
+                        </button>
+                    </div>
+                    <!-- 主要按钮用小熊主色 -->
+                    <button class="w-full bg-bear-brown hover:bg-bear-dark text-white font-medium py-3 px-4 rounded-lg transition-all duration-300 flex items-center justify-center mb-3">
+                        <i class="fa fa-calendar-check-o mr-2"></i>
+                        预约看房
+                    </button>
+                    <button class="w-full border border-gray-300 hover:border-bear-brown text-gray-700 font-medium py-2 px-4 rounded-lg transition-all duration-300 flex items-center justify-center">
+                        <i class="fa fa-heart-o mr-2 text-bear-brown"></i>
+                        收藏房源
+                    </button>
+                </div>
+
+                <!-- 配套信息（小熊主题图标色） -->
+                <div class="bg-white rounded-xl shadow-bear p-5 md:col-span-1">
+                    <h3 class="text-lg font-semibold mb-4 flex items-center text-bear-dark">
+                        <i class="fa fa-cubes text-bear-brown mr-2"></i>配套信息
+                    </h3>
+                    <div class="grid grid-cols-3 gap-4">
+                        <div class="flex flex-col items-center p-3 rounded-lg bg-bear-cream/50 card-hover">
+                            <i class="fa fa-television text-bear-brown text-xl mb-2"></i>
+                            <span class="text-sm text-bear-dark">电视</span>
+                        </div>
+                        <div class="flex flex-col items-center p-3 rounded-lg bg-bear-cream/50 card-hover">
+                            <i class="fa fa-wifi text-bear-brown text-xl mb-2"></i>
+                            <span class="text-sm text-bear-dark">WIFI</span>
+                        </div>
+                        <div class="flex flex-col items-center p-3 rounded-lg bg-bear-cream/50 card-hover">
+                            <i class="fa fa-snowflake-o text-bear-brown text-xl mb-2"></i>
+                            <span class="text-sm text-bear-dark">空调</span>
+                        </div>
+                        <div class="flex flex-col items-center p-3 rounded-lg bg-bear-cream/50 card-hover">
+                            <i class="fa fa-shower text-bear-brown text-xl mb-2"></i>
+                            <span class="text-sm text-bear-dark">热水器</span>
+                        </div>
+                        <div class="flex flex-col items-center p-3 rounded-lg bg-bear-cream/50 card-hover">
+                            <i class="fa fa-refresh text-bear-brown text-xl mb-2"></i>
+                            <span class="text-sm text-bear-dark">洗衣机</span>
+                        </div>
+                        <div class="flex flex-col items-center p-3 rounded-lg bg-bear-cream/50 card-hover">
+                            <i class="fa fa-suitcase text-bear-brown text-xl mb-2"></i>
+                            <span class="text-sm text-bear-dark">衣柜</span>
+                        </div>
+                        <div class="flex flex-col items-center p-3 rounded-lg bg-bear-cream/50 card-hover">
+                            <i class="fa fa-bed text-bear-brown text-xl mb-2"></i>
+                            <span class="text-sm text-bear-dark">床</span>
+                        </div>
+                        <div class="flex flex-col items-center p-3 rounded-lg bg-bear-cream/50 card-hover">
+                            <i class="fa fa-cutlery text-bear-brown text-xl mb-2"></i>
+                            <span class="text-sm text-bear-dark">油烟机</span>
+                        </div>
+                        <div class="flex flex-col items-center p-3 rounded-lg bg-bear-cream/50 card-hover">
+                            <i class="fa fa-coffee text-bear-brown text-xl mb-2"></i>
+                            <span class="text-sm text-bear-dark">微波炉</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 位置详情（小熊主题图标） -->
+            <div class="bg-white rounded-xl shadow-bear p-5 mb-6">
+                <h3 class="text-lg font-semibold mb-4 flex items-center text-bear-dark">
+                    <i class="fa fa-map-marker text-bear-brown mr-2"></i>位置详情
+                </h3>
+                <p class="text-gray-700 mb-4">北京市昌平区回龙观东大街地铁站B东北口8号线</p>
+                <div class="rounded-lg overflow-hidden h-80 bg-gray-100 relative">
+                    <!-- 地图占位图 -->
+                    <img src="https://picsum.photos/1200/600?random=2" alt="房屋位置地图" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <i class="fa fa-map-marker text-4xl text-bear-honey animate-pulse"></i>
+                    </div>
+                    <div class="absolute bottom-3 right-3 bg-white rounded-full p-2 shadow-md cursor-pointer hover:bg-bear-cream transition-colors">
+                        <i class="fa fa-location-arrow text-bear-brown"></i>
+                    </div>
+                </div>
+                <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="flex items-center p-2 bg-bear-cream/50 rounded-lg">
+                        <i class="fa fa-subway text-bear-brown text-xl mr-3"></i>
+                        <div>
+                            <div class="text-sm font-medium text-bear-dark">距8号线回龙观东大街站</div>
+                            <div class="text-xs text-gray-500">步行5分钟 (约350米)</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center p-2 bg-bear-cream/50 rounded-lg">
+                        <i class="fa fa-bus text-bear-brown text-xl mr-3"></i>
+                        <div>
+                            <div class="text-sm font-medium text-bear-dark">周边公交站</div>
+                            <div class="text-xs text-gray-500">307路、407路、618路</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center p-2 bg-bear-cream/50 rounded-lg">
+                        <i class="fa fa-shopping-bag text-bear-brown text-xl mr-3"></i>
+                        <div>
+                            <div class="text-sm font-medium text-bear-dark">购物中心</div>
+                            <div class="text-xs text-gray-500">华联超市、永辉超市</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 推荐房源（小熊主题卡片） -->
+            <section class="mb-12">
+                <h3 class="text-xl font-bold mb-6 text-bear-dark">相似推荐房源</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <!-- 推荐房源1 -->
+                    <div class="bg-white rounded-xl shadow-bear overflow-hidden card-hover">
+                        <div class="relative">
+                            <img src="https://picsum.photos/400/300?random=20" alt="推荐房源图片" class="w-full h-48 object-cover">
+                            <!-- 价格标签用小熊蜂蜜色 -->
+                            <div class="absolute top-2 right-2 bg-bear-honey text-white text-sm font-bold px-2 py-1 rounded">
+                                ¥3300/月
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h4 class="font-semibold mb-2 text-bear-dark">回龙观社区 203房间</h4>
+                            <div class="text-sm text-gray-600 mb-3">一室一厅 · 32平 · 朝南</div>
+                            <div class="flex items-center text-xs text-gray-500">
+                                <i class="fa fa-map-marker mr-1 text-bear-brown"></i>
+                                <span>距8号线回龙观东大街站步行8分钟</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 推荐房源2 -->
+                    <div class="bg-white rounded-xl shadow-bear overflow-hidden card-hover">
+                        <div class="relative">
+                            <img src="https://picsum.photos/400/300?random=21" alt="推荐房源图片" class="w-full h-48 object-cover">
+                            <div class="absolute top-2 right-2 bg-bear-honey text-white text-sm font-bold px-2 py-1 rounded">
+                                ¥3700/月
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h4 class="font-semibold mb-2 text-bear-dark">龙泽苑 1102房间</h4>
+                            <div class="text-sm text-gray-600 mb-3">一室一厅 · 40平 · 朝西</div>
+                            <div class="flex items-center text-xs text-gray-500">
+                                <i class="fa fa-map-marker mr-1 text-bear-brown"></i>
+                                <span>距13号线龙泽站步行10分钟</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 推荐房源3 -->
+                    <div class="bg-white rounded-xl shadow-bear overflow-hidden card-hover">
+                        <div class="relative">
+                            <img src="https://picsum.photos/400/300?random=22" alt="推荐房源图片" class="w-full h-48 object-cover">
+                            <div class="absolute top-2 right-2 bg-bear-honey text-white text-sm font-bold px-2 py-1 rounded">
+                                ¥3400/月
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h4 class="font-semibold mb-2 text-bear-dark">矩阵小区 301房间</h4>
+                            <div class="text-sm text-gray-600 mb-3">一室0厅 · 30平 · 朝北</div>
+                            <div class="flex items-center text-xs text-gray-500">
+                                <i class="fa fa-map-marker mr-1 text-bear-brown"></i>
+                                <span>距8号线育知路站步行6分钟</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 推荐房源4 -->
+                    <div class="bg-white rounded-xl shadow-bear overflow-hidden card-hover">
+                        <div class="relative">
+                            <img src="https://picsum.photos/400/300?random=23" alt="推荐房源图片" class="w-full h-48 object-cover">
+                            <div class="absolute top-2 right-2 bg-bear-honey text-white text-sm font-bold px-2 py-1 rounded">
+                                ¥3600/月
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h4 class="font-semibold mb-2 text-bear-dark">流星花园 502房间</h4>
+                            <div class="text-sm text-gray-600 mb-3">一室一厅 · 38平 · 朝东</div>
+                            <div class="flex items-center text-xs text-gray-500">
+                                <i class="fa fa-map-marker mr-1 text-bear-brown"></i>
+                                <span>距13号线龙泽站步行12分钟</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- 右侧：费用明细、付款方式和预约（小熊主题） -->
+        <div class="lg:col-span-1">
+            <!-- 费用明细（小熊主色文本） -->
+            <div class="bg-white rounded-xl shadow-bear p-5 mb-6">
+                <h3 class="text-lg font-semibold mb-4 flex items-center text-bear-dark">
+                    <i class="fa fa-money text-bear-brown mr-2"></i>费用明细
+                </h3>
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center pb-3 border-b border-gray-100">
+                        <span class="text-gray-600">租金</span>
+                        <span class="font-medium text-bear-honey">¥3500/月</span>
+                    </div>
+                    <div class="flex justify-between items-center pb-3 border-b border-gray-100">
+                        <span class="text-gray-600">停车费</span>
+                        <span class="font-medium">¥300/月</span>
+                    </div>
+                    <div class="flex justify-between items-center pb-3 border-b border-gray-100">
+                        <span class="text-gray-600">网费</span>
+                        <span class="font-medium">¥1000/年</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">电费</span>
+                        <span class="font-medium">¥1/度</span>
+                    </div>
+                </div>
+                <div class="mt-4 text-sm text-gray-500">
+                    <i class="fa fa-info-circle mr-1 text-bear-brown"></i> 水费、燃气费按实际使用量收取
+                </div>
+            </div>
+
+            <!-- 付款方式和租期（小熊主题边框/背景） -->
+            <div class="grid grid-cols-1 gap-6 mb-6">
+                <!-- 付款方式 -->
+                <div class="bg-white rounded-xl shadow-bear p-5">
+                    <h3 class="text-lg font-semibold mb-4 flex items-center text-bear-dark">
+                        <i class="fa fa-credit-card text-bear-brown mr-2"></i>可选付款方式
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="border border-gray-200 rounded-lg p-3 flex justify-between items-center hover:border-bear-brown transition-colors cursor-pointer">
+                            <span>月付</span>
+                            <span class="text-gray-600">押一付二</span>
+                        </div>
+                        <div class="border border-gray-200 rounded-lg p-3 flex justify-between items-center hover:border-bear-brown transition-colors cursor-pointer">
+                            <span>季付</span>
+                            <span class="text-gray-600">押一付三</span>
+                        </div>
+                        <div class="border border-gray-200 rounded-lg p-3 flex justify-between items-center hover:border-bear-brown transition-colors cursor-pointer">
+                            <span>半年付</span>
+                            <span class="text-gray-600">押一付六</span>
+                        </div>
+                        <div class="border border-gray-200 rounded-lg p-3 flex justify-between items-center hover:border-bear-brown transition-colors cursor-pointer">
+                            <span>年付</span>
+                            <span class="text-gray-600">押一付十二</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 可选租期 -->
+                <div class="bg-white rounded-xl shadow-bear p-5">
+                    <h3 class="text-lg font-semibold mb-4 flex items-center text-bear-dark">
+                        <i class="fa fa-calendar text-bear-brown mr-2"></i>可选租期
+                    </h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="border border-gray-200 rounded-lg p-4 text-center hover:border-bear-brown hover:bg-bear-cream/30 transition-colors cursor-pointer">
+                            <div class="font-medium mb-1 text-bear-dark">1个月</div>
+                            <div class="text-xs text-gray-500">到期可续</div>
+                        </div>
+                        <div class="border border-gray-200 rounded-lg p-4 text-center hover:border-bear-brown hover:bg-bear-cream/30 transition-colors cursor-pointer">
+                            <div class="font-medium mb-1 text-bear-dark">3个月</div>
+                            <div class="text-xs text-gray-500">到期可续</div>
+                        </div>
+                        <div class="border border-gray-200 rounded-lg p-4 text-center hover:border-bear-brown hover:bg-bear-cream/30 transition-colors cursor-pointer">
+                            <div class="font-medium mb-1 text-bear-dark">6个月</div>
+                            <div class="text-xs text-gray-500">到期可续</div>
+                        </div>
+                        <div class="border border-gray-200 rounded-lg p-4 text-center hover:border-bear-brown hover:bg-bear-cream/30 transition-colors cursor-pointer">
+                            <div class="font-medium mb-1 text-bear-dark">12个月</div>
+                            <div class="text-xs text-gray-500">到期可续</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- 页脚（与home.html完全一致） -->
+<footer class="bg-bear-dark text-white py-12">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-4 gap-8">
+            <div>
+                <div class="flex items-center space-x-2 mb-4">
+                    <i class="fa fa-paw text-2xl text-bear-honey"></i>
+                    <h3 class="text-xl font-bold">小熊房屋租赁系统</h3>
+                </div>
+                <p class="text-gray-300 mb-4">为您提供优质的房屋租赁服务，让租房变得简单、放心、便捷。</p>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-300 hover:text-bear-honey transition-colors duration-200">
+                        <i class="fa fa-weixin text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-300 hover:text-bear-honey transition-colors duration-200">
+                        <i class="fa fa-weibo text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-300 hover:text-bear-honey transition-colors duration-200">
+                        <i class="fa fa-qq text-xl"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div>
+                <h4 class="text-lg font-semibold mb-4">快速链接</h4>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-gray-300 hover:text-bear-honey transition-colors duration-200">首页</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-bear-honey transition-colors duration-200">全部房源</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-bear-honey transition-colors duration-200">热门区域</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-bear-honey transition-colors duration-200">价格走势</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-bear-honey transition-colors duration-200">关于我们</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-bear-honey transition-colors duration-200">联系我们</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-lg font-semibold mb-4">帮助中心</h4>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-gray-300 hover:text-bear-honey transition-colors duration-200">常见问题</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-bear-honey transition-colors duration-200">租房指南</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-bear-honey transition-colors duration-200">合同模板</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-bear-honey transition-colors duration-200">投诉建议</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-bear-honey transition-colors duration-200">隐私政策</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-lg font-semibold mb-4">联系我们</h4>
+                <ul class="space-y-3">
+                    <li class="flex items-start">
+                        <i class="fa fa-map-marker text-bear-honey mt-1 mr-3"></i>
+                        <span class="text-gray-300">北京市朝阳区建国路88号小熊大厦15层</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fa fa-phone text-bear-honey mr-3"></i>
+                        <span class="text-gray-300">400-888-9999</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fa fa-envelope text-bear-honey mr-3"></i>
+                        <span class="text-gray-300">service@xiaoxiong.com</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fa fa-clock-o text-bear-honey mr-3"></i>
+                        <span class="text-gray-300">工作时间: 周一至周日 9:00-21:00</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="border-t border-gray-700 mt-10 pt-6 text-center text-gray-400">
+            <p>© 2023 小熊房屋租赁系统 版权所有 | 京ICP备12345678号</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // 图片切换功能（保持原逻辑，适配小熊主题激活色）
+    document.querySelectorAll('.grid.grid-cols-4 img').forEach(thumb => {
+        thumb.addEventListener('click', function() {
+            // 更新主图
+            document.getElementById('main-image').src = this.src;
+
+            // 更新缩略图激活状态（小熊主色）
+            document.querySelectorAll('.grid.grid-cols-4 img').forEach(t => {
+                t.classList.remove('img-thumb-active');
+            });
+            this.classList.add('img-thumb-active');
+        });
+    });
+
+    // 滚动时导航栏效果（与home.html一致）
+    window.addEventListener('scroll', function() {
+        const header = document.querySelector('header');
+        if (window.scrollY > 50) {
+            header.classList.add('py-2');
+            header.classList.remove('py-3');
+            header.classList.add('shadow-bear');
+        } else {
+            header.classList.add('py-3');
+            header.classList.remove('py-2');
+            header.classList.remove('shadow-bear');
+        }
+    });
+</script>
+</body>
+</html>
