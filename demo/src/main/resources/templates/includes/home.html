@@ -79,7 +79,7 @@
                 <i class="fa fa-sign-in mr-1"></i> 退出登录
             </button>
             <div class="flex items-center space-x-4">
-                <button class="text-gray-600 hover:text-black transition-colors" id="about-self">
+                <button class="text-gray-600 hover:text-black transition-colors" id="about-self" onclick='aboutSelf();'>
                     <i class="fa fa-user-circle text-xl"></i>
                 </button>
                 <button class="md:hidden text-gray-600 hover:text-bear-brown transition-colors">
@@ -591,6 +591,7 @@
         </div>
     </div>
 </footer>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     document.getElementById('home-reg')
         .addEventListener('click', function (e) {
@@ -600,20 +601,38 @@
         });
 
 
+    function aboutSelf(){
+        $.post("/user/to_aboutSelf",
+            function(data){
+            if (data.code===200){
+                if(data.message==="landlord"){
+                    location.href = '/includes/landlord_center.html';
+                }
+                else if (data.message==="tenant")
+                    location.href = '/includes/user_center.html';
+                else
+                    location.href = '/includes/repairTechnician_center.html';
+            }
+            else {
+                alert("请先登录！")
+            }
+            });
+    }
 
-    document.addEventListener('click', e => {
+
+/*    document.addEventListener('click', e => {
         console.log('实际点到的元素：', e.target);
         console.log('它的 class：', e.target.className);
         console.log('它的 dataset：', e.target.dataset);
-        /* 1. 真正确保拿到按钮节点 */
+        /!* 1. 真正确保拿到按钮节点 *!/
         const btn = e.target.closest('.view-details-btn');
         if (!btn) return;                       // 没点到按钮区域，直接忽略
 
-        /* 2. 取 data */
+        /!* 2. 取 data *!/
         const houseId = btn.dataset.houseId;
         console.log('houseId =', houseId);
 
-        /* 3. 简单校验 */
+        /!* 3. 简单校验 *!/
         if (!houseId || isNaN(houseId)) {
             console.warn('未拿到有效 houseId');
             return;
@@ -627,7 +646,7 @@
                 window.location.href = resp.url;
             }
         });
-    });
+    });*/
 
 /*    function details(houseId) {
 
@@ -643,10 +662,20 @@
             });
     }*/
 
-    document.getElementById('about-self')
+/*    document.getElementById('about-self')
         .addEventListener('click', function (e) {
-            location.href = '/includes/user_center.html';
-        });
+            fetch('/user/to_aboutSelf', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            }).then(resp => {
+                if (resp.redirected) {          // 后端 302
+                    window.location.href = resp.url;
+                }
+            });
+
+        });*/
+
+
     document.getElementById('home-login')
         .addEventListener('click', function (e) {
             if (!confirm("是否退出登录？"))

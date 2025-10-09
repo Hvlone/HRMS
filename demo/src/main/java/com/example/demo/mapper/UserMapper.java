@@ -28,4 +28,7 @@ public interface UserMapper {
 
     /* 根据主键删除 */
     int deleteByPrimaryKey(Integer userId);
+
+
+    String selectUsertypeByUserId(Integer userId);
 }

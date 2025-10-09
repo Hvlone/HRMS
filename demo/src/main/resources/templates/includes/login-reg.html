@@ -184,6 +184,7 @@
         const userType = document.getElementById('identity').value;
         if (!phone || !username || !password || !sure || !identity) { alert('请完整填写'); return; }
         if (password !== sure) { alert('两次密码不一致'); return; }
+
         const res = await fetch('/user/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

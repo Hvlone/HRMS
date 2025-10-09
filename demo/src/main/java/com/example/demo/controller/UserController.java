@@ -1,8 +1,10 @@
 package com.example.demo.controller;
 
 
+import com.example.demo.common.LoginUser;
 import com.example.demo.po.User;
 import com.example.demo.service.UserService;
+import com.example.demo.vo.ApiResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +38,13 @@ public class UserController {
     @RequestMapping("/to_test")
     public String toTest() {
         return "includes/test";
+    }
+
+    @PostMapping("/to_aboutSelf")
+    @ResponseBody
+    public ApiResponse about_self(HttpSession session){
+        User user=userService.selectByUsername2((String)session.getAttribute("loginName"));
+        return ApiResponse.success(user.getUserType());
     }
 
     @RequestMapping("/login")

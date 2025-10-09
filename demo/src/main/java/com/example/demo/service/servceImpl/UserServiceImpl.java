@@ -25,6 +25,7 @@ public class UserServiceImpl implements UserService {
         if (!user1.getPassword().equals(user.getPassword()))
             return false;
         LoginUser.setLoginUserId(user1.getUserId());
+        System.out.println("登录者id："+LoginUser.getLoginUserId());
         return true;
     }
 
@@ -36,6 +37,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User selectByUsername2(String userName) {
+        return userMapper.selectByUsername(userName);
+    }
+
+    @Override
     public boolean selectByPhone(User user) {
         System.out.println(user.toString());
         if(userMapper.selectByPhone(user.getPhone())==null&&selectByUsername(user)){
@@ -44,6 +50,11 @@ public class UserServiceImpl implements UserService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public String selectUsertypeByUserId(Integer userId) {
+        return userMapper.selectUsertypeByUserId(userId);
     }
 
 

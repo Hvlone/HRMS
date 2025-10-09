@@ -87,4 +87,8 @@
         DELETE FROM user WHERE user_id = #{userId}
     </delete>
 
+    <!--通过userId查角色-->
+    <select id="selectUsertypeByUserId" parameterType="Integer" resultType="String">
+        select userType from user where user_id=#{userId}
+    </select>
 </mapper>

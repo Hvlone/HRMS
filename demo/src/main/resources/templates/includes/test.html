@@ -3,6 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background: white;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+    </style>
 </head>
 <body>
 <form id="houseForm" enctype="multipart/form-data">
@@ -14,7 +27,15 @@
     图片：<input type="file" name="pics" multiple /><br/>
     <button type="submit">发布房源</button>
 </form>
-
+<div class="dropdown">
+    <span class="dropdown-toggle">张师傅</span>
+    <div class="dropdown-menu">
+        <a href="#">个人中心</a>
+        <a href="#">账户设置</a>
+        <a href="#">我的评价</a>
+        <a href="#">退出登录</a>
+    </div>
+</div>
 <script>
     document.getElementById('houseForm')
         .addEventListener('submit', async function (e) {
