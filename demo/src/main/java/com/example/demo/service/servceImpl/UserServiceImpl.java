@@ -1,7 +1,11 @@
 package com.example.demo.service.servceImpl;
 
+<<<<<<< HEAD
+import com.example.demo.exception.BusinessException;
+=======
 import com.example.demo.common.LoginUser;
 import com.example.demo.common.MessageConstant;
+>>>>>>> fc76c76c7b6f35ac52a28a3fe55750a6792c1b7f
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.po.User;
 import com.example.demo.service.UserService;
@@ -58,4 +62,33 @@ public class UserServiceImpl implements UserService {
     }
 
 
+<<<<<<< HEAD
+        // 验证密码
+        String encryptedPwd = DigestUtils.md5DigestAsHex(
+                password.getBytes(StandardCharsets.UTF_8));
+        if (!encryptedPwd.equals(user.getPassword())) {
+            throw new BusinessException("密码错误");
+        }
+
+        return user;
+    }
+
+    @Override
+    @Transactional
+    public boolean updateUserInfo(User user) {
+        return userMapper.update(user) > 0;
+    }
+
+    @Override
+    public User getUserById(Integer userId) {
+        return userMapper.selectById(userId);
+    }
+
+    @Override
+    public User getUserByUsername(String username) {
+        return userMapper.selectByUsername(username);
+    }
 }
+=======
+}
+>>>>>>> fc76c76c7b6f35ac52a28a3fe55750a6792c1b7f

@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>房东中心 - 小熊房屋租赁系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- 引入颜色配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bear: {
+                            brown: '#8B5A2B',
+                            light: '#D2B48C',
+                            cream: '#F5F5DC',
+                            dark: '#5D4037',
+                            honey: '#F9A825',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-bear-cream min-h-screen flex flex-col">
+<!-- 导航栏 -->
+<header class="bg-bear-brown text-white shadow-md">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+            <i class="fa fa-paw text-2xl text-bear-honey"></i>
+            <h1 class="text-xl font-bold">小熊房屋租赁系统</h1>
+        </div>
+
+        <nav class="flex items-center space-x-6">
+            <a href="index.html" class="hover:text-bear-honey transition-colors duration-200 flex items-center">
+                <i class="fa fa-home mr-1"></i> 首页
+            </a>
+            <a href="#" class="hover:text-bear-honey transition-colors duration-200 flex items-center">
+                <i class="fa fa-building mr-1"></i> 我的房源
+            </a>
+            <a href="#" class="hover:text-bear-honey transition-colors duration-200 flex items-center">
+                <i class="fa fa-calendar-check-o mr-1"></i> 预约管理
+            </a>
+            <a href="#" class="hover:text-bear-honey transition-colors duration-200 flex items-center">
+                <i class="fa fa-info-circle mr-1"></i> 房东指南
+            </a>
+        </nav>
+
+        <!-- 用户区域 -->
+        <div class="flex items-center space-x-4">
+            <div class="relative group">
+                <button class="flex items-center text-white hover:text-bear-honey transition-colors duration-200">
+                    <i class="fa fa-user-circle mr-2 text-xl"></i>
+                    <span id="userName">张房东</span>
+                    <i class="fa fa-chevron-down ml-1 text-xs"></i>
+                </button>
+                <!-- 下拉菜单 -->
+                <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-10 hidden group-hover:block">
+                    <a href="landlord-center.html" class="block px-4 py-2 text-gray-800 hover:bg-bear-cream hover:text-bear-brown transition-colors duration-200">
+                        <i class="fa fa-user mr-2"></i>个人中心
+                    </a>
+                    <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-bear-cream hover:text-bear-brown transition-colors duration-200">
+                        <i class="fa fa-cog mr-2"></i>账户设置
+                    </a>
+                    <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-bear-cream hover:text-bear-brown transition-colors duration-200">
+                        <i class="fa fa-file-text-o mr-2"></i>租赁合同
+                    </a>
+                    <div class="border-t border-gray-200 my-1"></div>
+                    <a href="#" onclick="logout()" class="block px-4 py-2 text-gray-800 hover:bg-bear-cream hover:text-bear-brown transition-colors duration-200">
+                        <i class="fa fa-sign-out mr-2"></i>退出登录
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- 房东中心内容 -->
+<main class="flex-grow container mx-auto px-4 py-8">
+    <h2 class="text-2xl md:text-3xl font-bold text-bear-dark mb-8">
+        <i class="fa fa-home text-bear-honey mr-2"></i>房东中心
+    </h2>
+
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <!-- 左侧：个人信息 -->
+        <div class="lg:col-span-1">
+            <div class="bg-white rounded-xl shadow-md p-6 sticky top-4">
+                <div class="text-center mb-6">
+                    <div class="w-24 h-24 bg-bear-light rounded-full flex items-center justify-center mx-auto mb-4 overflow-hidden">
+                        <img src="../../static/img/landlord_avatar.jpg" alt="房东头像" class="w-full h-full object-cover" />
+                    </div>
+                    <h3 class="text-xl font-bold text-bear-dark" id="centerUserName">张房东</h3>
+                    <p class="text-gray-500 text-sm">已认证房东</p>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="flex items-start">
+                        <div class="w-10 text-center">
+                            <i class="fa fa-id-card text-bear-brown"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 text-sm">房东ID</p>
+                            <p class="font-medium" id="userId">FD20230315</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <div class="w-10 text-center">
+                            <i class="fa fa-phone text-bear-brown"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 text-sm">联系电话</p>
+                            <p class="font-medium">137****9988</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <div class="w-10 text-center">
+                            <i class="fa fa-building text-bear-brown"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 text-sm">管理房源</p>
+                            <p class="font-medium">5套</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <div class="w-10 text-center">
+                            <i class="fa fa-calendar-check-o text-bear-brown"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 text-sm">当前租客</p>
+                            <p class="font-medium">3户</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <div class="w-10 text-center">
+                            <i class="fa fa-calendar text-bear-brown"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 text-sm">加入时间</p>
+                            <p class="font-medium">2023-03-15</p>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="mt-6 w-full bg-bear-light hover:bg-bear-brown text-white py-2 rounded-lg transition-colors duration-200">
+                    <i class="fa fa-edit mr-1"></i> 编辑资料
+                </button>
+            </div>
+        </div>
+
+        <!-- 右侧：功能模块 -->
+        <div class="lg:col-span-3">
+            <!-- 功能按钮 -->
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <button class="function-btn active p-4 border border-bear-brown bg-bear-cream/50 rounded-lg text-center hover:bg-bear-cream transition-colors duration-200" data-target="my-houses">
+                        <div class="w-12 h-12 bg-bear-brown text-white rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fa fa-building text-xl"></i>
+                        </div>
+                        <h4 class="font-bold text-bear-dark">我的房源</h4>
+                    </button>
+
+                    <button class="function-btn p-4 border border-gray-200 rounded-lg text-center hover:bg-bear-cream/30 transition-colors duration-200" data-target="appointments">
+                        <div class="w-12 h-12 bg-bear-brown text-white rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fa fa-calendar-check-o text-xl"></i>
+                        </div>
+                        <h4 class="font-bold text-bear-dark">预约看房</h4>
+                    </button>
+
+                    <button class="function-btn p-4 border border-gray-200 rounded-lg text-center hover:bg-bear-cream/30 transition-colors duration-200" data-target="visit-records">
+                        <div class="w-12 h-12 bg-bear-brown text-white rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fa fa-history text-xl"></i>
+                        </div>
+                        <h4 class="font-bold text-bear-dark">看房记录</h4>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 我的房源模块 -->
+            <div class="function-content active" id="my-houses">
+                <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-bold text-bear-dark">
+                            <i class="fa fa-building text-bear-honey mr-2"></i>我的房源
+                        </h3>
+                        <button class="bg-bear-brown hover:bg-bear-dark text-white px-4 py-2 rounded-lg transition-colors duration-200">
+                            <i class="fa fa-plus mr-1"></i> 发布新房源
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- 房源1 -->
+                        <div class="border border-gray-100 rounded-lg overflow-hidden hover:shadow-md transition-shadow duration-200">
+                            <div class="relative">
+                                <img src="https://picsum.photos/id/1040/600/400" alt="阳光花园小区" class="w-full h-48 object-cover">
+                                <span class="absolute top-3 left-3 bg-green-600 text-white text-xs font-medium px-2.5 py-0.5 rounded">已出租</span>
+                            </div>
+                            <div class="p-4">
+                                <h4 class="font-bold text-bear-dark text-lg">阳光花园小区 两室一厅</h4>
+                                <p class="text-gray-600 text-sm mt-1">
+                                    <i class="fa fa-map-marker mr-1"></i> 距离市中心3公里，交通便利
+                                </p>
+                                <div class="flex flex-wrap gap-3 mt-2">
+                                    <span class="text-sm bg-gray-100 px-2 py-1 rounded"><i class="fa fa-arrows-alt mr-1"></i> 89㎡</span>
+                                    <span class="text-sm bg-gray-100 px-2 py-1 rounded"><i class="fa fa-compass mr-1"></i> 南北通透</span>
+                                    <span class="text-sm bg-gray-100 px-2 py-1 rounded"><i class="fa fa-building-o mr-1"></i> 12层</span>
+                                </div>
+                                <div class="mt-3 flex justify-between items-center">
+                                    <span class="text-bear-brown font-bold text-lg">¥3,200/月</span>
+                                    <div class="flex space-x-2">
+                                        <button class="text-blue-600 hover:text-blue-800 text-sm">
+                                            <i class="fa fa-edit mr-1"></i>编辑
+                                        </button>
+                                        <button class="text-gray-600 hover:text-gray-800 text-sm">
+                                            <i class="fa fa-eye mr-1"></i>详情
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 房源2 -->
+                        <div class="border border-gray-100 rounded-lg overflow-hidden hover:shadow-md transition-shadow duration-200">
+                            <div class="relative">
+                                <img src="https://picsum.photos/id/1029/600/400" alt="幸福家园" class="w-full h-48 object-cover">
+                                <span class="absolute top-3 left-3 bg-blue-600 text-white text-xs font-medium px-2.5 py-0.5 rounded">待出租</span>
+                            </div>
+                            <div class="p-4">
+                                <h4 class="font-bold text-bear-dark text-lg">幸福家园 一室一厅</h4>
+                                <p class="text-gray-600 text-sm mt-1">
+                                    <i class="fa fa-map-marker mr-1"></i> 近地铁口，周边配套齐全
+                                </p>
+                                <div class="flex flex-wrap gap-3 mt-2">
+                                    <span class="text-sm bg-gray-100 px-2 py-1 rounded"><i class="fa fa-arrows-alt mr-1"></i> 65㎡</span>
+                                    <span class="text-sm bg-gray-100 px-2 py-1 rounded"><i class="fa fa-compass mr-1"></i> 朝南</span>
+                                    <span class="text-sm bg-gray-100 px-2 py-1 rounded"><i class="fa fa-building-o mr-1"></i> 8层</span>
+                                </div>
+                                <div class="mt-3 flex justify-between items-center">
+                                    <span class="text-bear-brown font-bold text-lg">¥2,800/月</span>
+                                    <div class="flex space-x-2">
+                                        <button class="text-blue-600 hover:text-blue-800 text-sm">
+                                            <i class="fa fa-edit mr-1"></i>编辑
+                                        </button>
+                                        <button class="text-gray-600 hover:text-gray-800 text-sm">
+                                            <i class="fa fa-eye mr-1"></i>详情
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 房源3 -->
+                        <div class="border border-gray-100 rounded-lg overflow-hidden hover:shadow-md transition-shadow duration-200">
+                            <div class="relative">
+                                <img src="https://picsum.photos/id/164/600/400" alt="城市之光" class="w-full h-48 object-cover">
+                                <span class="absolute top-3 left-3 bg-green-600 text-white text-xs font-medium px-2.5 py-0.5 rounded">已出租</span>
+                            </div>
+                            <div class="p-4">
+                                <h4 class="font-bold text-bear-dark text-lg">城市之光 三室两厅</h4>
+                                <p class="text-gray-600 text-sm mt-1">
+                                    <i class="fa fa-map-marker mr-1"></i> 高档小区，环境优美
+                                </p>
+                                <div class="flex flex-wrap gap-3 mt-2">
+                                    <span class="text-sm bg-gray-100 px-2 py-1 rounded"><i class="fa fa-arrows-alt mr-1"></i> 120㎡</span>
+                                    <span class="text-sm bg-gray-100 px-2 py-1 rounded"><i class="fa fa-compass mr-1"></i> 南北通透</span>
+                                    <span class="text-sm bg-gray-100 px-2 py-1 rounded"><i class="fa fa-building-o mr-1"></i> 20层</span>
+                                </div>
+                                <div class="mt-3 flex justify-between items-center">
+                                    <span class="text-bear-brown font-bold text-lg">¥4,500/月</span>
+                                    <div class="flex space-x-2">
+                                        <button class="text-blue-600 hover:text-blue-800 text-sm">
+                                            <i class="fa fa-edit mr-1"></i>编辑
+                                        </button>
+                                        <button class="text-gray-600 hover:text-gray-800 text-sm">
+                                            <i class="fa fa-eye mr-1"></i>详情
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 房源4 -->
+                        <div class="border border-gray-100 rounded-lg overflow-hidden hover:shadow-md transition-shadow duration-200">
+                            <div class="relative">
+                                <img src="https://picsum.photos/id/239/600/400" alt="丽景花园" class="w-full h-48 object-cover">
+                                <span class="absolute top-3 left-3 bg-blue-600 text-white text-xs font-medium px-2.5 py-0.5 rounded">待出租</span>
+                            </div>
+                            <div class="p-4">
+                                <h4 class="font-bold text-bear-dark text-lg">丽景花园 两室两厅</h4>
+                                <p class="text-gray-600 text-sm mt-1">
+                                    <i class="fa fa-map-marker mr-1"></i> 近学校，适合家庭居住
+                                </p>
+                                <div class="flex flex-wrap gap-3 mt-2">
+                                    <span class="text-sm bg-gray-100 px-2 py-1 rounded"><i class="fa fa-arrows-alt mr-1"></i> 95㎡</span>
+                                    <span class="text-sm bg-gray-100 px-2 py-1 rounded"><i class="fa fa-compass mr-1"></i> 南北通透</span>
+                                    <span class="text-sm bg-gray-100 px-2 py-1 rounded"><i class="fa fa-building-o mr-1"></i> 7层</span>
+                                </div>
+                                <div class="mt-3 flex justify-between items-center">
+                                    <span class="text-bear-brown font-bold text-lg">¥3,600/月</span>
+                                    <div class="flex space-x-2">
+                                        <button class="text-blue-600 hover:text-blue-800 text-sm">
+                                            <i class="fa fa-edit mr-1"></i>编辑
+                                        </button>
+                                        <button class="text-gray-600 hover:text-gray-800 text-sm">
+                                            <i class="fa fa-eye mr-1"></i>详情
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 发布房源表单 -->
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <h3 class="text-xl font-bold text-bear-dark mb-6">
+                        <i class="fa fa-plus-circle text-bear-honey mr-2"></i>发布新房源
+                    </h3>
+
+                    <form id="houseForm">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <label for="houseTitle" class="block text-gray-700 mb-2">房源标题</label>
+                                <input type="text" id="houseTitle" class="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-bear-brown/50 focus:border-bear-brown" placeholder="例如：阳光花园小区 两室一厅 拎包入住">
+                            </div>
+
+                            <div>
+                                <label for="houseAddress" class="block text-gray-700 mb-2">详细地址</label>
+                                <input type="text" id="houseAddress" class="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-bear-brown/50 focus:border-bear-brown" placeholder="请输入详细地址">
+                            </div>
+
+                            <div>
+                                <label for="housePrice" class="block text-gray-700 mb-2">租金 (元/月)</label>
+                                <input type="number" id="housePrice" class="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-bear-brown/50 focus:border-bear-brown" placeholder="请输入租金">
+                            </div>
+
+                            <div>
+                                <label for="houseArea" class="block text-gray-700 mb-2">房屋面积 (㎡)</label>
+                                <input type="number" id="houseArea" class="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-bear-brown/50 focus:border-bear-brown" placeholder="请输入房屋面积">
+                            </div>
+
+                            <div>
+                                <label for="houseType" class="block text-gray-700 mb-2">房屋类型</label>
+                                <select id="houseType" class="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-bear-brown/50 focus:border-bear-brown">
+                                    <option value="">请选择房屋类型</option>
+                                    <option value="1">一室一厅</option>
+                                    <option value="2">两室一厅</option>
+                                    <option value="3">两室两厅</option>
+                                    <option value="4">三室一厅</option>
+                                    <option value="5">三室两厅</option>
+                                    <option value="6">其他</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label for="houseFloor" class="block text-gray-700 mb-2">楼层</label>
+                                <select id="houseFloor" class="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-bear-brown/50 focus:border-bear-brown">
+                                    <option value="">请选择楼层</option>
+                                    <option value="low">低楼层 (1-5层)</option>
+                                    <option value="mid">中楼层 (6-15层)</option>
+                                    <option value="high">高楼层 (16层以上)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-6">
+                            <label class="block text-gray-700 mb-2">房屋朝向</label>
+                            <div class="flex flex-wrap gap-4">
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox" name="orientation" value="north" class="form-checkbox text-bear-brown">
+                                    <span class="ml-2">朝北</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox" name="orientation" value="south" class="form-checkbox text-bear-brown">
+                                    <span class="ml-2">朝南</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox" name="orientation" value="east" class="form-checkbox text-bear-brown">
+                                    <span class="ml-2">朝东</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox" name="orientation" value="west" class="form-checkbox text-bear-brown">
+                                    <span class="ml-2">朝西</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox" name="orientation" value="north-south" class="form-checkbox text-bear-brown">
+                                    <span class="ml-2">南北通透</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mb-6">
+                            <label class="block text-gray-700 mb-2">配套设施</label>
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox" name="facility" value="wifi" class="form-checkbox text-bear-brown">
+                                    <span class="ml-2">WiFi</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox" name="facility" value="tv" class="form-checkbox text-bear-brown">
+                                    <span class="ml-2">电视</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox" name="facility" value="air-conditioner" class="form-checkbox text-bear-brown">
+                                    <span class="ml-2">空调</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox" name="facility" value="washing-machine" class="form-checkbox text-bear-brown">
+                                    <span class="ml-2">洗衣机</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox" name="facility" value="refrigerator" class="form-checkbox text-bear-brown">
+                                    <span class="ml-2">冰箱</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox" name="facility" value="water-heater" class="form-checkbox text-bear-brown">
+                                    <span class="ml-2">热水器</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox" name="facility" value="sofa" class="form-checkbox text-bear-brown">
+                                    <span class="ml-2">沙发</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox" name="facility" value="wardrobe" class="form-checkbox text-bear-brown">
+                                    <span class="ml-2">衣柜</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox" name="facility" value="gas" class="form-checkbox text-bear-brown">
+                                    <span class="ml-2">燃气</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mb-6">
+                            <label for="houseDescription" class="block text-gray-700 mb-2">房源描述</label>
+                            <textarea id="houseDescription" rows="4" class="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-bear-brown/50 focus:border-bear-brown" placeholder="请详细描述房源特点、周边环境、交通情况等"></textarea>
+                        </div>
+
+                        <div class="mb-6">
+                            <label class="block text-gray-700 mb-2">上传房源图片</label>
+                            <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                                <i class="fa fa-cloud-upload text-3xl text-gray-400 mb-2"></i>
+                                <p class="text-gray-500 mb-4">点击或拖拽图片到此处上传（至少3张）</p>
+                                <button type="button" class="bg-bear-light hover:bg-bear-brown text-white px-4 py-2 rounded-lg transition-colors duration-200">
+                                    选择图片
+                                </button>
+                                <input type="file" class="hidden" accept="image/*" multiple>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end gap-4">
+                            <button type="reset" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-3 rounded-lg transition-colors duration-200">
+                                重置
+                            </button>
+                            <button type="submit" class="bg-bear-brown hover:bg-bear-dark text-white px-6 py-3 rounded-lg transition-colors duration-200">
+                                <i class="fa fa-paper-plane mr-2"></i> 发布房源
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 预约看房模块 -->
+            <div class="function-content hidden" id="appointments">
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <h3 class="text-xl font-bold text-bear-dark mb-6">
+                        <i class="fa fa-calendar-check-o text-bear-honey mr-2"></i>预约看房记录
+                    </h3>
+
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full">
+                            <thead>
+                            <tr class="bg-bear-cream/50">
+                                <th class="py-3 px-4 text-left text-gray-700 font-medium">房源信息</th>
+                                <th class="py-3 px-4 text-left text-gray-700 font-medium">预约人</th>
+                                <th class="py-3 px-4 text-left text-gray-700 font-medium">预约时间</th>
+                                <th class="py-3 px-4 text-left text-gray-700 font-medium">联系电话</th>
+                                <th class="py-3 px-4 text-left text-gray-700 font-medium">状态</th>
+                                <th class="py-3 px-4 text-left text-gray-700 font-medium">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="border-t border-gray-100">
+                                <td class="py-3 px-4">
+                                    <div class="flex items-center">
+                                        <img src="https://picsum.photos/id/1029/80/80" alt="幸福家园" class="w-12 h-12 object-cover rounded mr-3">
+                                        <div>
+                                            <p class="font-medium">幸福家园 一室一厅</p>
+                                            <p class="text-gray-500 text-sm">¥2,800/月</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-3 px-4">李先生</td>
+                                <td class="py-3 px-4">2023-11-12 10:00</td>
+                                <td class="py-3 px-4">138****6789</td>
+                                <td class="py-3 px-4"><span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">已预约</span></td>
+                                <td class="py-3 px-4">
+                                    <div class="flex space-x-2">
+                                        <button class="text-green-600 hover:text-green-800 text-sm">
+                                            <i class="fa fa-check mr-1"></i>确认
+                                        </button>
+                                        <button class="text-red-600 hover:text-red-800 text-sm">
+                                            <i class="fa fa-times mr-1"></i>取消
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="border-t border-gray-100">
+                                <td class="py-3 px-4">
+                                    <div class="flex items-center">
+                                        <img src="https://picsum.photos/id/239/80/80" alt="丽景花园" class="w-12 h-12 object-cover rounded mr-3">
+                                        <div>
+                                            <p class="font-medium">丽景花园 两室两厅</p>
+                                            <p class="text-gray-500 text-sm">¥3,600/月</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-3 px-4">张女士</td>
+                                <td class="py-3 px-4">2023-11-11 15:30</td>
+                                <td class="py-3 px-4">139****5678</td>
+                                <td class="py-3 px-4"><span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">已预约</span></td>
+                                <td class="py-3 px-4">
+                                    <div class="flex space-x-2">
+                                        <button class="text-green-600 hover:text-green-800 text-sm">
+                                            <i class="fa fa-check mr-1"></i>确认
+                                        </button>
+                                        <button class="text-red-600 hover:text-red-800 text-sm">
+                                            <i class="fa fa-times mr-1"></i>取消
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="border-t border-gray-100">
+                                <td class="py-3 px-4">
+                                    <div class="flex items-center">
+                                        <img src="https://picsum.photos/id/1029/80/80" alt="幸福家园" class="w-12 h-12 object-cover rounded mr-3">
+                                        <div>
+                                            <p class="font-medium">幸福家园 一室一厅</p>
+                                            <p class="text-gray-500 text-sm">¥2,800/月</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-3 px-4">王先生</td>
+                                <td class="py-3 px-4">2023-11-10 09:30</td>
+                                <td class="py-3 px-4">136****2345</td>
+                                <td class="py-3 px-4"><span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">已确认</span></td>
+                                <td class="py-3 px-4">
+                                    <button class="text-red-600 hover:text-red-800 text-sm">
+                                        <i class="fa fa-times mr-1"></i>取消
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr class="border-t border-gray-100">
+                                <td class="py-3 px-4">
+                                    <div class="flex items-center">
+                                        <img src="https://picsum.photos/id/164/80/80" alt="城市之光" class="w-12 h-12 object-cover rounded mr-3">
+                                        <div>
+                                            <p class="font-medium">城市之光 三室两厅</p>
+                                            <p class="text-gray-500 text-sm">¥4,500/月</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-3 px-4">赵女士</td>
+                                <td class="py-3 px-4">2023-11-08 14:00</td>
+                                <td class="py-3 px-4">135****7890</td>
+                                <td class="py-3 px-4"><span class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded">已取消</span></td>
+                                <td class="py-3 px-4">
+                                    <button class="text-gray-600 hover:text-gray-800 text-sm">
+                                        <i class="fa fa-eye mr-1"></i>详情
+                                    </button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 看房记录模块 -->
+            <div class="function-content hidden" id="visit-records">
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <h3 class="text-xl font-bold text-bear-dark mb-6">
+                        <i class="fa fa-history text-bear-honey mr-2"></i>看房记录
+                    </h3>
+
+                    <!-- 搜索和筛选 -->
+                    <div class="mb-6 flex flex-wrap gap-4">
+                        <div class="flex-grow max-w-md">
+                            <div class="relative">
+                                <input type="text" placeholder="搜索房源或客户姓名..." class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-bear-brown/50 focus:border-bear-brown">
+                                <i class="fa fa-search absolute left-3 top-3 text-gray-400"></i>
+                            </div>
+                        </div>
+                        <div class="flex gap-3">
+                            <select class="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-bear-brown/50 focus:border-bear-brown">
+                                <option value="">所有房源</option>
+                                <option value="1">阳光花园小区 两室一厅</option>
+                                <option value="2">幸福家园 一室一厅</option>
+                                <option value="3">城市之光 三室两厅</option>
+                                <option value="4">丽景花园 两室两厅</option>
+                            </select>
+                            <select class="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-bear-brown/50 focus:border-bear-brown">
+                                <option value="">最近三个月</option>
+                                <option value="month">最近一个月</option>
+                                <option value="week">最近一周</option>
+                                <option value="custom">自定义</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <!-- 看房记录1 -->
+                        <div class="border border-gray-100 rounded-lg p-4 hover:shadow-md transition-shadow duration-200">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="flex items-center">
+                                    <img src="https://picsum.photos/id/1029/80/80" alt="幸福家园" class="w-12 h-12 object-cover rounded mr-3">
+                                    <div>
+                                        <h4 class="font-bold text-bear-dark">幸福家园 一室一厅</h4>
+                                        <p class="text-gray-500 text-sm">¥2,800/月</p>
+                                    </div>
+                                </div>
+                                <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">已成交</span>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                <div>
+                                    <p class="text-gray-500 text-sm mb-1">看房人</p>
+                                    <p class="font-medium">李先生 (138****6789)</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-500 text-sm mb-1">看房时间</p>
+                                    <p class="font-medium">2023-11-05 10:30</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-500 text-sm mb-1">看房时长</p>
+                                    <p class="font-medium">约30分钟</p>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <p class="text-gray-500 text-sm mb-1">客户反馈</p>
+                                <p class="bg-gray-50 p-3 rounded border border-gray-100">房子整体不错，位置也合适，价格可以接受，希望能尽快签约。</p>
+                            </div>
+
+                            <div class="flex justify-end">
+                                <button class="text-bear-brown hover:text-bear-dark text-sm">
+                                    <i class="fa fa-file-text-o mr-1"></i>查看合同
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 看房记录2 -->
+                        <div class="border border-gray-100 rounded-lg p-4 hover:shadow-md transition-shadow duration-200">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="flex items-center">
+                                    <img src="https://picsum.photos/id/239/80/80" alt="丽景花园" class="w-12 h-12 object-cover rounded mr-3">
+                                    <div>
+                                        <h4 class="font-bold text-bear-dark">丽景花园 两室两厅</h4>
+                                        <p class="text-gray-500 text-sm">¥3,600/月</p>
+                                    </div>
+                                </div>
+                                <span class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded">考虑中</span>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                <div>
+                                    <p class="text-gray-500 text-sm mb-1">看房人</p>
+                                    <p class="font-medium">张女士 (139****5678)</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-500 text-sm mb-1">看房时间</p>
+                                    <p class="font-medium">2023-11-03 15:00</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-500 text-sm mb-1">看房时长</p>
+                                    <p class="font-medium">约45分钟</p>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <p class="text-gray-500 text-sm mb-1">客户反馈</p>
+                                <p class="bg-gray-50 p-3 rounded border border-gray-100">房子很满意，但价格有点超出预算，需要再考虑一下，和家人商量后给答复。</p>
+                            </div>
+
+                            <div class="flex justify-end">
+                                <button class="text-blue-600 hover:text-blue-800 text-sm">
+                                    <i class="fa fa-phone mr-1"></i>跟进联系
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 看房记录3 -->
+                        <div class="border border-gray-100 rounded-lg p-4 hover:shadow-md transition-shadow duration-200">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="flex items-center">
+                                    <img src="https://picsum.photos/id/1029/80/80" alt="幸福家园" class="w-12 h-12 object-cover rounded mr-3">
+                                    <div>
+                                        <h4 class="font-bold text-bear-dark">幸福家园 一室一厅</h4>
+                                        <p class="text-gray-500 text-sm">¥2,800/月</p>
+                                    </div>
+                                </div>
+                                <span class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded">未成交</span>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                <div>
+                                    <p class="text-gray-500 text-sm mb-1">看房人</p>
+                                    <p class="font-medium">王先生 (136****2345)</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-500 text-sm mb-1">看房时间</p>
+                                    <p class="font-medium">2023-10-28 09:30</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-500 text-sm mb-1">看房时长</p>
+                                    <p class="font-medium">约20分钟</p>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <p class="text-gray-500 text-sm mb-1">客户反馈</p>
+                                <p class="bg-gray-50 p-3 rounded border border-gray-100">房间有点小，不太符合我的需求，暂时不考虑了，谢谢。</p>
+                            </div>
+
+                            <div class="flex justify-end">
+                                <button class="text-gray-600 hover:text-gray-800 text-sm">
+                                    <i class="fa fa-eye mr-1"></i>详情
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 分页 -->
+                    <div class="mt-8 flex justify-center">
+                        <nav class="inline-flex rounded-md shadow">
+                            <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                <i class="fa fa-chevron-left"></i>
+                            </a>
+                            <a href="#" aria-current="page" class="z-10 bg-bear-brown text-white relative inline-flex items-center px-4 py-2 border border-bear-brown text-sm font-medium">
+                                1
+                            </a>
+                            <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                                2
+                            </a>
+                            <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                                3
+                            </a>
+                            <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                <i class="fa fa-chevron-right"></i>
+                            </a>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- 页脚 -->
+<footer class="bg-bear-dark text-white py-6 mt-12">
+    <div class="container mx-auto px-4 text-center text-gray-400">
+        <p>© 2023 小熊房屋租赁系统 版权所有 | 京ICP备12345678号</p>
+    </div>
+</footer>
+
+<script>
+    // 退出登录
+    function logout() {
+        localStorage.removeItem('currentLandlord');
+        window.location.href = 'index.html';
+    }
+
+    // 功能模块切换
+    function setupFunctionTabs() {
+        const buttons = document.querySelectorAll('.function-btn');
+        const contents = document.querySelectorAll('.function-content');
+
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                // 移除所有按钮的活跃状态
+                buttons.forEach(btn => {
+                    btn.classList.remove('active', 'border-bear-brown', 'bg-bear-cream/50');
+                    btn.classList.add('border-gray-200');
+                });
+
+                // 添加当前按钮的活跃状态
+                button.classList.add('active', 'border-bear-brown', 'bg-bear-cream/50');
+                button.classList.remove('border-gray-200');
+
+                // 隐藏所有内容
+                contents.forEach(content => {
+                    content.classList.add('hidden');
+                    content.classList.remove('active');
+                });
+
+                // 显示对应内容
+                const target = button.getAttribute('data-target');
+                const activeContent = document.getElementById(target);
+                activeContent.classList.remove('hidden');
+                activeContent.classList.add('active');
+            });
+        });
+    }
+
+    // 房源表单提交
+    function setupHouseForm() {
+        const form = document.getElementById('houseForm');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('房源发布成功，将进入审核阶段！');
+                form.reset();
+            });
+        }
+    }
+
+
+
+    // 页面加载时初始化
+    document.addEventListener('DOMContentLoaded', function() {
+        // 检查登录状态
+        const landlord = checkLoginStatus();
+        if (landlord) {
+            // 显示用户名
+            document.getElementById('userName').textContent = landlord.name || landlord.username;
+            document.getElementById('centerUserName').textContent = landlord.name || landlord.username;
+            document.getElementById('userId').textContent = landlord.id;
+        }
+
+        // 初始化功能模块切换
+        setupFunctionTabs();
+
+        // 初始化房源表单
+        setupHouseForm();
+    });
+</script>
+</body>
+</html>
