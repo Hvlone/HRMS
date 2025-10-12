@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>index页面</title>
+    <title th:text="${title}">默认的Title</title>
 </head>
 <body onload="parent.location='user/to_login'">
 <h3>首页</h3>

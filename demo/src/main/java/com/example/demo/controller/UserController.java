@@ -1,11 +1,10 @@
 package com.example.demo.controller;
 
 
-import com.example.demo.common.LoginUser;
 import com.example.demo.po.User;
+import com.example.demo.service.HouseService;
 import com.example.demo.service.UserService;
 import com.example.demo.vo.ApiResponse;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpSession;
 import java.util.Collections;
 import java.util.Map;
 
@@ -24,6 +24,8 @@ public class UserController {
 
     @Autowired
     UserService userService;
+    @Autowired
+    HouseService houseService;
 
     @RequestMapping("/to_home")
     public String toHome() {
@@ -42,8 +44,16 @@ public class UserController {
 
     @PostMapping("/to_aboutSelf")
     @ResponseBody
-    public ApiResponse about_self(HttpSession session){
+    public ApiResponse about_self(HttpSession session,Model model){
         User user=userService.selectByUsername2((String)session.getAttribute("loginName"));
+        model.addAttribute("user",user);
+        model.addAttribute("landlord_id",12138+user.getUserId()+"");
+        int res=houseService.selectHouseCount(user.getUserId());
+        System.out.println("aaa");
+        model.addAttribute("res",res);
+        int count=userService.selectCountByLandlordId(user.getUserId());
+        model.addAttribute("count",count);
+        System.out.println("user:"+user.getUserId()+"，"+model.getAttribute("landlord_id"));
         return ApiResponse.success(user.getUserType());
     }
 
@@ -71,6 +81,29 @@ public class UserController {
         }
     }
 
+    @PostMapping("/to_edit_user")
+    @ResponseBody
+    public ApiResponse editUser(int userId){
+        User user=userService.getUserById(userId);
+        if (user!=null){
+            return ApiResponse.success("修改成功！",user);
+        }
+        else {
+            return ApiResponse.error("修改失败！");
+        }
+    }
 
-
+    @PostMapping("/save_user")
+    @ResponseBody
+    public ApiResponse saveUser(@RequestBody User user,HttpSession session){
+        User user1=userService.selectByUsername2((String)session.getAttribute("loginName"));
+        user.setUserId(user1.getUserId());
+        boolean res=userService.updateByPrimaryKeySelective(user);
+        if (res){
+            return ApiResponse.success("修改成功！");
+        }
+        else {
+            return ApiResponse.error("修改失败！");
+        }
+    }
 }

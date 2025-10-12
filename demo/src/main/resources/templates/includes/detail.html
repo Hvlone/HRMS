@@ -5,12 +5,13 @@
     <title>Title</title>
 </head>
 <body>
-<h2 th:text="${house.title}">标题</h2>
-<p th:text="${house.price}+'/月'">价格</p>
-<p th:text="${house.area}+'m²'">面积</p>
-<p th:text="${house.description}">描述</p>
+<h2 th:text="|标题:${house.title}|"></h2>
+<p th:text="|${house.price}/月|"></p>
+<p th:text="|面积:${house.area}+'m²'|"></p>
+<p th:text="|描述:${house.description}|"></p>
 
 <div id="pics">
+    <p th:each="pic:${pics}" th:text="${pic}"></p>
     <img th:each="pic : ${pics}" th:src="@{'/uploads/'+${pic}}" width="40%" alt="网络异常">
 </div>
 

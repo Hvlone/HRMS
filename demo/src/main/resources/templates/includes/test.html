@@ -23,6 +23,97 @@
     地址：<input name="address"/><br/>
     租金：<input name="price"/><br/>
     面积：<input name="area"/><br/>
+    <div>
+        <label for="houseType" class="block text-gray-700 mb-2">房屋类型 *</label>
+        <select id="houseType" name="houseType" required class="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-bear-brown/50 focus:border-bear-brown">
+            <option value="">请选择房屋类型</option>
+            <option value="一室一厅">一室一厅</option>
+            <option value="两室一厅">两室一厅</option>
+            <option value="两室两厅">两室两厅</option>
+            <option value="三室一厅">三室一厅</option>
+            <option value="三室两厅">三室两厅</option>
+            <option value="其他">其他</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="houseFloor" class="block text-gray-700 mb-2">楼层 *</label>
+        <select id="houseFloor" name="houseFloor" required class="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-bear-brown/50 focus:border-bear-brown">
+            <option value="">请选择楼层</option>
+            <option value="低楼层 (1-5层)">低楼层 (1-5层)</option>
+            <option value="中楼层 (6-15层)">中楼层 (6-15层)</option>
+            <option value="高楼层 (16层以上)">高楼层 (16层以上)</option>
+        </select>
+    </div>
+    </div>
+
+    <div class="mb-6">
+        <label class="block text-gray-700 mb-2">房屋朝向 *</label>
+        <div class="flex flex-wrap gap-4">
+            <label class="inline-flex items-center">
+                <input type="radio" name="houseOrientation" value="朝北" required class="form-radio text-bear-brown">
+                <span class="ml-2">朝北</span>
+            </label>
+            <label class="inline-flex items-center">
+                <input type="radio" name="houseOrientation" value="朝南" class="form-radio text-bear-brown">
+                <span class="ml-2">朝南</span>
+            </label>
+            <label class="inline-flex items-center">
+                <input type="radio" name="houseOrientation" value="朝东" class="form-radio text-bear-brown">
+                <span class="ml-2">朝东</span>
+            </label>
+            <label class="inline-flex items-center">
+                <input type="radio" name="houseOrientation" value="朝西" class="form-radio text-bear-brown">
+                <span class="ml-2">朝西</span>
+            </label>
+            <label class="inline-flex items-center">
+                <input type="radio" name="houseOrientation" value="南北通透" class="form-radio text-bear-brown">
+                <span class="ml-2">南北通透</span>
+            </label>
+        </div>
+    </div>
+
+    <div class="mb-6">
+        <label class="block text-gray-700 mb-2">配套设施 *</label>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+            <label class="inline-flex items-center">
+                <input type="checkbox" name="houseFacility" value="WiFi" class="form-checkbox text-bear-brown">
+                <span class="ml-2">WiFi</span>
+            </label>
+            <label class="inline-flex items-center">
+                <input type="checkbox" name="houseFacility" value="电视" class="form-checkbox text-bear-brown">
+                <span class="ml-2">电视</span>
+            </label>
+            <label class="inline-flex items-center">
+                <input type="checkbox" name="houseFacility" value="空调" class="form-checkbox text-bear-brown">
+                <span class="ml-2">空调</span>
+            </label>
+            <label class="inline-flex items-center">
+                <input type="checkbox" name="houseFacility" value="洗衣机" class="form-checkbox text-bear-brown">
+                <span class="ml-2">洗衣机</span>
+            </label>
+            <label class="inline-flex items-center">
+                <input type="checkbox" name="houseFacility" value="冰箱" class="form-checkbox text-bear-brown">
+                <span class="ml-2">冰箱</span>
+            </label>
+            <label class="inline-flex items-center">
+                <input type="checkbox" name="houseFacility" value="热水器" class="form-checkbox text-bear-brown">
+                <span class="ml-2">热水器</span>
+            </label>
+            <label class="inline-flex items-center">
+                <input type="checkbox" name="houseFacility" value="沙发" class="form-checkbox text-bear-brown">
+                <span class="ml-2">沙发</span>
+            </label>
+            <label class="inline-flex items-center">
+                <input type="checkbox" name="houseFacility" value="衣柜" class="form-checkbox text-bear-brown">
+                <span class="ml-2">衣柜</span>
+            </label>
+            <label class="inline-flex items-center">
+                <input type="checkbox" name="houseFacility" value="燃气" class="form-checkbox text-bear-brown">
+                <span class="ml-2">燃气</span>
+            </label>
+        </div>
+    </div>
     描述：<input name="description"/><br/>
     图片：<input type="file" name="pics" multiple /><br/>
     <button type="submit">发布房源</button>
@@ -36,9 +127,12 @@
         <a href="#">退出登录</a>
     </div>
 </div>
+<span th:text="${data}">默认的数据</span>
 <script>
-    document.getElementById('houseForm')
-        .addEventListener('submit', async function (e) {
+    let selectedFileList = [];
+    const form = document.getElementById('houseForm');
+
+    form.addEventListener('submit', async function (e) {
             e.preventDefault();
             const res =await fetch('/house/addHouse', {
                 method: 'POST',

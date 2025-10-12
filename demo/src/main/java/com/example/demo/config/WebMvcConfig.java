@@ -17,8 +17,15 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/js/**").addResourceLocations("classpath:/static/js/");
         registry.addResourceHandler("/fonts/**").addResourceLocations("classpath:/static/fonts/");
         registry.addResourceHandler("/includes/**").addResourceLocations("classpath:/templates/includes/");
+        /*registry.addResourceHandler("/uploads/**")
+                .addResourceLocations("file:" + fileProperties.getUploadDir() + "/");*/
+        // 获取当前工作目录的绝对路径
+        String currentDir = System.getProperty("user.dir");
+        String uploadsPath = "file:" + currentDir + "/uploads/";
+
+        // 映射 /uploads/** 到本地的 uploads/ 目录
         registry.addResourceHandler("/uploads/**")
-                .addResourceLocations("file:" + fileProperties.getUploadDir() + "/");
+                .addResourceLocations(uploadsPath);
     }
 }
 

@@ -1,12 +1,10 @@
 package com.example.demo.service.servceImpl;
 
-import com.example.demo.common.LoginUser;
 import com.example.demo.common.MessageConstant;
-import com.example.demo.service.HouseService;
-
-import com.example.demo.po.House;
 import com.example.demo.exception.BusinessException;
 import com.example.demo.mapper.HouseMapper;
+import com.example.demo.po.House;
+import com.example.demo.service.HouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,13 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class HouseServiceImpl implements HouseService {
@@ -34,7 +27,7 @@ FileService fileService;
         /* 1. 处理图片 */
         List<String> picPaths = fileService.saveImages(files);
         house.setPictures(String.join(",", picPaths));
-
+        System.out.println(String.join(",", picPaths));
         /* 2. 补全业务字段 */
         /*house.setLandlordId(LoginUser.getLoginUserId());*/
         house.setLandlordId(1);
@@ -110,6 +103,16 @@ FileService fileService;
     @Override
     public int updateHouse(House house) {
         return houseMapper.updateHouse(house);
+    }
+
+    @Override
+    public int selectHouseCount(int landlordId) {
+        return houseMapper.selectHouseCount(landlordId);
+    }
+
+    @Override
+    public List<House> selectAllHouse() {
+        return houseMapper.selectAllHouse();
     }
 
 }

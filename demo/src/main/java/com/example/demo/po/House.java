@@ -1,11 +1,11 @@
 package com.example.demo.po;
 
-import lombok.Setter;
+import com.example.demo.common.MessageConstant;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-@Setter
+
 public class House {
 
     private Integer houseId;
@@ -16,24 +16,62 @@ public class House {
     private Integer area; // 面积
     private String description;
     private String status; // 状态：draft/pending_review/published/rejected/rented
-    private Date publishTime;
-    private Date createTime;
-    private Date updateTime;
+    private Date publishTime;//发布时间
+    private Date createTime;//创建时间
+    private Date updateTime;//更新时间
+    private String houseFacility;//房子的配套设施
+    private String houseFloor;
+    private String houseType;
+    private String houseOrientation;
     // 只存“相对路径”，用逗号分隔多图
     private String pictures;
     public House() {}
 
-    public House(Integer landlordId, String title, String address, BigDecimal price,String pictures) {
-        this.landlordId = landlordId;
+    public House(String houseFloor, Integer houseId, Integer landlordId, String title, String address, BigDecimal price, Integer area, String description, String status, Date publishTime, Date createTime, Date updateTime, String houseFacility, String houseType, String houseOrientation, String pictures) {
+        this.houseFloor = houseFloor;
         this.title = title;
         this.address = address;
         this.price = price;
-        this.status = "draft";
-        this.createTime = new Date();
-        this.pictures=pictures;
+        this.area = area;
+        this.description = description;
+        this.status = MessageConstant.PENDING_REVIEW;
+        this.houseFacility = houseFacility;
+        this.houseType = houseType;
+        this.houseOrientation = houseOrientation;
+        this.pictures = pictures;
     }
 
+    public String getHouseFacility() {
+        return houseFacility;
+    }
 
+    public void setHouseFacility(String houseFacility) {
+        this.houseFacility = houseFacility;
+    }
+
+    public String getHouseFloor() {
+        return houseFloor;
+    }
+
+    public void setHouseFloor(String houseFloor) {
+        this.houseFloor = houseFloor;
+    }
+
+    public String getHouseType() {
+        return houseType;
+    }
+
+    public void setHouseType(String houseType) {
+        this.houseType = houseType;
+    }
+
+    public String getHouseOrientation() {
+        return houseOrientation;
+    }
+
+    public void setHouseOrientation(String houseOrientation) {
+        this.houseOrientation = houseOrientation;
+    }
 
     public Integer getHouseId() {
         return houseId;
@@ -145,6 +183,10 @@ public class House {
                 ", publishTime=" + publishTime +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
+                ", houseFacility='" + houseFacility + '\'' +
+                ", houseFloor='" + houseFloor + '\'' +
+                ", houseType='" + houseType + '\'' +
+                ", houseOrientation='" + houseOrientation + '\'' +
                 ", pictures='" + pictures + '\'' +
                 '}';
     }

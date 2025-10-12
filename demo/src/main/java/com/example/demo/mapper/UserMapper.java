@@ -1,6 +1,8 @@
 package com.example.demo.mapper;
-import org.apache.ibatis.annotations.Mapper;
+
 import com.example.demo.po.User;
+import org.apache.ibatis.annotations.Mapper;
+
 import java.util.List;
 @Mapper
 public interface UserMapper {
@@ -24,11 +26,12 @@ public interface UserMapper {
     List<User> selectByUserType(String userType);
 
     /* 动态更新 */
-    int updateByPrimaryKeySelective(User record);
+    int updateByPrimaryKeySelective(User user);
 
     /* 根据主键删除 */
     int deleteByPrimaryKey(Integer userId);
 
+    int selectCountByLandlordId(Integer landlordId);
 
     String selectUsertypeByUserId(Integer userId);
 }

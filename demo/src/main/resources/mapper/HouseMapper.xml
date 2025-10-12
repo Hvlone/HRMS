@@ -15,6 +15,10 @@
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
         <result property="pictures" column="pictures"/>
+        <result property="houseFacility" column="house_facility"/>
+        <result property="houseFloor" column="house_floor"/>
+        <result property="houseType" column="house_type"/>
+        <result property="houseOrientation" column="house_orientation"/>
     </resultMap>
 
     <!-- 条件查询房源 -->
@@ -40,6 +44,41 @@
         LIMIT #{offset}, #{limit}
     </select>
 
+    <!-- 插入房源信息 -->
+    <insert id="insert" parameterType="com.example.demo.po.House" useGeneratedKeys="true" keyProperty="houseId">
+        INSERT INTO house (
+            landlord_id, title, address, price, area, description, status,
+            publish_time, create_time, update_time, house_facility, house_floor,
+            house_type, house_orientation, pictures
+        ) VALUES (
+                     #{landlordId}, #{title}, #{address}, #{price}, #{area}, #{description}, #{status},
+                     #{publishTime}, #{createTime}, #{updateTime}, #{houseFacility}, #{houseFloor},
+                     #{houseType}, #{houseOrientation}, #{pictures}
+                 )
+    </insert>
+
+    <!-- 根据房东ID查询房源 -->
+    <select id="selectByLandlordId" parameterType="integer" resultMap="HouseResultMap">
+        SELECT *
+        FROM house
+        WHERE landlord_id = #{landlordId}
+        ORDER BY create_time DESC
+    </select>
+
+    <!-- 更新房源状态 -->
+    <update id="updateStatus">
+        UPDATE house
+        SET status = #{status}, publish_time = #{publishTime}, update_time = NOW()
+        WHERE house_id = #{houseId}
+    </update>
+
+    <!-- 根据ID查询房源 -->
+    <select id="selectById" parameterType="integer" resultMap="HouseResultMap">
+        SELECT *
+        FROM house
+        WHERE house_id = #{houseId}
+    </select>
+
 <!--    删除房源-->
     <delete id="deleteHouseByHouseId" parameterType="Integer">
         delete from house where house_id=#{houseId}
@@ -58,8 +97,22 @@
             <if test="publishTime != null">create_time = #{createTime},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
             <if test="pictures != null">pictures = #{pictures},</if>
+            <if test="houseFacility != null">house_facility = #{houseFacility},</if>
+            <if test="houseFloor != null">house_floor = #{houseFloor},</if>
+            <if test="houseType != null">house_type = #{houseType},</if>
+            <if test="houseOrientation != null">house_orientation = #{houseOrientation},</if>
         </set>
         WHERE house_id = #{houseId}
     </update>
+
+    <!--查询个人名下有多少套房源-->
+    <select id="selectHouseCount" parameterType="Integer" resultType="Integer">
+        select count(*) from house where landlord_id=#{landlordId}
+    </select>
+
+    <!--查找所有的房源-->
+    <select id="selectAllHouse" resultMap="HouseResultMap">
+        select * from house
+    </select>
 </mapper>
     

@@ -4,10 +4,12 @@ import com.example.demo.po.House;
 import com.example.demo.service.HouseService;
 import com.example.demo.vo.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.ui.Model;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -16,6 +18,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/house")
 public class HouseController {
+
     @Autowired
     HouseService houseService;
 
@@ -115,13 +118,18 @@ public class HouseController {
         return res==1?ApiResponse.success("更新成功！"):ApiResponse.error("更新失败");
     }
 
-    @PostMapping("/addHouse")
+    @PostMapping(value = "/addHouse",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseBody
-    public ApiResponse publish(House dto,
+    public ApiResponse publish(@ModelAttribute House dto,
                              @RequestParam("pics") MultipartFile[] pics) throws IOException {
         int res= houseService.addHouse(dto, pics);
         return res==1?ApiResponse.success("添加房源成功！"):ApiResponse.error("添加房源失败");
     }
-
+    @RequestMapping("/selectAllHouse")
+    @ResponseBody
+    public ApiResponse selectAllHouse(){
+        List<House> houseList=houseService.selectAllHouse();
+        return houseList!=null?ApiResponse.success("true",houseList):ApiResponse.error("false");
+    }
 
 }

@@ -224,16 +224,14 @@
                         <span><i class="fa fa-building-o mr-1"></i> 12层</span>
                         <span><i class="fa fa-tag mr-1"></i> 整租</span>
                     </div>
-                    <button class="mt-4 w-full bg-bear-brown hover:bg-bear-dark text-white py-2 rounded-lg transition-colors duration-200 view-details-btn"
-                            th:attr="data-house-id=1" title="查看详情">
-                            查看详情
-                    </button>
-         <!--           <form th:action="@{/house/houseDetail}" class="inline">
-                        <input type="hidden" name="houseId" th:value="1" />
+
+
+                    <form th:action="@{/test/houseDetail}" class="inline">
+                        <input type="hidden" name="houseId" th:value="3" />
                         <button type="submit" class="mt-4 w-full bg-bear-brown hover:bg-bear-dark text-white py-2 rounded-lg transition-colors duration-200 view-details-btn">
                             查看详情
                         </button>
-                    </form>-->
+                    </form>
                 </div>
             </div>
 
@@ -600,7 +598,6 @@
             location.href = '/includes/login-reg.html';
         });
 
-
     function aboutSelf(){
         $.post("/user/to_aboutSelf",
             function(data){
@@ -610,11 +607,10 @@
                 }
                 else if (data.message==="tenant")
                     location.href = '/includes/user_center.html';
+                else if (data.message==="admin")
+                    location.href='/includes/manager_center.html';
                 else
                     location.href = '/includes/repairTechnician_center.html';
-            }
-            else {
-                alert("请先登录！")
             }
             });
     }

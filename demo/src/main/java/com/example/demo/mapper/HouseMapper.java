@@ -1,7 +1,8 @@
 package com.example.demo.mapper;
 
 import com.example.demo.po.House;
-import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -14,9 +15,6 @@ public interface HouseMapper {
      * @param house 房源实体
      * @return 影响行数
      */
-    @Insert("INSERT INTO house(landlord_id, title, address, price, area, description, status, create_time,update_time,pictures) " +
-            "VALUES(#{landlordId}, #{title}, #{address}, #{price}, #{area}, #{description}, #{status}, #{createTime},#{updateTime},#{pictures})")
-    @Options(useGeneratedKeys = true, keyProperty = "houseId")
     int insert(House house);
 
     /**
@@ -26,7 +24,6 @@ public interface HouseMapper {
      * @param publishTime 发布时间
      * @return 影响行数
      */
-    @Update("UPDATE house SET status = #{status}, publish_time = #{publishTime} WHERE house_id = #{houseId}")
     int updateStatus(@Param("houseId") Integer houseId,
                      @Param("status") String status,
                      @Param("publishTime") Date publishTime);
@@ -36,7 +33,6 @@ public interface HouseMapper {
      * @param houseId 房源ID
      * @return 房源实体
      */
-    @Select("SELECT * FROM house WHERE house_id = #{houseId}")
     House selectById(Integer houseId);
 
     /**
@@ -44,7 +40,6 @@ public interface HouseMapper {
      * @param landlordId 房东ID
      * @return 房源列表
      */
-    @Select("SELECT * FROM house WHERE landlord_id = #{landlordId}")
     List<House> selectByLandlordId(Integer landlordId);
 
     /**
@@ -65,9 +60,26 @@ public interface HouseMapper {
             @Param("offset") int offset,
             @Param("limit") int limit);
 
+    /**
+     * 删除房源
+     * @param houseId 房源ID
+     * @return 影响行数
+     */
     /*删除房源*/
     int deleteHouseByHouseId(Integer houseId);
 
+    /**
+     * 更新房源信息
+     * @param house 房源实体
+     * @return 影响行数
+     */
+
     /*更新房源信息*/
     int updateHouse(House house);
+
+    /*查询房东有多少个房源*/
+    int selectHouseCount(int landlordId);
+
+    //查找所有的房源
+    List<House> selectAllHouse();
 }

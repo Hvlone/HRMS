@@ -1,0 +1,2170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理员中心 - 小熊房屋租赁系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- 引入颜色配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bear: {
+                            brown: '#8B5A2B',
+                            light: '#D2B48C',
+                            cream: '#F5F5DC',
+                            dark: '#5D4037',
+                            honey: '#F9A825',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-bear-cream min-h-screen flex flex-col">
+<!-- 导航栏 -->
+<header class="bg-bear-brown text-white shadow-md">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+            <i class="fa fa-paw text-2xl text-bear-honey"></i>
+            <h1 class="text-xl font-bold">小熊房屋租赁系统</h1>
+        </div>
+
+        <nav class="flex items-center space-x-6">
+            <a href="index.html" class="hover:text-bear-honey transition-colors duration-200 flex items-center">
+                <i class="fa fa-home mr-1"></i> 首页
+            </a>
+            <a href="#" class="hover:text-bear-honey transition-colors duration-200 flex items-center">
+                <i class="fa fa-tachometer mr-1"></i> 数据统计
+            </a>
+            <a href="#" class="hover:text-bear-honey transition-colors duration-200 flex items-center">
+                <i class="fa fa-bell mr-1"></i> 系统通知
+            </a>
+            <a href="#" class="hover:text-bear-honey transition-colors duration-200 flex items-center">
+                <i class="fa fa-cog mr-1"></i> 系统设置
+            </a>
+        </nav>
+
+        <!-- 管理员区域 -->
+        <div class="flex items-center space-x-4">
+            <div class="relative group">
+                <button class="flex items-center text-white hover:text-bear-honey transition-colors duration-200">
+                    <i class="fa fa-user-circle mr-2 text-xl"></i>
+                    <span id="adminName">管理员</span>
+                    <i class="fa fa-chevron-down ml-1 text-xs"></i>
+                </button>
+                <!-- 下拉菜单 -->
+                <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-10 hidden group-hover:block">
+                    <a href="admin-center.html" class="block px-4 py-2 text-gray-800 hover:bg-bear-cream hover:text-bear-brown transition-colors duration-200">
+                        <i class="fa fa-user mr-2"></i>个人中心
+                    </a>
+                    <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-bear-cream hover:text-bear-brown transition-colors duration-200">
+                        <i class="fa fa-cog mr-2"></i>账户设置
+                    </a>
+                    <div class="border-t border-gray-200 my-1"></div>
+                    <a href="#" onclick="logout()" class="block px-4 py-2 text-gray-800 hover:bg-bear-cream hover:text-bear-brown transition-colors duration-200">
+                        <i class="fa fa-sign-out mr-2"></i>退出登录
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- 管理员中心内容 -->
+<main class="flex-grow container mx-auto px-4 py-8">
+    <h2 class="text-2xl md:text-3xl font-bold text-bear-dark mb-8">
+        <i class="fa fa-shield text-bear-honey mr-2"></i>管理员中心
+    </h2>
+
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <!-- 左侧：管理员信息 -->
+        <div class="lg:col-span-1">
+            <div class="bg-white rounded-xl shadow-md p-6 sticky top-4">
+                <div class="text-center mb-6">
+                    <div class="w-24 h-24 bg-bear-light rounded-full flex items-center justify-center mx-auto mb-4 overflow-hidden">
+                        <img src="../../static/img/admin_avatar.jpg" alt="管理员头像" class="w-full h-full object-cover" />
+                    </div>
+                    <h3 class="text-xl font-bold text-bear-dark" id="centerAdminName">管理员</h3>
+                    <p class="text-gray-500 text-sm">系统管理员</p>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="flex items-start">
+                        <div class="w-10 text-center">
+                            <i class="fa fa-id-card text-bear-brown"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 text-sm">管理员ID</p>
+                            <p class="font-medium" id="adminId">ADMIN2023001</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <div class="w-10 text-center">
+                            <i class="fa fa-phone text-bear-brown"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 text-sm">联系电话</p>
+                            <p class="font-medium">139****0001</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <div class="w-10 text-center">
+                            <i class="fa fa-envelope text-bear-brown"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 text-sm">电子邮箱</p>
+                            <p class="font-medium">admin@bearrent.com</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <div class="w-10 text-center">
+                            <i class="fa fa-calendar text-bear-brown"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 text-sm">创建时间</p>
+                            <p class="font-medium">2023-01-01</p>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="mt-6 w-full bg-bear-light hover:bg-bear-brown text-white py-2 rounded-lg transition-colors duration-200">
+                    <i class="fa fa-edit mr-1"></i> 编辑资料
+                </button>
+            </div>
+        </div>
+
+        <!-- 右侧：功能模块 -->
+        <div class="lg:col-span-3">
+            <!-- 功能按钮 -->
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                    <button class="function-btn active p-4 border border-bear-brown bg-bear-cream/50 rounded-lg text-center hover:bg-bear-cream transition-colors duration-200" data-target="house-approval">
+                        <div class="w-12 h-12 bg-bear-brown text-white rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fa fa-home text-xl"></i>
+                        </div>
+                        <h4 class="font-bold text-bear-dark text-sm">房源审核</h4>
+                    </button>
+
+                    <button class="function-btn p-4 border border-gray-200 rounded-lg text-center hover:bg-bear-cream/30 transition-colors duration-200" data-target="repair-orders">
+                        <div class="w-12 h-12 bg-bear-brown text-white rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fa fa-wrench text-xl"></i>
+                        </div>
+                        <h4 class="font-bold text-bear-dark text-sm">维修单管理</h4>
+                    </button>
+
+                    <button class="function-btn p-4 border border-gray-200 rounded-lg text-center hover:bg-bear-cream/30 transition-colors duration-200" data-target="repairmen">
+                        <div class="w-12 h-12 bg-bear-brown text-white rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fa fa-user-md text-xl"></i>
+                        </div>
+                        <h4 class="font-bold text-bear-dark text-sm">维修师傅管理</h4>
+                    </button>
+
+                    <button class="function-btn p-4 border border-gray-200 rounded-lg text-center hover:bg-bear-cream/30 transition-colors duration-200" data-target="user-management">
+                        <div class="w-12 h-12 bg-bear-brown text-white rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fa fa-users text-xl"></i>
+                        </div>
+                        <h4 class="font-bold text-bear-dark text-sm">用户管理</h4>
+                    </button>
+
+                    <button class="function-btn p-4 border border-gray-200 rounded-lg text-center hover:bg-bear-cream/30 transition-colors duration-200" data-target="review-approval">
+                        <div class="w-12 h-12 bg-bear-brown text-white rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fa fa-comments text-xl"></i>
+                        </div>
+                        <h4 class="font-bold text-bear-dark text-sm">评价审核</h4>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 1. 房源审核模块 -->
+            <div class="function-content active" id="house-approval">
+                <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+                    <h3 class="text-xl font-bold text-bear-dark mb-6 flex items-center">
+                        <i class="fa fa-home text-bear-honey mr-2"></i>房源审核
+                        <button id="refreshHouseApproval" class="ml-4 text-sm text-bear-brown hover:text-bear-dark flex items-center">
+                            <i class="fa fa-refresh mr-1"></i> 刷新
+                        </button>
+                    </h3>
+
+                    <!-- 搜索和筛选 -->
+                    <div class="mb-6 flex flex-wrap gap-4">
+                        <div class="flex-grow max-w-md">
+                            <div class="relative">
+                                <input type="text" id="houseSearch" placeholder="搜索房源标题或房东名称..." class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-bear-brown/50 focus:border-bear-brown">
+                                <i class="fa fa-search absolute left-3 top-3 text-gray-400"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <select id="approvalStatusFilter" class="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-bear-brown/50 focus:border-bear-brown">
+                                <option value="">全部状态</option>
+                                <option value="pending">待审核</option>
+                                <option value="approved">已通过</option>
+                                <option value="rejected">已拒绝</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- 加载状态提示 -->
+                    <div id="houseApprovalLoading" class="text-center py-10 hidden">
+                        <i class="fa fa-spinner fa-spin text-bear-brown text-2xl mb-2"></i>
+                        <p class="text-gray-500">正在加载房源审核列表...</p>
+                    </div>
+
+                    <!-- 空状态提示（默认隐藏） -->
+                    <div id="houseApprovalEmpty" class="text-center py-10 hidden">
+                        <i class="fa fa-home text-bear-brown text-3xl mb-2"></i>
+                        <p class="text-gray-500">暂无需要审核的房源</p>
+                    </div>
+
+                    <!-- 房源审核列表 -->
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full">
+                            <thead>
+                            <tr class="bg-bear-cream/50">
+                                <th class="py-3 px-4 text-left text-gray-700 font-medium">房源信息</th>
+                                <th class="py-3 px-4 text-left text-gray-700 font-medium">房东信息</th>
+                                <th class="py-3 px-4 text-left text-gray-700 font-medium">提交时间</th>
+                                <th class="py-3 px-4 text-left text-gray-700 font-medium">状态</th>
+                                <th class="py-3 px-4 text-left text-gray-700 font-medium">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody id="houseApprovalList">
+                            <!-- 异步加载数据将插入到这里 -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 分页 -->
+                    <div class="mt-8 flex justify-center" id="houseApprovalPagination">
+                        <!-- 异步加载分页控件 -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. 维修单管理模块 -->
+            <div class="function-content hidden" id="repair-orders">
+                <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+                    <h3 class="text-xl font-bold text-bear-dark mb-6 flex items-center">
+                        <i class="fa fa-wrench text-bear-honey mr-2"></i>维修单管理
+                        <button id="refreshRepairOrders" class="ml-4 text-sm text-bear-brown hover:text-bear-dark flex items-center">
+                            <i class="fa fa-refresh mr-1"></i> 刷新
+                        </button>
+                    </h3>
+
+                    <!-- 搜索和筛选 -->
+                    <div class="mb-6 flex flex-wrap gap-4">
+                        <div class="flex-grow max-w-md">
+                            <div class="relative">
+                                <input type="text" id="repairSearch" placeholder="搜索维修单号或房屋地址..." class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-bear-brown/50 focus:border-bear-brown">
+                                <i class="fa fa-search absolute left-3 top-3 text-gray-400"></i>
+                            </div>
+                        </div>
+                        <div class="flex gap-3">
+                            <select id="repairStatusFilter" class="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-bear-brown/50 focus:border-bear-brown">
+                                <option value="">全部状态</option>
+                                <option value="pending">待处理</option>
+                                <option value="assigned">已派单</option>
+                                <option value="processing">处理中</option>
+                                <option value="completed">已完成</option>
+                                <option value="cancelled">已取消</option>
+                            </select>
+                            <select id="repairTypeFilter" class="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-bear-brown/50 focus:border-bear-brown">
+                                <option value="">全部类型</option>
+                                <option value="electric">电器故障</option>
+                                <option value="water">水管问题</option>
+                                <option value="furniture">家具损坏</option>
+                                <option value="other">其他问题</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- 加载状态提示 -->
+                    <div id="repairOrdersLoading" class="text-center py-10 hidden">
+                        <i class="fa fa-spinner fa-spin text-bear-brown text-2xl mb-2"></i>
+                        <p class="text-gray-500">正在加载维修单列表...</p>
+                    </div>
+
+                    <!-- 空状态提示（默认隐藏） -->
+                    <div id="repairOrdersEmpty" class="text-center py-10 hidden">
+                        <i class="fa fa-wrench text-bear-brown text-3xl mb-2"></i>
+                        <p class="text-gray-500">暂无维修单记录</p>
+                    </div>
+
+                    <!-- 维修单列表 -->
+                    <div id="repairOrdersList" class="space-y-6">
+                        <!-- 异步加载数据将插入到这里 -->
+                    </div>
+
+                    <!-- 分页 -->
+                    <div class="mt-8 flex justify-center" id="repairOrdersPagination">
+                        <!-- 异步加载分页控件 -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. 维修师傅管理模块 -->
+            <div class="function-content hidden" id="repairmen">
+                <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-bold text-bear-dark">
+                            <i class="fa fa-user-md text-bear-honey mr-2"></i>维修师傅管理
+                        </h3>
+                        <button id="addRepairmanBtn" class="bg-bear-brown hover:bg-bear-dark text-white px-4 py-2 rounded-lg transition-colors duration-200">
+                            <i class="fa fa-plus mr-1"></i> 添加维修师傅
+                        </button>
+                    </div>
+
+                    <!-- 搜索 -->
+                    <div class="mb-6">
+                        <div class="relative max-w-md">
+                            <input type="text" id="repairmanSearch" placeholder="搜索维修师傅姓名或电话..." class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-bear-brown/50 focus:border-bear-brown">
+                            <i class="fa fa-search absolute left-3 top-3 text-gray-400"></i>
+                        </div>
+                    </div>
+
+                    <!-- 加载状态提示 -->
+                    <div id="repairmenLoading" class="text-center py-10 hidden">
+                        <i class="fa fa-spinner fa-spin text-bear-brown text-2xl mb-2"></i>
+                        <p class="text-gray-500">正在加载维修师傅列表...</p>
+                    </div>
+
+                    <!-- 空状态提示（默认隐藏） -->
+                    <div id="repairmenEmpty" class="text-center py-10 hidden">
+                        <i class="fa fa-user-md text-bear-brown text-3xl mb-2"></i>
+                        <p class="text-gray-500">暂无维修师傅信息</p>
+                        <button id="addFirstRepairmanBtn" class="mt-4 bg-bear-brown hover:bg-bear-dark text-white px-4 py-2 rounded-lg transition-colors duration-200">
+                            <i class="fa fa-plus mr-1"></i> 添加首位维修师傅
+                        </button>
+                    </div>
+
+                    <!-- 维修师傅列表 -->
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full">
+                            <thead>
+                            <tr class="bg-bear-cream/50">
+                                <th class="py-3 px-4 text-left text-gray-700 font-medium">姓名</th>
+                                <th class="py-3 px-4 text-left text-gray-700 font-medium">联系电话</th>
+                                <th class="py-3 px-4 text-left text-gray-700 font-medium">擅长领域</th>
+                                <th class="py-3 px-4 text-left text-gray-700 font-medium">接单数量</th>
+                                <th class="py-3 px-4 text-left text-gray-700 font-medium">状态</th>
+                                <th class="py-3 px-4 text-left text-gray-700 font-medium">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody id="repairmenList">
+                            <!-- 异步加载数据将插入到这里 -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 分页 -->
+                    <div class="mt-8 flex justify-center" id="repairmenPagination">
+                        <!-- 异步加载分页控件 -->
+                    </div>
+                </div>
+
+                <!-- 添加/编辑维修师傅表单 -->
+                <div id="repairmanFormModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+                    <div class="bg-white rounded-xl shadow-lg w-full max-w-md mx-4 transform transition-all duration-300 scale-95 opacity-0" id="modalContent">
+                        <div class="p-6 border-b border-gray-200">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-xl font-bold text-bear-dark" id="repairmanFormTitle">添加维修师傅</h3>
+                                <button id="closeModalBtn" class="text-gray-500 hover:text-gray-700">
+                                    <i class="fa fa-times text-xl"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <form id="repairmanForm" class="p-6">
+                            <input type="hidden" id="repairmanId">
+                            <div class="mb-4">
+                                <label for="repairmanName" class="block text-gray-700 mb-2">姓名</label>
+                                <input type="text" id="repairmanName" class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-bear-brown/50 focus:border-bear-brown" placeholder="请输入维修师傅姓名">
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="repairmanPhone" class="block text-gray-700 mb-2">联系电话</label>
+                                <input type="tel" id="repairmanPhone" class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-bear-brown/50 focus:border-bear-brown" placeholder="请输入联系电话">
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="repairmanSpecialty" class="block text-gray-700 mb-2">擅长领域</label>
+                                <input type="text" id="repairmanSpecialty" class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-bear-brown/50 focus:border-bear-brown" placeholder="例如：水电维修、家具维修">
+                            </div>
+
+                            <div class="mb-6">
+                                <label for="repairmanStatus" class="block text-gray-700 mb-2">状态</label>
+                                <select id="repairmanStatus" class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-bear-brown/50 focus:border-bear-brown">
+                                    <option value="active">正常</option>
+                                    <option value="inactive">禁用</option>
+                                </select>
+                            </div>
+
+                            <div class="flex justify-end gap-4">
+                                <button type="button" id="cancelFormBtn" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-2 rounded-lg transition-colors duration-200">
+                                    取消
+                                </button>
+                                <button type="submit" class="bg-bear-brown hover:bg-bear-dark text-white px-6 py-2 rounded-lg transition-colors duration-200">
+                                    <i class="fa fa-save mr-1"></i> 保存
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. 用户管理模块 -->
+            <div class="function-content hidden" id="user-management">
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <h3 class="text-xl font-bold text-bear-dark mb-6 flex items-center">
+                        <i class="fa fa-users text-bear-honey mr-2"></i>用户管理
+                        <button id="refreshUsers" class="ml-4 text-sm text-bear-brown hover:text-bear-dark flex items-center">
+                            <i class="fa fa-refresh mr-1"></i> 刷新
+                        </button>
+                    </h3>
+
+                    <!-- 搜索和筛选 -->
+                    <div class="mb-6 flex flex-wrap gap-4">
+                        <div class="flex-grow max-w-md">
+                            <div class="relative">
+                                <input type="text" id="userSearch" placeholder="搜索用户名或ID..." class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-bear-brown/50 focus:border-bear-brown">
+                                <i class="fa fa-search absolute left-3 top-3 text-gray-400"></i>
+                            </div>
+                        </div>
+                        <div class="flex gap-3">
+                            <select id="userTypeFilter" class="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-bear-brown/50 focus:border-bear-brown">
+                                <option value="">全部用户</option>
+                                <option value="tenant">租客</option>
+                                <option value="landlord">房东</option>
+                            </select>
+                            <select id="userStatusFilter" class="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-bear-brown/50 focus:border-bear-brown">
+                                <option value="">全部状态</option>
+                                <option value="active">正常</option>
+                                <option value="inactive">禁用</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- 加载状态提示 -->
+                    <div id="usersLoading" class="text-center py-10 hidden">
+                        <i class="fa fa-spinner fa-spin text-bear-brown text-2xl mb-2"></i>
+                        <p class="text-gray-500">正在加载用户列表...</p>
+                    </div>
+
+                    <!-- 空状态提示（默认隐藏） -->
+                    <div id="usersEmpty" class="text-center py-10 hidden">
+                        <i class="fa fa-users text-bear-brown text-3xl mb-2"></i>
+                        <p class="text-gray-500">暂无用户信息</p>
+                    </div>
+
+                    <!-- 用户列表 -->
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full">
+                            <thead>
+                            <tr class="bg-bear-cream/50">
+                                <th class="py-3 px-4 text-left text-gray-700 font-medium">用户ID</th>
+                                <th class="py-3 px-4 text-left text-gray-700 font-medium">用户名</th>
+                                <th class="py-3 px-4 text-left text-gray-700 font-medium">用户类型</th>
+                                <th class="py-3 px-4 text-left text-gray-700 font-medium">联系电话</th>
+                                <th class="py-3 px-4 text-left text-gray-700 font-medium">注册时间</th>
+                                <th class="py-3 px-4 text-left text-gray-700 font-medium">状态</th>
+                                <th class="py-3 px-4 text-left text-gray-700 font-medium">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody id="usersList">
+                            <!-- 异步加载数据将插入到这里 -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 分页 -->
+                    <div class="mt-8 flex justify-center" id="usersPagination">
+                        <!-- 异步加载分页控件 -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. 评价审核模块 -->
+            <div class="function-content hidden" id="review-approval">
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <h3 class="text-xl font-bold text-bear-dark mb-6 flex items-center">
+                        <i class="fa fa-comments text-bear-honey mr-2"></i>评价审核
+                        <button id="refreshReviews" class="ml-4 text-sm text-bear-brown hover:text-bear-dark flex items-center">
+                            <i class="fa fa-refresh mr-1"></i> 刷新
+                        </button>
+                    </h3>
+
+                    <!-- 搜索和筛选 -->
+                    <div class="mb-6 flex flex-wrap gap-4">
+                        <div class="flex-grow max-w-md">
+                            <div class="relative">
+                                <input type="text" id="reviewSearch" placeholder="搜索房源名称或评价内容..." class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-bear-brown/50 focus:border-bear-brown">
+                                <i class="fa fa-search absolute left-3 top-3 text-gray-400"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <select id="reviewStatusFilter" class="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-bear-brown/50 focus:border-bear-brown">
+                                <option value="">全部状态</option>
+                                <option value="pending">待审核</option>
+                                <option value="approved">已通过</option>
+                                <option value="rejected">已拒绝</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- 加载状态提示 -->
+                    <div id="reviewsLoading" class="text-center py-10 hidden">
+                        <i class="fa fa-spinner fa-spin text-bear-brown text-2xl mb-2"></i>
+                        <p class="text-gray-500">正在加载评价列表...</p>
+                    </div>
+
+                    <!-- 空状态提示（默认隐藏） -->
+                    <div id="reviewsEmpty" class="text-center py-10 hidden">
+                        <i class="fa fa-comments text-bear-brown text-3xl mb-2"></i>
+                        <p class="text-gray-500">暂无需要审核的评价</p>
+                    </div>
+
+                    <!-- 评价列表 -->
+                    <div id="reviewsList" class="space-y-6">
+                        <!-- 异步加载数据将插入到这里 -->
+                    </div>
+
+                    <!-- 分页 -->
+                    <div class="mt-8 flex justify-center" id="reviewsPagination">
+                        <!-- 异步加载分页控件 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- 页脚 -->
+<footer class="bg-bear-dark text-white py-6 mt-12">
+    <div class="container mx-auto px-4 text-center text-gray-400">
+        <p>© 2023 小熊房屋租赁系统 版权所有 | 京ICP备12345678号</p>
+    </div>
+</footer>
+
+<script>
+    // -------------------------- 模拟接口数据 --------------------------
+    // 1. 模拟房源审核数据
+    function getHouseApprovalData(filters = {}) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                const data = [
+                    {
+                        id: 1,
+                        houseImg: "https://picsum.photos/id/1040/80/80",
+                        houseTitle: "阳光花园小区 两室一厅",
+                        housePrice: 3200,
+                        landlordName: "张房东",
+                        landlordId: "FD20230315",
+                        submitTime: "2023-11-08 10:20",
+                        status: "pending",
+                        statusText: "待审核",
+                        statusColor: "yellow"
+                    },
+                    {
+                        id: 2,
+                        houseImg: "https://picsum.photos/id/1029/80/80",
+                        houseTitle: "幸福家园 一室一厅",
+                        housePrice: 2800,
+                        landlordName: "李房东",
+                        landlordId: "FD20230422",
+                        submitTime: "2023-11-07 16:45",
+                        status: "pending",
+                        statusText: "待审核",
+                        statusColor: "yellow"
+                    },
+                    {
+                        id: 3,
+                        houseImg: "https://picsum.photos/id/164/80/80",
+                        houseTitle: "城市之光 三室两厅",
+                        housePrice: 4500,
+                        landlordName: "王房东",
+                        landlordId: "FD20230105",
+                        submitTime: "2023-11-06 09:15",
+                        status: "approved",
+                        statusText: "已通过",
+                        statusColor: "green"
+                    },
+                    {
+                        id: 4,
+                        houseImg: "https://picsum.photos/id/239/80/80",
+                        houseTitle: "丽景花园 两室两厅",
+                        housePrice: 3600,
+                        landlordName: "赵房东",
+                        landlordId: "FD20230511",
+                        submitTime: "2023-11-05 14:30",
+                        status: "rejected",
+                        statusText: "已拒绝",
+                        statusColor: "red"
+                    }
+                ];
+
+                // 应用筛选
+                let filteredData = data;
+                if (filters.status) {
+                    filteredData = filteredData.filter(item => item.status === filters.status);
+                }
+                if (filters.search) {
+                    const searchTerm = filters.search.toLowerCase();
+                    filteredData = filteredData.filter(item =>
+                        item.houseTitle.toLowerCase().includes(searchTerm) ||
+                        item.landlordName.toLowerCase().includes(searchTerm)
+                    );
+                }
+
+                resolve({
+                    records: filteredData,
+                    totalPages: 1,
+                    currentPage: 1
+                });
+            }, 800);
+        });
+    }
+
+    // 2. 模拟维修单数据
+    function getRepairOrdersData(filters = {}) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                const data = [
+                    {
+                        id: 1,
+                        orderNo: "BX20231108001",
+                        houseInfo: "阳光花园小区 3号楼 502室",
+                        tenantName: "张小明",
+                        tenantPhone: "138****6789",
+                        repairType: "电器故障",
+                        description: "空调无法制冷，需要维修或更换",
+                        submitTime: "2023-11-08 08:30",
+                        status: "pending",
+                        statusText: "待处理",
+                        statusColor: "yellow",
+                        image: "https://picsum.photos/id/116/120/90"
+                    },
+                    {
+                        id: 2,
+                        orderNo: "BX20231107002",
+                        houseInfo: "幸福家园 2号楼 1201室",
+                        tenantName: "李华",
+                        tenantPhone: "139****5678",
+                        repairType: "水管问题",
+                        description: "厨房水龙头漏水严重，需要更换",
+                        submitTime: "2023-11-07 15:45",
+                        status: "assigned",
+                        statusText: "已派单",
+                        statusColor: "blue",
+                        repairman: "王师傅",
+                        repairmanPhone: "136****1234",
+                        image: "https://picsum.photos/id/118/120/90"
+                    },
+                    {
+                        id: 3,
+                        orderNo: "BX20231106003",
+                        houseInfo: "城市之光 5号楼 801室",
+                        tenantName: "王芳",
+                        tenantPhone: "137****4567",
+                        repairType: "家具损坏",
+                        description: "衣柜门合页损坏，无法正常关闭",
+                        submitTime: "2023-11-06 10:15",
+                        status: "completed",
+                        statusText: "已完成",
+                        statusColor: "green",
+                        repairman: "刘师傅",
+                        completeTime: "2023-11-07 11:30",
+                        image: "https://picsum.photos/id/119/120/90"
+                    }
+                ];
+
+                // 应用筛选
+                let filteredData = data;
+                if (filters.status) {
+                    filteredData = filteredData.filter(item => item.status === filters.status);
+                }
+                if (filters.type) {
+                    filteredData = filteredData.filter(item => item.repairType === filters.type);
+                }
+                if (filters.search) {
+                    const searchTerm = filters.search.toLowerCase();
+                    filteredData = filteredData.filter(item =>
+                        item.orderNo.toLowerCase().includes(searchTerm) ||
+                        item.houseInfo.toLowerCase().includes(searchTerm)
+                    );
+                }
+
+                resolve({
+                    records: filteredData,
+                    totalPages: 1,
+                    currentPage: 1
+                });
+            }, 800);
+        });
+    }
+
+    // 3. 模拟维修师傅数据
+    function getRepairmenData(search = '') {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                let data = [
+                    {
+                        id: 1,
+                        name: "王师傅",
+                        phone: "136****1234",
+                        specialty: "水电维修、电器维修",
+                        orderCount: 128,
+                        status: "active",
+                        statusText: "正常"
+                    },
+                    {
+                        id: 2,
+                        name: "刘师傅",
+                        phone: "135****5678",
+                        specialty: "家具维修、木工",
+                        orderCount: 95,
+                        status: "active",
+                        statusText: "正常"
+                    },
+                    {
+                        id: 3,
+                        name: "张师傅",
+                        phone: "134****9012",
+                        specialty: "管道维修、防水处理",
+                        orderCount: 76,
+                        status: "inactive",
+                        statusText: "禁用"
+                    }
+                ];
+
+                // 应用搜索筛选
+                if (search) {
+                    const searchTerm = search.toLowerCase();
+                    data = data.filter(item =>
+                        item.name.toLowerCase().includes(searchTerm) ||
+                        item.phone.toLowerCase().includes(searchTerm)
+                    );
+                }
+
+                resolve({
+                    records: data,
+                    totalPages: 1,
+                    currentPage: 1
+                });
+            }, 800);
+        });
+    }
+
+    // 4. 模拟用户数据
+    function getUsersData(filters = {}) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                const data = [
+                    {
+                        id: 1,
+                        userId: "USR20230518001",
+                        name: "张小明",
+                        type: "tenant",
+                        typeText: "租客",
+                        phone: "138****6789",
+                        registerTime: "2023-05-18",
+                        status: "active",
+                        statusText: "正常",
+                        statusColor: "green"
+                    },
+                    {
+                        id: 2,
+                        userId: "FD20230315",
+                        name: "张房东",
+                        type: "landlord",
+                        typeText: "房东",
+                        phone: "137****9988",
+                        registerTime: "2023-03-15",
+                        status: "active",
+                        statusText: "正常",
+                        statusColor: "green"
+                    },
+                    {
+                        id: 3,
+                        userId: "USR20230622002",
+                        name: "李华",
+                        type: "tenant",
+                        typeText: "租客",
+                        phone: "139****5678",
+                        registerTime: "2023-06-22",
+                        status: "active",
+                        statusText: "正常",
+                        statusColor: "green"
+                    },
+                    {
+                        id: 4,
+                        userId: "FD20230422",
+                        name: "李房东",
+                        type: "landlord",
+                        typeText: "房东",
+                        phone: "136****3344",
+                        registerTime: "2023-04-22",
+                        status: "inactive",
+                        statusText: "禁用",
+                        statusColor: "red"
+                    }
+                ];
+
+                // 应用筛选
+                let filteredData = data;
+                if (filters.type) {
+                    filteredData = filteredData.filter(item => item.type === filters.type);
+                }
+                if (filters.status) {
+                    filteredData = filteredData.filter(item => item.status === filters.status);
+                }
+                if (filters.search) {
+                    const searchTerm = filters.search.toLowerCase();
+                    filteredData = filteredData.filter(item =>
+                        item.userId.toLowerCase().includes(searchTerm) ||
+                        item.name.toLowerCase().includes(searchTerm)
+                    );
+                }
+
+                resolve({
+                    records: filteredData,
+                    totalPages: 1,
+                    currentPage: 1
+                });
+            }, 800);
+        });
+    }
+
+    // 5. 模拟评价数据
+    function getReviewsData(filters = {}) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                const data = [
+                    {
+                        id: 1,
+                        houseTitle: "阳光花园小区 两室一厅",
+                        reviewerName: "张小明",
+                        rating: 5,
+                        content: "房子很不错，采光好，交通便利，房东人也很好说话，推荐！",
+                        submitTime: "2023-11-07 18:30",
+                        status: "pending",
+                        statusText: "待审核",
+                        statusColor: "yellow"
+                    },
+                    {
+                        id: 2,
+                        houseTitle: "幸福家园 一室一厅",
+                        reviewerName: "李华",
+                        rating: 3,
+                        content: "房子还行，就是有点小，价格略高，周边配套还不错。",
+                        submitTime: "2023-11-06 15:45",
+                        status: "approved",
+                        statusText: "已通过",
+                        statusColor: "green"
+                    },
+                    {
+                        id: 3,
+                        houseTitle: "城市之光 三室两厅",
+                        reviewerName: "王芳",
+                        rating: 1,
+                        content: "太差了，房东态度恶劣，房子设施陈旧，大家千万别租！",
+                        submitTime: "2023-11-05 10:20",
+                        status: "pending",
+                        statusText: "待审核",
+                        statusColor: "yellow"
+                    },
+                    {
+                        id: 4,
+                        houseTitle: "丽景花园 两室两厅",
+                        reviewerName: "赵强",
+                        rating: 2,
+                        content: "房子有漏水问题，维修不及时，体验不好。",
+                        submitTime: "2023-11-04 09:15",
+                        status: "rejected",
+                        statusText: "已拒绝",
+                        statusColor: "red"
+                    }
+                ];
+
+                // 应用筛选
+                let filteredData = data;
+                if (filters.status) {
+                    filteredData = filteredData.filter(item => item.status === filters.status);
+                }
+                if (filters.search) {
+                    const searchTerm = filters.search.toLowerCase();
+                    filteredData = filteredData.filter(item =>
+                        item.houseTitle.toLowerCase().includes(searchTerm) ||
+                        item.content.toLowerCase().includes(searchTerm)
+                    );
+                }
+
+                resolve({
+                    records: filteredData,
+                    totalPages: 1,
+                    currentPage: 1
+                });
+            }, 800);
+        });
+    }
+
+    // 6. 模拟获取维修师傅列表（用于派单）
+    function getRepairmenForAssignment() {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve([
+                    { id: 1, name: "王师傅", specialty: "水电维修、电器维修", phone: "136****1234" },
+                    { id: 2, name: "刘师傅", specialty: "家具维修、木工", phone: "135****5678" }
+                ]);
+            }, 500);
+        });
+    }
+
+    // -------------------------- 渲染函数 --------------------------
+    // 1. 渲染房源审核列表
+    async function renderHouseApprovalList(filters = {}) {
+        const listContainer = document.getElementById('houseApprovalList');
+        const loading = document.getElementById('houseApprovalLoading');
+        const empty = document.getElementById('houseApprovalEmpty');
+        const paginationContainer = document.getElementById('houseApprovalPagination');
+
+        // 显示加载状态
+        loading.classList.remove('hidden');
+        listContainer.innerHTML = '';
+        empty.classList.add('hidden');
+        paginationContainer.innerHTML = '';
+
+        try {
+            const result = await getHouseApprovalData(filters);
+            const data = result.records;
+
+            // 隐藏加载状态
+            loading.classList.add('hidden');
+
+            // 处理空数据
+            if (data.length === 0) {
+                empty.classList.remove('hidden');
+                return;
+            }
+
+            // 渲染列表
+            const fragment = document.createDocumentFragment();
+            data.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.className = 'border-t border-gray-100';
+
+                // 审核按钮（只对未审核的显示）
+                let actionButtons = '';
+                if (item.status === 'pending') {
+                    actionButtons = `
+                        <button class="text-green-600 hover:text-green-800 text-sm mr-3 approve-house" data-id="${item.id}">
+                            <i class="fa fa-check mr-1"></i>通过
+                        </button>
+                        <button class="text-red-600 hover:text-red-800 text-sm reject-house" data-id="${item.id}">
+                            <i class="fa fa-times mr-1"></i>拒绝
+                        </button>
+                    `;
+                } else {
+                    actionButtons = `
+                        <button class="text-gray-600 hover:text-gray-800 text-sm view-house-details" data-id="${item.id}">
+                            <i class="fa fa-eye mr-1"></i>详情
+                        </button>
+                    `;
+                }
+
+                tr.innerHTML = `
+                    <td class="py-3 px-4">
+                        <div class="flex items-center">
+                            <img src="${item.houseImg}" alt="${item.houseTitle}" class="w-12 h-12 object-cover rounded mr-3">
+                            <div>
+                                <p class="font-medium">${item.houseTitle}</p>
+                                <p class="text-gray-500 text-sm">¥${item.housePrice}/月</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="py-3 px-4">
+                        <p class="font-medium">${item.landlordName}</p>
+                        <p class="text-gray-500 text-sm">ID: ${item.landlordId}</p>
+                    </td>
+                    <td class="py-3 px-4">${item.submitTime}</td>
+                    <td class="py-3 px-4">
+                        <span class="bg-${item.statusColor}-100 text-${item.statusColor}-800 text-xs font-medium px-2.5 py-0.5 rounded">${item.statusText}</span>
+                    </td>
+                    <td class="py-3 px-4">
+                        <div class="flex">${actionButtons}</div>
+                    </td>
+                `;
+                fragment.appendChild(tr);
+            });
+            listContainer.appendChild(fragment);
+
+            // 渲染分页
+            renderPagination(paginationContainer, result.currentPage, result.totalPages, (page) => {
+                renderHouseApprovalList({...filters, page: page});
+            });
+
+            // 绑定审核按钮事件
+            bindHouseApprovalEvents();
+
+        } catch (error) {
+            loading.classList.add('hidden');
+            listContainer.innerHTML = '<tr><td colspan="5" class="text-center py-6 text-red-500"><i class="fa fa-exclamation-circle mr-1"></i> 加载失败，请重试</td></tr>';
+            console.error('房源审核列表加载失败：', error);
+        }
+    }
+
+    // 2. 渲染维修单列表
+    async function renderRepairOrders(filters = {}) {
+        const listContainer = document.getElementById('repairOrdersList');
+        const loading = document.getElementById('repairOrdersLoading');
+        const empty = document.getElementById('repairOrdersEmpty');
+        const paginationContainer = document.getElementById('repairOrdersPagination');
+
+        // 显示加载状态
+        loading.classList.remove('hidden');
+        listContainer.innerHTML = '';
+        empty.classList.add('hidden');
+        paginationContainer.innerHTML = '';
+
+        try {
+            const result = await getRepairOrdersData(filters);
+            const data = result.records;
+
+            // 隐藏加载状态
+            loading.classList.add('hidden');
+
+            // 处理空数据
+            if (data.length === 0) {
+                empty.classList.remove('hidden');
+                return;
+            }
+
+            // 渲染列表
+            const fragment = document.createDocumentFragment();
+            data.forEach(item => {
+                const orderItem = document.createElement('div');
+                orderItem.className = 'border border-gray-100 rounded-lg p-4 hover:shadow-md transition-shadow duration-200';
+
+                // 操作按钮
+                let actionButtons = '';
+                if (item.status === 'pending') {
+                    actionButtons = `
+                        <button class="bg-bear-brown hover:bg-bear-dark text-white px-4 py-1 rounded text-sm assign-repairman" data-id="${item.id}">
+                            <i class="fa fa-user-md mr-1"></i>派单
+                        </button>
+                        <button class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-1 rounded text-sm ml-2 cancel-repair" data-id="${item.id}">
+                            <i class="fa fa-times mr-1"></i>取消
+                        </button>
+                    `;
+                } else if (item.status === 'assigned' || item.status === 'processing') {
+                    actionButtons = `
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded text-sm view-repair-status" data-id="${item.id}">
+                            <i class="fa fa-eye mr-1"></i>查看进度
+                        </button>
+                    `;
+                } else {
+                    actionButtons = `
+                        <button class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-1 rounded text-sm view-repair-details" data-id="${item.id}">
+                            <i class="fa fa-file-text-o mr-1"></i>查看详情
+                        </button>
+                    `;
+                }
+
+                // 维修师傅信息（如果已派单）
+                let repairmanInfo = '';
+                if (item.status === 'assigned' || item.status === 'processing' || item.status === 'completed') {
+                    repairmanInfo = `
+                        <div class="mt-3">
+                            <p class="text-gray-500 text-sm mb-1">维修师傅</p>
+                            <p class="font-medium">${item.repairman || '未分配'}</p>
+                        </div>
+                    `;
+                }
+
+                orderItem.innerHTML = `
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h4 class="font-bold text-bear-dark">${item.houseInfo}</h4>
+                            <p class="text-gray-500 text-sm">报修单号: ${item.orderNo}</p>
+                        </div>
+                        <span class="bg-${item.statusColor}-100 text-${item.statusColor}-800 text-xs font-medium px-2.5 py-0.5 rounded">${item.statusText}</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                        <div>
+                            <p class="text-gray-500 text-sm mb-1">报修人</p>
+                            <p class="font-medium">${item.tenantName} (${item.tenantPhone})</p>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 text-sm mb-1">报修类型</p>
+                            <p class="font-medium">${item.repairType}</p>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 text-sm mb-1">提交时间</p>
+                            <p class="font-medium">${item.submitTime}</p>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <p class="text-gray-500 text-sm mb-1">问题描述</p>
+                        <p class="bg-gray-50 p-3 rounded border border-gray-100">${item.description}</p>
+                    </div>
+
+                    <div class="mb-4">
+                        <p class="text-gray-500 text-sm mb-1">问题图片</p>
+                        <img src="${item.image}" alt="报修问题图片" class="w-32 h-24 object-cover rounded">
+                    </div>
+
+                    ${repairmanInfo}
+
+                    <div class="flex justify-end mt-4">
+                        ${actionButtons}
+                    </div>
+                `;
+                fragment.appendChild(orderItem);
+            });
+            listContainer.appendChild(fragment);
+
+            // 渲染分页
+            renderPagination(paginationContainer, result.currentPage, result.totalPages, (page) => {
+                renderRepairOrders({...filters, page: page});
+            });
+
+            // 绑定维修单操作事件
+            bindRepairOrderEvents();
+
+        } catch (error) {
+            loading.classList.add('hidden');
+            listContainer.innerHTML = '<div class="text-center py-6 text-red-500"><i class="fa fa-exclamation-circle mr-1"></i> 加载失败，请重试</div>';
+            console.error('维修单列表加载失败：', error);
+        }
+    }
+
+    // 3. 渲染维修师傅列表
+    async function renderRepairmen(search = '') {
+        const listContainer = document.getElementById('repairmenList');
+        const loading = document.getElementById('repairmenLoading');
+        const empty = document.getElementById('repairmenEmpty');
+        const paginationContainer = document.getElementById('repairmenPagination');
+
+        // 显示加载状态
+        loading.classList.remove('hidden');
+        listContainer.innerHTML = '';
+        empty.classList.add('hidden');
+        paginationContainer.innerHTML = '';
+
+        try {
+            const result = await getRepairmenData(search);
+            const data = result.records;
+
+            // 隐藏加载状态
+            loading.classList.add('hidden');
+
+            // 处理空数据
+            if (data.length === 0) {
+                empty.classList.remove('hidden');
+                return;
+            }
+
+            // 渲染列表
+            const fragment = document.createDocumentFragment();
+            data.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.className = 'border-t border-gray-100';
+
+                // 状态标签和操作按钮
+                let statusColor = item.status === 'active' ? 'green' : 'red';
+                let actionButtons = `
+                    <button class="text-blue-600 hover:text-blue-800 text-sm mr-3 edit-repairman" data-id="${item.id}">
+                        <i class="fa fa-edit mr-1"></i>编辑
+                    </button>
+                `;
+
+                if (item.status === 'active') {
+                    actionButtons += `
+                        <button class="text-red-600 hover:text-red-800 text-sm deactivate-repairman" data-id="${item.id}">
+                            <i class="fa fa-ban mr-1"></i>禁用
+                        </button>
+                    `;
+                } else {
+                    actionButtons += `
+                        <button class="text-green-600 hover:text-green-800 text-sm activate-repairman" data-id="${item.id}">
+                            <i class="fa fa-check mr-1"></i>启用
+                        </button>
+                    `;
+                }
+
+                tr.innerHTML = `
+                    <td class="py-3 px-4">${item.name}</td>
+                    <td class="py-3 px-4">${item.phone}</td>
+                    <td class="py-3 px-4">${item.specialty}</td>
+                    <td class="py-3 px-4">${item.orderCount}</td>
+                    <td class="py-3 px-4">
+                        <span class="bg-${statusColor}-100 text-${statusColor}-800 text-xs font-medium px-2.5 py-0.5 rounded">${item.statusText}</span>
+                    </td>
+                    <td class="py-3 px-4">
+                        <div class="flex">${actionButtons}</div>
+                    </td>
+                `;
+                fragment.appendChild(tr);
+            });
+            listContainer.appendChild(fragment);
+
+            // 渲染分页
+            renderPagination(paginationContainer, result.currentPage, result.totalPages, (page) => {
+                renderRepairmen(search, page);
+            });
+
+            // 绑定维修师傅操作事件
+            bindRepairmenEvents();
+
+        } catch (error) {
+            loading.classList.add('hidden');
+            listContainer.innerHTML = '<tr><td colspan="6" class="text-center py-6 text-red-500"><i class="fa fa-exclamation-circle mr-1"></i> 加载失败，请重试</td></tr>';
+            console.error('维修师傅列表加载失败：', error);
+        }
+    }
+
+    // 4. 渲染用户列表
+    async function renderUsers(filters = {}) {
+        const listContainer = document.getElementById('usersList');
+        const loading = document.getElementById('usersLoading');
+        const empty = document.getElementById('usersEmpty');
+        const paginationContainer = document.getElementById('usersPagination');
+
+        // 显示加载状态
+        loading.classList.remove('hidden');
+        listContainer.innerHTML = '';
+        empty.classList.add('hidden');
+        paginationContainer.innerHTML = '';
+
+        try {
+            const result = await getUsersData(filters);
+            const data = result.records;
+
+            // 隐藏加载状态
+            loading.classList.add('hidden');
+
+            // 处理空数据
+            if (data.length === 0) {
+                empty.classList.remove('hidden');
+                return;
+            }
+
+            // 渲染列表
+            const fragment = document.createDocumentFragment();
+            data.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.className = 'border-t border-gray-100';
+
+                // 操作按钮
+                let actionButtons = `
+                    <button class="text-blue-600 hover:text-blue-800 text-sm mr-3 view-user-details" data-id="${item.id}">
+                        <i class="fa fa-eye mr-1"></i>详情
+                    </button>
+                `;
+
+                if (item.status === 'active') {
+                    actionButtons += `
+                        <button class="text-red-600 hover:text-red-800 text-sm deactivate-user" data-id="${item.id}">
+                            <i class="fa fa-ban mr-1"></i>禁用
+                        </button>
+                    `;
+                } else {
+                    actionButtons += `
+                        <button class="text-green-600 hover:text-green-800 text-sm activate-user" data-id="${item.id}">
+                            <i class="fa fa-check mr-1"></i>启用
+                        </button>
+                    `;
+                }
+
+                tr.innerHTML = `
+                    <td class="py-3 px-4">${item.userId}</td>
+                    <td class="py-3 px-4">${item.name}</td>
+                    <td class="py-3 px-4">
+                        <span class="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded">${item.typeText}</span>
+                    </td>
+                    <td class="py-3 px-4">${item.phone}</td>
+                    <td class="py-3 px-4">${item.registerTime}</td>
+                    <td class="py-3 px-4">
+                        <span class="bg-${item.statusColor}-100 text-${item.statusColor}-800 text-xs font-medium px-2.5 py-0.5 rounded">${item.statusText}</span>
+                    </td>
+                    <td class="py-3 px-4">
+                        <div class="flex">${actionButtons}</div>
+                    </td>
+                `;
+                fragment.appendChild(tr);
+            });
+            listContainer.appendChild(fragment);
+
+            // 渲染分页
+            renderPagination(paginationContainer, result.currentPage, result.totalPages, (page) => {
+                renderUsers({...filters, page: page});
+            });
+
+            // 绑定用户操作事件
+            bindUserEvents();
+
+        } catch (error) {
+            loading.classList.add('hidden');
+            listContainer.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-red-500"><i class="fa fa-exclamation-circle mr-1"></i> 加载失败，请重试</td></tr>';
+            console.error('用户列表加载失败：', error);
+        }
+    }
+
+    // 5. 渲染评价列表
+    async function renderReviews(filters = {}) {
+        const listContainer = document.getElementById('reviewsList');
+        const loading = document.getElementById('reviewsLoading');
+        const empty = document.getElementById('reviewsEmpty');
+        const paginationContainer = document.getElementById('reviewsPagination');
+
+        // 显示加载状态
+        loading.classList.remove('hidden');
+        listContainer.innerHTML = '';
+        empty.classList.add('hidden');
+        paginationContainer.innerHTML = '';
+
+        try {
+            const result = await getReviewsData(filters);
+            const data = result.records;
+
+            // 隐藏加载状态
+            loading.classList.add('hidden');
+
+            // 处理空数据
+            if (data.length === 0) {
+                empty.classList.remove('hidden');
+                return;
+            }
+
+            // 渲染列表
+            const fragment = document.createDocumentFragment();
+            data.forEach(item => {
+                const reviewItem = document.createElement('div');
+                reviewItem.className = 'border border-gray-100 rounded-lg p-4 hover:shadow-md transition-shadow duration-200';
+
+                // 星级评分
+                let ratingHtml = '';
+                for (let i = 1; i <= 5; i++) {
+                    if (i <= item.rating) {
+                        ratingHtml += '<i class="fa fa-star text-yellow-400"></i>';
+                    } else {
+                        ratingHtml += '<i class="fa fa-star-o text-gray-300"></i>';
+                    }
+                }
+
+                // 操作按钮（只对未审核的显示）
+                let actionButtons = '';
+                if (item.status === 'pending') {
+                    actionButtons = `
+                        <button class="text-green-600 hover:text-green-800 text-sm mr-3 approve-review" data-id="${item.id}">
+                            <i class="fa fa-check mr-1"></i>通过
+                        </button>
+                        <button class="text-red-600 hover:text-red-800 text-sm reject-review" data-id="${item.id}">
+                            <i class="fa fa-times mr-1"></i>拒绝
+                        </button>
+                    `;
+                } else {
+                    actionButtons = `
+                        <button class="text-gray-600 hover:text-gray-800 text-sm view-review-details" data-id="${item.id}">
+                            <i class="fa fa-eye mr-1"></i>详情
+                        </button>
+                    `;
+                }
+
+                reviewItem.innerHTML = `
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h4 class="font-bold text-bear-dark">${item.houseTitle}</h4>
+                            <p class="text-gray-500 text-sm">评价人: ${item.reviewerName}</p>
+                        </div>
+                        <div class="flex flex-col items-end">
+                            <div class="flex mb-1">${ratingHtml}</div>
+                            <span class="bg-${item.statusColor}-100 text-${item.statusColor}-800 text-xs font-medium px-2.5 py-0.5 rounded">${item.statusText}</span>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <p class="text-gray-500 text-sm mb-1">评价内容</p>
+                        <p class="bg-gray-50 p-3 rounded border border-gray-100">${item.content}</p>
+                    </div>
+
+                    <div class="flex justify-between items-center">
+                        <p class="text-gray-500 text-sm">${item.submitTime}</p>
+                        <div class="flex">${actionButtons}</div>
+                    </div>
+                `;
+                fragment.appendChild(reviewItem);
+            });
+            listContainer.appendChild(fragment);
+
+            // 渲染分页
+            renderPagination(paginationContainer, result.currentPage, result.totalPages, (page) => {
+                renderReviews({...filters, page: page});
+            });
+
+            // 绑定评价操作事件
+            bindReviewEvents();
+
+        } catch (error) {
+            loading.classList.add('hidden');
+            listContainer.innerHTML = '<div class="text-center py-6 text-red-500"><i class="fa fa-exclamation-circle mr-1"></i> 加载失败，请重试</div>';
+            console.error('评价列表加载失败：', error);
+        }
+    }
+
+    // 渲染分页控件
+    function renderPagination(container, currentPage, totalPages, pageChangeCallback) {
+        if (totalPages <= 1) return;
+
+        let paginationHtml = `
+            <nav class="inline-flex rounded-md shadow">
+                <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 page-prev" data-page="${currentPage - 1}">
+                    <i class="fa fa-chevron-left"></i>
+                </a>
+        `;
+
+        for (let i = 1; i <= totalPages; i++) {
+            paginationHtml += `
+                <a href="#" class="relative inline-flex items-center px-4 py-2 border text-sm font-medium page-link ${i === currentPage ? 'z-10 bg-bear-brown text-white border-bear-brown' : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'}" data-page="${i}">
+                    ${i}
+                </a>
+            `;
+        }
+
+        paginationHtml += `
+                <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 page-next" data-page="${currentPage + 1}">
+                    <i class="fa fa-chevron-right"></i>
+                </a>
+            </nav>
+        `;
+
+        container.innerHTML = paginationHtml;
+
+        // 绑定分页事件
+        const pageLinks = container.querySelectorAll('.page-link, .page-prev, .page-next');
+        pageLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const page = parseInt(this.getAttribute('data-page'));
+                if (page > 0 && page <= totalPages) {
+                    pageChangeCallback(page);
+                }
+            });
+        });
+    }
+
+    // -------------------------- 事件绑定函数 --------------------------
+    // 1. 绑定房源审核事件
+    function bindHouseApprovalEvents() {
+        // 审核通过
+        document.querySelectorAll('.approve-house').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                if (confirm('确定要通过此房源审核吗？')) {
+                    simulateHouseApproval(id, 'approved');
+                }
+            });
+        });
+
+        // 审核拒绝
+        document.querySelectorAll('.reject-house').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                const reason = prompt('请输入拒绝原因：');
+                if (reason) {
+                    simulateHouseApproval(id, 'rejected', reason);
+                }
+            });
+        });
+
+        // 查看详情
+        document.querySelectorAll('.view-house-details').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                alert(`查看房源 #${id} 的详情`);
+            });
+        });
+    }
+
+    // 2. 绑定维修单操作事件
+    function bindRepairOrderEvents() {
+        // 派单
+        document.querySelectorAll('.assign-repairman').forEach(btn => {
+            btn.addEventListener('click', async function() {
+                const orderId = this.getAttribute('data-id');
+                showRepairmanAssignmentModal(orderId);
+            });
+        });
+
+        // 取消维修
+        document.querySelectorAll('.cancel-repair').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                if (confirm('确定要取消此维修单吗？')) {
+                    simulateRepairOrderOperation(id, 'cancelled');
+                }
+            });
+        });
+
+        // 查看进度/详情
+        document.querySelectorAll('.view-repair-status, .view-repair-details').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                alert(`查看维修单 #${id} 的详情`);
+            });
+        });
+    }
+
+    // 3. 绑定维修师傅操作事件
+    function bindRepairmenEvents() {
+        // 编辑维修师傅
+        document.querySelectorAll('.edit-repairman').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                editRepairman(id);
+            });
+        });
+
+        // 禁用维修师傅
+        document.querySelectorAll('.deactivate-repairman').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                if (confirm('确定要禁用此维修师傅吗？')) {
+                    simulateRepairmanStatusChange(id, 'inactive');
+                }
+            });
+        });
+
+        // 启用维修师傅
+        document.querySelectorAll('.activate-repairman').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                if (confirm('确定要启用此维修师傅吗？')) {
+                    simulateRepairmanStatusChange(id, 'active');
+                }
+            });
+        });
+    }
+
+    // 4. 绑定用户操作事件
+    function bindUserEvents() {
+        // 查看用户详情
+        document.querySelectorAll('.view-user-details').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                alert(`查看用户 #${id} 的详情`);
+            });
+        });
+
+        // 禁用用户
+        document.querySelectorAll('.deactivate-user').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                if (confirm('确定要禁用此用户吗？')) {
+                    simulateUserStatusChange(id, 'inactive');
+                }
+            });
+        });
+
+        // 启用用户
+        document.querySelectorAll('.activate-user').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                if (confirm('确定要启用此用户吗？')) {
+                    simulateUserStatusChange(id, 'active');
+                }
+            });
+        });
+    }
+
+    // 5. 绑定评价操作事件
+    function bindReviewEvents() {
+        // 审核通过
+        document.querySelectorAll('.approve-review').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                if (confirm('确定要通过此评价吗？')) {
+                    simulateReviewApproval(id, 'approved');
+                }
+            });
+        });
+
+        // 审核拒绝
+        document.querySelectorAll('.reject-review').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                const reason = prompt('请输入拒绝原因：');
+                if (reason) {
+                    simulateReviewApproval(id, 'rejected', reason);
+                }
+            });
+        });
+
+        // 查看详情
+        document.querySelectorAll('.view-review-details').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                alert(`查看评价 #${id} 的详情`);
+            });
+        });
+    }
+
+    // -------------------------- 操作模拟函数 --------------------------
+    // 模拟房源审核操作
+    function simulateHouseApproval(id, status, reason = '') {
+        // 显示加载状态
+        document.getElementById('houseApprovalLoading').classList.remove('hidden');
+
+        // 模拟API请求延迟
+        setTimeout(() => {
+            // 刷新列表
+            const filters = getHouseApprovalFilters();
+            renderHouseApprovalList(filters);
+
+            // 显示操作结果
+            if (status === 'approved') {
+                showNotification('房源审核已通过', 'success');
+            } else if (status === 'rejected') {
+                showNotification('房源审核已拒绝', 'info');
+            }
+        }, 600);
+    }
+
+    // 模拟维修单操作
+    function simulateRepairOrderOperation(id, status) {
+        // 显示加载状态
+        document.getElementById('repairOrdersLoading').classList.remove('hidden');
+
+        // 模拟API请求延迟
+        setTimeout(() => {
+            // 刷新列表
+            const filters = getRepairOrderFilters();
+            renderRepairOrders(filters);
+
+            // 显示操作结果
+            if (status === 'cancelled') {
+                showNotification('维修单已取消', 'info');
+            } else if (status === 'assigned') {
+                showNotification('维修单已派单', 'success');
+            }
+        }, 600);
+    }
+
+    // 模拟维修师傅状态变更
+    function simulateRepairmanStatusChange(id, status) {
+        // 显示加载状态
+        document.getElementById('repairmenLoading').classList.remove('hidden');
+
+        // 模拟API请求延迟
+        setTimeout(() => {
+            // 刷新列表
+            const search = document.getElementById('repairmanSearch').value;
+            renderRepairmen(search);
+
+            // 显示操作结果
+            if (status === 'inactive') {
+                showNotification('维修师傅已禁用', 'info');
+            } else if (status === 'active') {
+                showNotification('维修师傅已启用', 'success');
+            }
+        }, 600);
+    }
+
+    // 模拟用户状态变更
+    function simulateUserStatusChange(id, status) {
+        // 显示加载状态
+        document.getElementById('usersLoading').classList.remove('hidden');
+
+        // 模拟API请求延迟
+        setTimeout(() => {
+            // 刷新列表
+            const filters = getUserFilters();
+            renderUsers(filters);
+
+            // 显示操作结果
+            if (status === 'inactive') {
+                showNotification('用户已禁用', 'info');
+            } else if (status === 'active') {
+                showNotification('用户已启用', 'success');
+            }
+        }, 600);
+    }
+
+    // 模拟评价审核操作
+    function simulateReviewApproval(id, status, reason = '') {
+        // 显示加载状态
+        document.getElementById('reviewsLoading').classList.remove('hidden');
+
+        // 模拟API请求延迟
+        setTimeout(() => {
+            // 刷新列表
+            const filters = getReviewFilters();
+            renderReviews(filters);
+
+            // 显示操作结果
+            if (status === 'approved') {
+                showNotification('评价审核已通过', 'success');
+            } else if (status === 'rejected') {
+                showNotification('评价审核已拒绝', 'info');
+            }
+        }, 600);
+    }
+
+    // -------------------------- 模态框相关函数 --------------------------
+    // 显示维修师傅派单模态框
+    async function showRepairmanAssignmentModal(orderId) {
+        const modal = document.getElementById('repairmanFormModal');
+        const modalContent = document.getElementById('modalContent');
+        const assignmentContainer = document.getElementById('repairmanAssignmentContainer');
+
+        // 创建派单模态框内容
+        modalContent.innerHTML = `
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-xl font-bold text-bear-dark">指派维修师傅</h3>
+                    <button id="closeAssignmentModalBtn" class="text-gray-500 hover:text-gray-700">
+                        <i class="fa fa-times text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="p-6">
+                <p class="mb-4 text-gray-700">请选择维修师傅为维修单 #${orderId} 进行维修：</p>
+
+                <div id="repairmenForAssignment" class="space-y-3 mb-6">
+                    <!-- 加载中 -->
+                    <div class="text-center py-4">
+                        <i class="fa fa-spinner fa-spin text-bear-brown"></i> 加载维修师傅列表...
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="assignmentNotes" class="block text-gray-700 mb-2">备注信息（可选）</label>
+                    <textarea id="assignmentNotes" rows="2" class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-bear-brown/50 focus:border-bear-brown" placeholder="请输入维修注意事项等信息"></textarea>
+                </div>
+
+                <div class="flex justify-end gap-4">
+                    <button id="cancelAssignmentBtn" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-2 rounded-lg transition-colors duration-200">
+                        取消
+                    </button>
+                    <button id="confirmAssignmentBtn" class="bg-bear-brown hover:bg-bear-dark text-white px-6 py-2 rounded-lg transition-colors duration-200" data-order-id="${orderId}">
+                        <i class="fa fa-check mr-1"></i> 确认指派
+                    </button>
+                </div>
+            </div>
+        `;
+
+        // 显示模态框
+        modal.classList.remove('hidden');
+        setTimeout(() => {
+            modalContent.classList.remove('scale-95', 'opacity-0');
+            modalContent.classList.add('scale-100', 'opacity-100');
+        }, 100);
+
+        // 加载维修师傅列表
+        try {
+            const repairmen = await getRepairmenForAssignment();
+            const container = document.getElementById('repairmenForAssignment');
+
+            if (repairmen.length === 0) {
+                container.innerHTML = '<p class="text-center text-gray-500">暂无可用的维修师傅，请先添加维修师傅</p>';
+                return;
+            }
+
+            // 渲染维修师傅选项
+            let html = '';
+            repairmen.forEach(repairman => {
+                html += `
+                    <label class="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-bear-cream/30">
+                        <input type="radio" name="repairman" value="${repairman.id}" class="form-radio text-bear-brown" required>
+                        <div class="ml-3">
+                            <p class="font-medium">${repairman.name}</p>
+                            <p class="text-gray-500 text-sm">${repairman.specialty} | ${repairman.phone}</p>
+                        </div>
+                    </label>
+                `;
+            });
+            container.innerHTML = html;
+
+            // 绑定确认派单事件
+            document.getElementById('confirmAssignmentBtn').addEventListener('click', function() {
+                const selectedRepairman = document.querySelector('input[name="repairman"]:checked');
+                if (!selectedRepairman) {
+                    alert('请选择维修师傅');
+                    return;
+                }
+
+                // 关闭模态框并执行派单
+                closeAssignmentModal();
+                simulateRepairOrderOperation(orderId, 'assigned');
+            });
+
+            // 绑定取消和关闭事件
+            document.getElementById('cancelAssignmentBtn').addEventListener('click', closeAssignmentModal);
+            document.getElementById('closeAssignmentModalBtn').addEventListener('click', closeAssignmentModal);
+
+        } catch (error) {
+            document.getElementById('repairmenForAssignment').innerHTML = '<p class="text-center text-red-500">加载失败，请重试</p>';
+            console.error('加载维修师傅列表失败：', error);
+        }
+    }
+
+    // 关闭派单模态框
+    function closeAssignmentModal() {
+        const modal = document.getElementById('repairmanFormModal');
+        const modalContent = document.getElementById('modalContent');
+
+        modalContent.classList.remove('scale-100', 'opacity-100');
+        modalContent.classList.add('scale-95', 'opacity-0');
+
+        setTimeout(() => {
+            modal.classList.add('hidden');
+        }, 300);
+    }
+
+    // 打开维修师傅表单模态框（添加/编辑）
+    function openRepairmanFormModal(repairmanId = null) {
+        const modal = document.getElementById('repairmanFormModal');
+        const modalContent = document.getElementById('modalContent');
+        const formTitle = document.getElementById('repairmanFormTitle');
+        const form = document.getElementById('repairmanForm');
+
+        // 重置表单
+        form.reset();
+        document.getElementById('repairmanId').value = '';
+
+        // 设置标题
+        if (repairmanId) {
+            formTitle.textContent = '编辑维修师傅';
+            // 模拟加载维修师傅数据
+            setTimeout(() => {
+                // 这里应该从API获取数据，这里仅做示例
+                document.getElementById('repairmanName').value = '王师傅';
+                document.getElementById('repairmanPhone').value = '136****1234';
+                document.getElementById('repairmanSpecialty').value = '水电维修、电器维修';
+                document.getElementById('repairmanStatus').value = 'active';
+                document.getElementById('repairmanId').value = repairmanId;
+            }, 300);
+        } else {
+            formTitle.textContent = '添加维修师傅';
+        }
+
+        // 显示模态框
+        modal.classList.remove('hidden');
+        setTimeout(() => {
+            modalContent.classList.remove('scale-95', 'opacity-0');
+            modalContent.classList.add('scale-100', 'opacity-100');
+        }, 100);
+
+        // 绑定表单提交事件
+        form.onsubmit = function(e) {
+            e.preventDefault();
+            saveRepairman();
+        };
+
+        // 绑定取消和关闭事件
+        document.getElementById('cancelFormBtn').addEventListener('click', closeRepairmanFormModal);
+        document.getElementById('closeModalBtn').addEventListener('click', closeRepairmanFormModal);
+    }
+
+    // 关闭维修师傅表单模态框
+    function closeRepairmanFormModal() {
+        const modal = document.getElementById('repairmanFormModal');
+        const modalContent = document.getElementById('modalContent');
+
+        modalContent.classList.remove('scale-100', 'opacity-100');
+        modalContent.classList.add('scale-95', 'opacity-0');
+
+        setTimeout(() => {
+            modal.classList.add('hidden');
+        }, 300);
+    }
+
+    // 保存维修师傅信息
+    function saveRepairman() {
+        const id = document.getElementById('repairmanId').value;
+        const name = document.getElementById('repairmanName').value;
+        const phone = document.getElementById('repairmanPhone').value;
+        const specialty = document.getElementById('repairmanSpecialty').value;
+
+        // 简单验证
+        if (!name || !phone || !specialty) {
+            alert('请填写完整信息');
+            return;
+        }
+
+        // 显示加载状态
+        document.getElementById('repairmenLoading').classList.remove('hidden');
+
+        // 关闭模态框
+        closeRepairmanFormModal();
+
+        // 模拟API请求延迟
+        setTimeout(() => {
+            // 刷新列表
+            const search = document.getElementById('repairmanSearch').value;
+            renderRepairmen(search);
+
+            // 显示操作结果
+            if (id) {
+                showNotification('维修师傅信息已更新', 'success');
+            } else {
+                showNotification('维修师傅已添加', 'success');
+            }
+        }, 800);
+    }
+
+    // 编辑维修师傅
+    function editRepairman(id) {
+        openRepairmanFormModal(id);
+    }
+
+    // -------------------------- 筛选器相关函数 --------------------------
+    // 获取房源审核筛选条件
+    function getHouseApprovalFilters() {
+        return {
+            status: document.getElementById('approvalStatusFilter').value,
+            search: document.getElementById('houseSearch').value
+        };
+    }
+
+    // 获取维修单筛选条件
+    function getRepairOrderFilters() {
+        return {
+            status: document.getElementById('repairStatusFilter').value,
+            type: document.getElementById('repairTypeFilter').value,
+            search: document.getElementById('repairSearch').value
+        };
+    }
+
+    // 获取用户筛选条件
+    function getUserFilters() {
+        return {
+            type: document.getElementById('userTypeFilter').value,
+            status: document.getElementById('userStatusFilter').value,
+            search: document.getElementById('userSearch').value
+        };
+    }
+
+    // 获取评价筛选条件
+    function getReviewFilters() {
+        return {
+            status: document.getElementById('reviewStatusFilter').value,
+            search: document.getElementById('reviewSearch').value
+        };
+    }
+
+    // -------------------------- 辅助函数 --------------------------
+    // 显示通知
+    function showNotification(message, type = 'info') {
+        // 创建通知元素
+        const notification = document.createElement('div');
+        notification.className = `fixed top-4 right-4 px-4 py-3 rounded-lg shadow-lg z-50 flex items-center transition-all duration-300 transform translate-x-full`;
+
+        // 设置通知样式
+        if (type === 'success') {
+            notification.classList.add('bg-green-500', 'text-white');
+            notification.innerHTML = `<i class="fa fa-check-circle mr-2"></i>${message}`;
+        } else if (type === 'error') {
+            notification.classList.add('bg-red-500', 'text-white');
+            notification.innerHTML = `<i class="fa fa-exclamation-circle mr-2"></i>${message}`;
+        } else {
+            notification.classList.add('bg-blue-500', 'text-white');
+            notification.innerHTML = `<i class="fa fa-info-circle mr-2"></i>${message}`;
+        }
+
+        // 添加到页面
+        document.body.appendChild(notification);
+
+        // 显示通知
+        setTimeout(() => {
+            notification.classList.remove('translate-x-full');
+            notification.classList.add('translate-x-0');
+        }, 100);
+
+        // 3秒后隐藏通知
+        setTimeout(() => {
+            notification.classList.remove('translate-x-0');
+            notification.classList.add('translate-x-full');
+
+            // 移除元素
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 300);
+        }, 3000);
+    }
+
+    // 退出登录
+    function logout() {
+        localStorage.removeItem('currentAdmin');
+        window.location.href = 'login.html';
+    }
+
+    // 功能模块切换
+    function setupFunctionTabs() {
+        const buttons = document.querySelectorAll('.function-btn');
+        const contents = document.querySelectorAll('.function-content');
+        let loadedModules = new Set(); // 记录已加载过的模块，避免重复请求
+
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                // 移除所有按钮的活跃状态
+                buttons.forEach(btn => {
+                    btn.classList.remove('active', 'border-bear-brown', 'bg-bear-cream/50');
+                    btn.classList.add('border-gray-200');
+                });
+
+                // 添加当前按钮的活跃状态
+                button.classList.add('active', 'border-bear-brown', 'bg-bear-cream/50');
+                button.classList.remove('border-gray-200');
+
+                // 隐藏所有内容
+                contents.forEach(content => {
+                    content.classList.add('hidden');
+                    content.classList.remove('active');
+                });
+
+                // 显示对应内容并加载数据
+                const target = button.getAttribute('data-target');
+                const activeContent = document.getElementById(target);
+                activeContent.classList.remove('hidden');
+                activeContent.classList.add('active');
+
+                // 根据不同模块加载对应数据
+                if (target === 'house-approval' && (!loadedModules.has('house-approval') || event.target.id === 'refreshHouseApproval')) {
+                    renderHouseApprovalList(getHouseApprovalFilters());
+                    loadedModules.add('house-approval');
+                }
+                if (target === 'repair-orders' && (!loadedModules.has('repair-orders') || event.target.id === 'refreshRepairOrders')) {
+                    renderRepairOrders(getRepairOrderFilters());
+                    loadedModules.add('repair-orders');
+                }
+                if (target === 'repairmen' && (!loadedModules.has('repairmen') || event.target.id === 'refreshRepairmen')) {
+                    renderRepairmen(document.getElementById('repairmanSearch').value);
+                    loadedModules.add('repairmen');
+                }
+                if (target === 'user-management' && (!loadedModules.has('user-management') || event.target.id === 'refreshUsers')) {
+                    renderUsers(getUserFilters());
+                    loadedModules.add('user-management');
+                }
+                if (target === 'review-approval' && (!loadedModules.has('review-approval') || event.target.id === 'refreshReviews')) {
+                    renderReviews(getReviewFilters());
+                    loadedModules.add('review-approval');
+                }
+            });
+        });
+
+        // 刷新按钮事件
+        document.getElementById('refreshHouseApproval').addEventListener('click', () => {
+            renderHouseApprovalList(getHouseApprovalFilters());
+        });
+        document.getElementById('refreshRepairOrders').addEventListener('click', () => {
+            renderRepairOrders(getRepairOrderFilters());
+        });
+        document.getElementById('refreshUsers').addEventListener('click', () => {
+            renderUsers(getUserFilters());
+        });
+        document.getElementById('refreshReviews').addEventListener('click', () => {
+            renderReviews(getReviewFilters());
+        });
+
+        // 添加维修师傅按钮事件
+        document.getElementById('addRepairmanBtn').addEventListener('click', () => {
+            openRepairmanFormModal();
+        });
+        document.getElementById('addFirstRepairmanBtn').addEventListener('click', () => {
+            openRepairmanFormModal();
+        });
+
+        // 搜索和筛选事件
+        document.getElementById('houseSearch').addEventListener('input', debounce(function() {
+            renderHouseApprovalList(getHouseApprovalFilters());
+        }, 500));
+        document.getElementById('approvalStatusFilter').addEventListener('change', function() {
+            renderHouseApprovalList(getHouseApprovalFilters());
+        });
+
+        document.getElementById('repairSearch').addEventListener('input', debounce(function() {
+            renderRepairOrders(getRepairOrderFilters());
+        }, 500));
+        document.getElementById('repairStatusFilter').addEventListener('change', function() {
+            renderRepairOrders(getRepairOrderFilters());
+        });
+        document.getElementById('repairTypeFilter').addEventListener('change', function() {
+            renderRepairOrders(getRepairOrderFilters());
+        });
+
+        document.getElementById('repairmanSearch').addEventListener('input', debounce(function() {
+            renderRepairmen(this.value);
+        }, 500));
+
+        document.getElementById('userSearch').addEventListener('input', debounce(function() {
+            renderUsers(getUserFilters());
+        }, 500));
+        document.getElementById('userTypeFilter').addEventListener('change', function() {
+            renderUsers(getUserFilters());
+        });
+        document.getElementById('userStatusFilter').addEventListener('change', function() {
+            renderUsers(getUserFilters());
+        });
+
+        document.getElementById('reviewSearch').addEventListener('input', debounce(function() {
+            renderReviews(getReviewFilters());
+        }, 500));
+        document.getElementById('reviewStatusFilter').addEventListener('change', function() {
+            renderReviews(getReviewFilters());
+        });
+    }
+
+    // 防抖函数
+    function debounce(func, wait) {
+        let timeout;
+        return function() {
+            const context = this;
+            const args = arguments;
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(context, args), wait);
+        };
+    }
+
+    // 检查管理员登录状态
+    function checkAdminLoginStatus() {
+        // 模拟登录状态：实际项目中从localStorage或后端获取
+        const mockAdmin = localStorage.getItem('currentAdmin')
+            ? JSON.parse(localStorage.getItem('currentAdmin'))
+            : { id: 'ADMIN2023001', name: '管理员' };
+        // 若未登录，跳转登录页
+        if (!mockAdmin) {
+            window.location.href = 'login.html';
+            return null;
+        }
+        return mockAdmin;
+    }
+
+    // 页面加载时初始化
+    document.addEventListener('DOMContentLoaded', function() {
+        // 检查登录状态
+        const admin = checkAdminLoginStatus();
+        if (admin) {
+            // 显示管理员名
+            document.getElementById('adminName').textContent = admin.name;
+            document.getElementById('centerAdminName').textContent = admin.name;
+            document.getElementById('adminId').textContent = admin.id;
+        }
+
+        // 初始化功能模块切换
+        setupFunctionTabs();
+
+        // 加载默认模块数据（房源审核）
+        renderHouseApprovalList(getHouseApprovalFilters());
+    });
+</script>
+</body>
+</html>

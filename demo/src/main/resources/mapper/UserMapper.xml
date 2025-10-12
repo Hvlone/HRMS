@@ -89,6 +89,11 @@
 
     <!--通过userId查角色-->
     <select id="selectUsertypeByUserId" parameterType="Integer" resultType="String">
-        select userType from user where user_id=#{userId}
+        select user.user_type from user where user_id=#{userId}
+    </select>
+
+    <!--查看房东有多少个租客-->
+    <select id="selectCountByLandlordId" parameterType="Integer" resultType="Integer">
+        select count(*) from landlord_user where landlord_id=#{landlordId}
     </select>
 </mapper>

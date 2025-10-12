@@ -51,6 +51,12 @@ public interface HouseService {
     /*更新房源信息*/
     int updateHouse(House house);
 
+    /*查询房东有多少个房源*/
+    int selectHouseCount(int landlordId);
+
+    //查找所有的房源
+    List<House> selectAllHouse();
+
     /*添加房源*/
     int addHouse(House house,@RequestParam("pics") MultipartFile[] pics) throws IOException;
 }

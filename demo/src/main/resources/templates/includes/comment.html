@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户评价中心 - 小熊房屋租赁系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 将原链接替换为正确路径 -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- 颜色配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bear: {
+                            brown: '#8B5A2B',
+                            light: '#D2B48C',
+                            cream: '#F5F5DC',
+                            dark: '#5D4037',
+                            honey: '#F9A825',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .shadow-bear {
+                box-shadow: 0 4px 6px -1px rgba(93, 64, 55, 0.1), 0 2px 4px -1px rgba(93, 64, 55, 0.06);
+            }
+        }
+    </style>
+</head>
+<body class="bg-bear-cream min-h-screen flex flex-col">
+<!-- 导航栏 -->
+<header class="bg-bear-brown text-white shadow-md transition-all duration-300">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+            <i class="fa fa-paw text-2xl text-bear-honey"></i>
+            <h1 class="text-xl md:text-2xl font-bold">小熊房屋租赁系统</h1>
+        </div>
+
+        <!-- 桌面导航 -->
+        <nav class="hidden md:flex items-center space-x-6">
+            <a href="home.html" class="hover:text-bear-honey transition-colors duration-200 flex items-center">
+                <i class="fa fa-home mr-1"></i> 首页
+            </a>
+            <a href="housing_resources.html" class="hover:text-bear-honey transition-colors duration-200 flex items-center">
+                <i class="fa fa-building mr-1"></i> 房源
+            </a>
+            <a href="comment.html"  class="hover:text-bear-honey transition-colors duration-200 flex items-center">
+                <i class="fa fa-comments mr-1"></i> 评价
+            </a>
+            <a href="#contact" class="hover:text-bear-honey transition-colors duration-200 flex items-center">
+                <i class="fa fa-info-circle mr-1"></i> 联系
+            </a>
+        </nav>
+
+        <div class="flex items-center space-x-4">
+            <a href="register(no_use).html" class="hidden md:block bg-bear-honey hover:bg-amber-500 text-white px-4 py-2 rounded-lg transition-colors duration-200">
+                <i class="fa fa-user-plus mr-1"></i> 注册
+            </a>
+            <a href="login.html" class="hidden md:block bg-transparent border border-white hover:border-bear-honey hover:text-bear-honey px-4 py-2 rounded-lg transition-colors duration-200">
+                <i class="fa fa-sign-in mr-1"></i> 登录
+            </a>
+        </div>
+    </div>
+
+</header>
+
+<!-- 主内容区 -->
+<main class="flex-grow container mx-auto px-4 py-8">
+
+
+    <!-- 发布评价区域 -->
+    <section class="bg-white rounded-xl shadow-bear p-6 mb-8">
+        <h3 class="text-xl font-bold text-bear-dark mb-4">
+            <i class="fa fa-pencil-square-o text-bear-honey mr-2"></i>分享您的租房体验
+        </h3>
+
+        <form>
+            <div class="mb-4">
+                <label class="block text-gray-700 mb-2">选择您租赁的房源</label>
+                <select class="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-bear-brown/50 focus:border-bear-brown">
+                    <option value="">请选择您已入住的房源</option>
+                    <option value="1">阳光花园小区 两室一厅</option>
+                    <option value="2">幸福家园 一室一厅</option>
+                    <option value="3">城市之光 三室两厅</option>
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700 mb-2">您的评分</label>
+                <div class="text-2xl text-gray-300">
+                    <i class="fa fa-star cursor-pointer hover:text-bear-honey transition-colors duration-200"></i>
+                    <i class="fa fa-star cursor-pointer hover:text-bear-honey transition-colors duration-200"></i>
+                    <i class="fa fa-star cursor-pointer hover:text-bear-honey transition-colors duration-200"></i>
+                    <i class="fa fa-star cursor-pointer hover:text-bear-honey transition-colors duration-200"></i>
+                    <i class="fa fa-star cursor-pointer hover:text-bear-honey transition-colors duration-200"></i>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label for="reviewContent" class="block text-gray-700 mb-2">评价内容</label>
+                <textarea id="reviewContent" rows="5" class="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-bear-brown/50 focus:border-bear-brown" placeholder="请分享您对该房源的真实体验，包括房屋状况、周边环境、房东服务等..."></textarea>
+            </div>
+
+            <div class="mb-6">
+                <label class="block text-gray-700 mb-2">上传图片（可选）</label>
+                <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                    <i class="fa fa-cloud-upload text-3xl text-gray-400 mb-2"></i>
+                    <p class="text-gray-500 mb-4">点击或拖拽图片到此处上传</p>
+                    <button type="button" class="bg-bear-light hover:bg-bear-brown text-white px-4 py-2 rounded-lg transition-colors duration-200">
+                        选择图片
+                    </button>
+                    <input type="file" class="hidden" accept="image/*" multiple>
+                </div>
+            </div>
+
+            <button type="submit" class="bg-bear-brown hover:bg-bear-dark text-white px-6 py-3 rounded-lg transition-colors duration-200">
+                <i class="fa fa-paper-plane mr-2"></i> 发布评价
+            </button>
+        </form>
+    </section>
+
+    <!-- 页面标题 -->
+    <section class="mb-8">
+        <h2 class="text-3xl font-bold text-bear-dark">
+            <i class="fa fa-comments text-bear-honey mr-2"></i>用户评价中心
+        </h2>
+        <p class="text-gray-600 mt-2">查看真实用户评价，分享您的租房体验</p>
+    </section>
+
+    <!-- 筛选和排序 -->
+    <section class="bg-white rounded-xl shadow-bear p-4 mb-8">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div class="flex flex-wrap gap-2">
+                <button class="bg-bear-brown text-white px-4 py-2 rounded-lg text-sm">
+                    全部评价
+                </button>
+                <button class="bg-white border border-bear-brown text-bear-brown hover:bg-bear-brown hover:text-white px-4 py-2 rounded-lg text-sm transition-colors duration-200">
+                    5星
+                </button>
+                <button class="bg-white border border-bear-brown text-bear-brown hover:bg-bear-brown hover:text-white px-4 py-2 rounded-lg text-sm transition-colors duration-200">
+                    4星及以上
+                </button>
+                <button class="bg-white border border-bear-brown text-bear-brown hover:bg-bear-brown hover:text-white px-4 py-2 rounded-lg text-sm transition-colors duration-200">
+                    有图评价
+                </button>
+            </div>
+
+            <div class="w-full md:w-auto">
+                <select class="w-full md:w-auto px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-bear-brown/50 focus:border-bear-brown">
+                    <option value="newest">最新评价</option>
+                    <option value="highest">评分最高</option>
+                    <option value="lowest">评分最低</option>
+                    <option value="most_likes">点赞最多</option>
+                </select>
+            </div>
+        </div>
+    </section>
+
+    <!-- 评价列表 -->
+    <section>
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-xl font-bold text-bear-dark">
+                <i class="fa fa-list-alt text-bear-honey mr-2"></i>用户真实评价
+            </h3>
+            <p class="text-gray-600">共 128 条评价</p>
+        </div>
+
+        <div class="space-y-6">
+            <!-- 评价1 -->
+            <div class="bg-white rounded-xl p-6 shadow-bear">
+                <div class="flex items-start">
+                    <img src="https://picsum.photos/id/64/100/100" alt="用户头像" class="w-12 h-12 rounded-full object-cover mr-4 flex-shrink-0" />
+
+                    <div class="flex-1">
+                        <div class="flex flex-wrap justify-between items-start gap-2 mb-2">
+                            <div>
+                                <h4 class="font-bold text-bear-dark">张先生</h4>
+                                <div class="text-bear-honey">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                            </div>
+                            <p class="text-gray-400 text-sm">2023年11月12日</p>
+                        </div>
+
+                        <p class="text-gray-600 mb-4">"阳光花园小区的这套房子真的很棒，采光非常好，房东人也很nice，有问题都及时解决。小区安保很到位，周边超市、医院、学校都很齐全，生活便利。"</p>
+
+                        <div class="flex flex-wrap gap-3 mb-4">
+                            <img src="https://picsum.photos/id/1040/120/120" alt="评价图片" class="w-20 h-20 object-cover rounded-lg cursor-pointer hover:opacity-90 transition-opacity duration-200">
+                            <img src="https://picsum.photos/id/1029/120/120" alt="评价图片" class="w-20 h-20 object-cover rounded-lg cursor-pointer hover:opacity-90 transition-opacity duration-200">
+                        </div>
+
+                        <div class="flex items-center text-sm text-gray-500 border-t border-gray-100 pt-3">
+                            <span class="mr-4">阳光花园小区 两室一厅</span>
+                            <button class="flex items-center hover:text-bear-honey transition-colors duration-200">
+                                <i class="fa fa-thumbs-o-up mr-1"></i> 有用 (24)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 评价2 -->
+            <div class="bg-white rounded-xl p-6 shadow-bear">
+                <div class="flex items-start">
+                    <img src="https://picsum.photos/id/65/100/100" alt="用户头像" class="w-12 h-12 rounded-full object-cover mr-4 flex-shrink-0" />
+
+                    <div class="flex-1">
+                        <div class="flex flex-wrap justify-between items-start gap-2 mb-2">
+                            <div>
+                                <h4 class="font-bold text-bear-dark">李女士</h4>
+                                <div class="text-bear-honey">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-half-o"></i>
+                                </div>
+                            </div>
+                            <p class="text-gray-400 text-sm">2023年11月5日</p>
+                        </div>
+
+                        <p class="text-gray-600 mb-4">"城市之光的三居室很适合我们一家三口居住，装修风格现代简约，家电都是新的。小区环境优美，物业服务态度好。唯一的小缺点是离地铁站有点远，步行需要15分钟左右。"</p>
+
+                        <div class="flex flex-wrap gap-3 mb-4">
+                            <img src="https://picsum.photos/id/164/120/120" alt="评价图片" class="w-20 h-20 object-cover rounded-lg cursor-pointer hover:opacity-90 transition-opacity duration-200">
+                        </div>
+
+                        <div class="flex items-center text-sm text-gray-500 border-t border-gray-100 pt-3">
+                            <span class="mr-4">城市之光 三室两厅</span>
+                            <button class="flex items-center hover:text-bear-honey transition-colors duration-200">
+                                <i class="fa fa-thumbs-o-up mr-1"></i> 有用 (18)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 评价3 -->
+            <div class="bg-white rounded-xl p-6 shadow-bear">
+                <div class="flex items-start">
+                    <img src="https://picsum.photos/id/91/100/100" alt="用户头像" class="w-12 h-12 rounded-full object-cover mr-4 flex-shrink-0" />
+
+                    <div class="flex-1">
+                        <div class="flex flex-wrap justify-between items-start gap-2 mb-2">
+                            <div>
+                                <h4 class="font-bold text-bear-dark">王先生</h4>
+                                <div class="text-bear-honey">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-o"></i>
+                                </div>
+                            </div>
+                            <p class="text-gray-400 text-sm">2023年10月28日</p>
+                        </div>
+
+                        <p class="text-gray-600 mb-4">"幸福家园的一室一厅很适合独居，麻雀虽小五脏俱全。离地铁口非常近，通勤很方便。周边小吃店很多，生活便利。唯一不足是隔音效果一般，偶尔能听到邻居的声音。"</p>
+
+                        <div class="flex items-center text-sm text-gray-500 border-t border-gray-100 pt-3">
+                            <span class="mr-4">幸福家园 一室一厅</span>
+                            <button class="flex items-center hover:text-bear-honey transition-colors duration-200">
+                                <i class="fa fa-thumbs-o-up mr-1"></i> 有用 (12)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 评价4 -->
+            <div class="bg-white rounded-xl p-6 shadow-bear">
+                <div class="flex items-start">
+                    <img src="https://picsum.photos/id/26/100/100" alt="用户头像" class="w-12 h-12 rounded-full object-cover mr-4 flex-shrink-0" />
+
+                    <div class="flex-1">
+                        <div class="flex flex-wrap justify-between items-start gap-2 mb-2">
+                            <div>
+                                <h4 class="font-bold text-bear-dark">赵女士</h4>
+                                <div class="text-bear-honey">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-o"></i>
+                                    <i class="fa fa-star-o"></i>
+                                </div>
+                            </div>
+                            <p class="text-gray-400 text-sm">2023年10月15日</p>
+                        </div>
+
+                        <p class="text-gray-600 mb-4">"阳光花园小区的这套房子性价比一般，价格略高。厨房有点小，不太方便做饭。小区绿化不错，但物业服务响应有点慢，上次报修了水龙头，三天才来人修。"</p>
+
+                        <div class="flex items-center text-sm text-gray-500 border-t border-gray-100 pt-3">
+                            <span class="mr-4">阳光花园小区 两室一厅</span>
+                            <button class="flex items-center hover:text-bear-honey transition-colors duration-200">
+                                <i class="fa fa-thumbs-o-up mr-1"></i> 有用 (5)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 分页 -->
+        <div class="mt-8 flex justify-center">
+            <nav class="inline-flex rounded-md shadow">
+                <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                    <i class="fa fa-chevron-left"></i>
+                </a>
+                <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-bear-brown text-sm font-medium text-white">
+                    1
+                </a>
+                <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                    2
+                </a>
+                <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                    3
+                </a>
+                <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
+                        ...
+                    </span>
+                <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                    13
+                </a>
+                <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                    <i class="fa fa-chevron-right"></i>
+                </a>
+            </nav>
+        </div>
+    </section>
+</main>
+
+<!-- 页脚 -->
+<footer class="bg-bear-dark text-white mt-16">
+    <div class="container mx-auto px-4 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div>
+                <div class="flex items-center space-x-2 mb-4">
+                    <i class="fa fa-paw text-2xl text-bear-honey"></i>
+                    <h3 class="text-xl font-bold">小熊房屋租赁系统</h3>
+                </div>
+                <p class="text-gray-300 mb-4">为您提供优质的房屋租赁服务，让租房变得简单、放心、便捷。</p>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-300 hover:text-bear-honey transition-colors duration-200">
+                        <i class="fa fa-weixin text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-300 hover:text-bear-honey transition-colors duration-200">
+                        <i class="fa fa-weibo text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-300 hover:text-bear-honey transition-colors duration-200">
+                        <i class="fa fa-qq text-xl"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div>
+                <h4 class="text-lg font-bold mb-4">快速链接</h4>
+                <ul class="space-y-2">
+                    <li><a href="home.html" class="text-gray-300 hover:text-bear-honey transition-colors duration-200">首页</a></li>
+                    <li><a href="housing_resources.html" class="text-gray-300 hover:text-bear-honey transition-colors duration-200">全部房源</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-bear-honey transition-colors duration-200">区域导航</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-bear-honey transition-colors duration-200">用户评价</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-bear-honey transition-colors duration-200">关于我们</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-lg font-bold mb-4">帮助中心</h4>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-gray-300 hover:text-bear-honey transition-colors duration-200">租赁流程</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-bear-honey transition-colors duration-200">常见问题</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-bear-honey transition-colors duration-200">用户协议</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-bear-honey transition-colors duration-200">隐私政策</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-bear-honey transition-colors duration-200">联系客服</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-lg font-bold mb-4">联系我们</h4>
+                <ul class="space-y-2">
+                    <li class="flex items-start">
+                        <i class="fa fa-map-marker text-bear-honey mt-1 mr-2"></i>
+                        <span class="text-gray-300">北京市朝阳区建国路88号</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fa fa-phone text-bear-honey mr-2"></i>
+                        <span class="text-gray-300">400-888-9999</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fa fa-envelope text-bear-honey mr-2"></i>
+                        <span class="text-gray-300">service@xiaoxiong.com</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fa fa-clock-o text-bear-honey mr-2"></i>
+                        <span class="text-gray-300">周一至周日 9:00-21:00</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400 text-sm">
+            <p>© 2023 小熊房屋租赁系统 版权所有</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // 星级评分交互
+    document.querySelectorAll('#reviewContent').forEach(textarea => {
+        textarea.addEventListener('focus', function() {
+            this.parentElement.classList.add('focus-within');
+        });
+        textarea.addEventListener('blur', function() {
+            this.parentElement.classList.remove('focus-within');
+        });
+    });
+
+    // 星级评分选择
+    const stars = document.querySelectorAll('.fa-star');
+    stars.forEach((star, index) => {
+        star.addEventListener('click', () => {
+            // 重置所有星星
+            stars.forEach(s => s.classList.remove('text-bear-honey'));
+
+            // 设置选中的星星
+            for (let i = 0; i <= index; i++) {
+                stars[i].classList.add('text-bear-honey');
+            }
+        });
+    });
+
+    // 点赞功能
+    document.querySelectorAll('.fa-thumbs-o-up').forEach(thumb => {
+        thumb.addEventListener('click', function() {
+            const parent = this.parentElement;
+            const countText = parent.textContent.trim();
+            const count = parseInt(countText.match(/\d+/)[0]);
+
+            if (this.classList.contains('text-bear-honey')) {
+                // 取消点赞
+                this.classList.remove('text-bear-honey');
+                parent.innerHTML = `<i class="fa fa-thumbs-o-up mr-1"></i> 有用 (${count - 1})`;
+            } else {
+                // 点赞
+                this.classList.add('text-bear-honey');
+                parent.innerHTML = `<i class="fa fa-thumbs-o-up mr-1 text-bear-honey"></i> 有用 (${count + 1})`;
+            }
+        });
+    });
+</script>
+</body>
+</html>
